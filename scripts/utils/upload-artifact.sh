@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -exuo pipefail
 
-RESPONSE=$(curl -X POST "$URL" \
+FILENAME=$(basename dist/*.whl)
+
+RESPONSE=$(curl -X POST "$URL?filename=$FILENAME" \
   -H "Authorization: Bearer $AUTH" \
   -H "Content-Type: application/json")
 
@@ -12,15 +14,13 @@ if [[ "$SIGNED_URL" == "null" ]]; then
   exit 1
 fi
 
-TARBALL=$(cd dist && npm pack --silent)
-
 UPLOAD_RESPONSE=$(curl -v -X PUT \
-  -H "Content-Type: application/gzip" \
-  --data-binary "@dist/$TARBALL" "$SIGNED_URL" 2>&1)
+  -H "Content-Type: binary/octet-stream" \
+  --data-binary "@dist/$FILENAME" "$SIGNED_URL" 2>&1)
 
 if echo "$UPLOAD_RESPONSE" | grep -q "HTTP/[0-9.]* 200"; then
   echo -e "\033[32mUploaded build to Stainless storage.\033[0m"
-  echo -e "\033[32mInstallation: npm install 'https://pkg.stainless.com/s/brapi-typescript/$SHA'\033[0m"
+  echo -e "\033[32mInstallation: pip install 'https://pkg.stainless.com/s/brapi-python/$SHA/$FILENAME'\033[0m"
 else
   echo -e "\033[31mFailed to upload artifact.\033[0m"
   exit 1
