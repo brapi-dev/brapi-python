@@ -33,7 +33,7 @@ class InflationResource(SyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/brapi-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/brapi-dev/brapi-python#accessing-raw-response-data-eg-headers
         """
         return InflationResourceWithRawResponse(self)
 
@@ -42,7 +42,7 @@ class InflationResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/brapi-python#with_streaming_response
+        For more information, see https://www.github.com/brapi-dev/brapi-python#with_streaming_response
         """
         return InflationResourceWithStreamingResponse(self)
 
@@ -261,7 +261,7 @@ class AsyncInflationResource(AsyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/brapi-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/brapi-dev/brapi-python#accessing-raw-response-data-eg-headers
         """
         return AsyncInflationResourceWithRawResponse(self)
 
@@ -270,7 +270,7 @@ class AsyncInflationResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/brapi-python#with_streaming_response
+        For more information, see https://www.github.com/brapi-dev/brapi-python#with_streaming_response
         """
         return AsyncInflationResourceWithStreamingResponse(self)
 
