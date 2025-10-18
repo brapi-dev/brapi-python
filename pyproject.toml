@@ -39,7 +39,7 @@ Homepage = "https://github.com/brapi-dev/brapi-python"
 Repository = "https://github.com/brapi-dev/brapi-python"
 
 [project.optional-dependencies]
-aiohttp = ["aiohttp", "httpx_aiohttp>=0.1.8"]
+aiohttp = ["aiohttp", "httpx_aiohttp>=0.1.9"]
 
 [tool.rye]
 managed = true
