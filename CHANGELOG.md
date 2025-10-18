@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.1 (2025-10-18)
+
+Full Changelog: [v1.0.0...v1.0.1](https://github.com/brapi-dev/brapi-python/compare/v1.0.0...v1.0.1)
+
+### Chores
+
+* bump `httpx-aiohttp` version to 0.1.9 ([58fd5fc](https://github.com/brapi-dev/brapi-python/commit/58fd5fc95c4b0b4e3f92fc5bca2d6dcea5bbe8c9))
+
 ## 1.0.0 (2025-10-12)
 
 Full Changelog: [v0.0.1...v1.0.0](https://github.com/brapi-dev/brapi-python/compare/v0.0.1...v1.0.0)
