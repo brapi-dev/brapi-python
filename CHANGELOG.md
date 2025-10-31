@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.2 (2025-10-31)
+
+Full Changelog: [v1.0.1...v1.0.2](https://github.com/brapi-dev/brapi-python/compare/v1.0.1...v1.0.2)
+
+### Bug Fixes
+
+* **client:** close streams without requiring full consumption ([a23e5a4](https://github.com/brapi-dev/brapi-python/commit/a23e5a4c2d30869c11ab6e09f3eea4ee847c68c4))
+
+
+### Chores
+
+* **internal/tests:** avoid race condition with implicit client cleanup ([d11f1ff](https://github.com/brapi-dev/brapi-python/commit/d11f1ffe7fe451a81c01c4cc90054f6e4190e2de))
+
 ## 1.0.1 (2025-10-18)
 
 Full Changelog: [v1.0.0...v1.0.1](https://github.com/brapi-dev/brapi-python/compare/v1.0.0...v1.0.1)
