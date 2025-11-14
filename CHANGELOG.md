@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.0.2 (2025-11-12)
+
+Full Changelog: [v1.0.1...v1.0.2](https://github.com/brapi-dev/brapi-python/compare/v1.0.1...v1.0.2)
+
+### Bug Fixes
+
+* **client:** close streams without requiring full consumption ([a23e5a4](https://github.com/brapi-dev/brapi-python/commit/a23e5a4c2d30869c11ab6e09f3eea4ee847c68c4))
+* compat with Python 3.14 ([7d86ba1](https://github.com/brapi-dev/brapi-python/commit/7d86ba177c65bde5e0e84c2b7dea7e0f1667cce5))
+* **compat:** update signatures of `model_dump` and `model_dump_json` for Pydantic v1 ([220d879](https://github.com/brapi-dev/brapi-python/commit/220d879c5e6ed1762b5815b007e5dcc942a2e0e4))
+
+
+### Chores
+
+* **internal/tests:** avoid race condition with implicit client cleanup ([d11f1ff](https://github.com/brapi-dev/brapi-python/commit/d11f1ffe7fe451a81c01c4cc90054f6e4190e2de))
+* **internal:** grammar fix (it's -&gt; its) ([1d324d4](https://github.com/brapi-dev/brapi-python/commit/1d324d4f8e18fde597d35938226fd2ca7efda9d1))
+* **package:** drop Python 3.8 support ([0d274f6](https://github.com/brapi-dev/brapi-python/commit/0d274f6b323c4005e8e5ad10fac72c3aca27e3b8))
+
 ## 1.0.1 (2025-10-18)
 
 Full Changelog: [v1.0.0...v1.0.1](https://github.com/brapi-dev/brapi-python/compare/v1.0.0...v1.0.1)
