@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.3 (2025-11-22)
+
+Full Changelog: [v1.0.2...v1.0.3](https://github.com/brapi-dev/brapi-python/compare/v1.0.2...v1.0.3)
+
+### Chores
+
+* add Python 3.14 classifier and testing ([bb6876e](https://github.com/brapi-dev/brapi-python/commit/bb6876e969d28e9458d89cc54c134c43261397e6))
+
 ## 1.0.2 (2025-11-12)
 
 Full Changelog: [v1.0.1...v1.0.2](https://github.com/brapi-dev/brapi-python/compare/v1.0.1...v1.0.2)
