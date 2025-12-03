@@ -87,6 +87,7 @@ pip install brapi[aiohttp]
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
 
 ```python
+import os
 import asyncio
 from brapi import DefaultAioHttpClient
 from brapi import AsyncBrapi
@@ -94,7 +95,7 @@ from brapi import AsyncBrapi
 
 async def main() -> None:
     async with AsyncBrapi(
-        api_key="My API Key",
+        api_key=os.environ.get("BRAPI_API_KEY"),  # This is the default and can be omitted
         http_client=DefaultAioHttpClient(),
     ) as client:
         quote = await client.quote.retrieve(
