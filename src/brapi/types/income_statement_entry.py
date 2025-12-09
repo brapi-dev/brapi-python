@@ -12,6 +12,10 @@ __all__ = ["IncomeStatementEntry"]
 
 
 class IncomeStatementEntry(BaseModel):
+    """
+    Representa os dados de uma Demonstração do Resultado do Exercício (DRE) para um período específico (anual ou trimestral).
+    """
+
     id: Optional[str] = None
     """Identificador único deste registro de DRE (interno)."""
 

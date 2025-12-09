@@ -12,6 +12,10 @@ __all__ = ["FinancialDataEntry"]
 
 
 class FinancialDataEntry(BaseModel):
+    """
+    Representa um conjunto de dados e indicadores financeiros calculados para um período (TTM, anual ou trimestral).
+    """
+
     current_price: Optional[float] = FieldInfo(alias="currentPrice", default=None)
     """Preço atual da ação (pode ser ligeiramente defasado)."""
 

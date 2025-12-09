@@ -8,6 +8,8 @@ __all__ = ["CryptoListAvailableResponse"]
 
 
 class CryptoListAvailableResponse(BaseModel):
+    """Resposta do endpoint que lista todas as criptomoedas disponíveis."""
+
     coins: Optional[List[str]] = None
     """
     Lista de siglas (tickers) das criptomoedas disponíveis (ex: `BTC`, `ETH`,

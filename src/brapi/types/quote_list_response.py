@@ -11,6 +11,8 @@ __all__ = ["QuoteListResponse", "Index", "Stock"]
 
 
 class Index(BaseModel):
+    """Resumo de informações de um índice, geralmente retornado em listas."""
+
     name: Optional[str] = None
     """Nome do índice (ex: `IBOVESPA`)."""
 
@@ -19,6 +21,10 @@ class Index(BaseModel):
 
 
 class Stock(BaseModel):
+    """
+    Resumo de informações de um ativo (ação, FII, BDR), geralmente retornado em listas.
+    """
+
     change: Optional[float] = None
     """Variação percentual do preço em relação ao fechamento anterior."""
 
@@ -57,6 +63,8 @@ class Stock(BaseModel):
 
 
 class QuoteListResponse(BaseModel):
+    """Resposta do endpoint de listagem de cotações (`/api/quote/list`)."""
+
     available_sectors: Optional[List[str]] = FieldInfo(alias="availableSectors", default=None)
     """
     Lista de todos os setores disponíveis que podem ser usados no parâmetro de

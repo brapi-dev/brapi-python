@@ -12,6 +12,10 @@ __all__ = ["ValueAddedEntry"]
 
 
 class ValueAddedEntry(BaseModel):
+    """
+    Representa os dados de uma Demonstração do Valor Adicionado (DVA) para um período específico (anual ou trimestral). A DVA mostra como a riqueza gerada pela empresa foi distribuída.
+    """
+
     added_value_received_by_transfer: Optional[float] = FieldInfo(alias="addedValueReceivedByTransfer", default=None)
     """
     Valor Adicionado Recebido em Transferência (Resultado de Equivalência
