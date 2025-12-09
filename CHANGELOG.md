@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.0.4 (2025-12-09)
+
+Full Changelog: [v1.0.3...v1.0.4](https://github.com/brapi-dev/brapi-python/compare/v1.0.3...v1.0.4)
+
+### Bug Fixes
+
+* ensure streams are always closed ([d1f3a3e](https://github.com/brapi-dev/brapi-python/commit/d1f3a3e1d98fb1ed84e31a58a1df5332446cd793))
+* **types:** allow pyright to infer TypedDict types within SequenceNotStr ([d1f1fcc](https://github.com/brapi-dev/brapi-python/commit/d1f1fcc15a0457f8c03ed22ed76730bee6b56fc1))
+
+
+### Chores
+
+* **deps:** mypy 1.18.1 has a regression, pin to 1.17 ([c03a35a](https://github.com/brapi-dev/brapi-python/commit/c03a35aa19cb32632f2929ebe8e44c171445e5fd))
+* **docs:** use environment variables for authentication in code snippets ([f80ab62](https://github.com/brapi-dev/brapi-python/commit/f80ab628737e2f32db10fc63b47ad0339733c57f))
+* update lockfile ([972cee4](https://github.com/brapi-dev/brapi-python/commit/972cee46353bc8dd7a096f975ae233e508bcf6ec))
+
 ## 1.0.3 (2025-11-22)
 
 Full Changelog: [v1.0.2...v1.0.3](https://github.com/brapi-dev/brapi-python/compare/v1.0.2...v1.0.3)
