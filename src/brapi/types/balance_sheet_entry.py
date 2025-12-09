@@ -12,6 +12,10 @@ __all__ = ["BalanceSheetEntry"]
 
 
 class BalanceSheetEntry(BaseModel):
+    """
+    Representa os dados de um Balanço Patrimonial para um período específico (anual ou trimestral).
+    """
+
     accounts_payable: Optional[float] = FieldInfo(alias="accountsPayable", default=None)
     """Contas a pagar (fornecedores)."""
 

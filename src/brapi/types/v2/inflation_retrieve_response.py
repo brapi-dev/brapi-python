@@ -10,6 +10,8 @@ __all__ = ["InflationRetrieveResponse", "Inflation"]
 
 
 class Inflation(BaseModel):
+    """Representa um ponto de dado histórico de inflação para um país."""
+
     date: Optional[str] = None
     """Data da medição da inflação, no formato `DD/MM/YYYY`."""
 
@@ -27,6 +29,8 @@ class Inflation(BaseModel):
 
 
 class InflationRetrieveResponse(BaseModel):
+    """Resposta principal do endpoint `/api/v2/inflation`."""
+
     inflation: Optional[List[Inflation]] = None
     """
     Array contendo os registros históricos de inflação para o país e período

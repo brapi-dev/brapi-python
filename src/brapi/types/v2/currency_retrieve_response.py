@@ -10,6 +10,10 @@ __all__ = ["CurrencyRetrieveResponse", "Currency"]
 
 
 class Currency(BaseModel):
+    """
+    Contém os dados detalhados da cotação de um **par de moedas fiduciárias específico**, retornado como um elemento do array `currency` no endpoint `/api/v2/currency`.
+    """
+
     ask_price: str = FieldInfo(alias="askPrice")
     """
     **Preço de Venda (Ask):** Preço atual pelo qual o mercado está disposto a vender
@@ -77,6 +81,8 @@ class Currency(BaseModel):
 
 
 class CurrencyRetrieveResponse(BaseModel):
+    """Estrutura da **resposta principal** do endpoint `GET /api/v2/currency`."""
+
     currency: List[Currency]
     """
     Array contendo os objetos `CurrencyQuote`, um para cada par de moeda válido
