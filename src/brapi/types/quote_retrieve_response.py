@@ -25,6 +25,8 @@ __all__ = [
 
 
 class ResultDividendsDataCashDividend(BaseModel):
+    """Detalhes sobre um pagamento de provento em dinheiro (Dividendo ou JCP)."""
+
     approved_on: Optional[datetime] = FieldInfo(alias="approvedOn", default=None)
     """Data em que o pagamento do provento foi aprovado pela empresa.
 
@@ -76,6 +78,10 @@ class ResultDividendsDataCashDividend(BaseModel):
 
 
 class ResultDividendsDataStockDividend(BaseModel):
+    """
+    Detalhes sobre um evento corporativo que afeta a quantidade de ações (Desdobramento/Split, Grupamento/Inplit, Bonificação).
+    """
+
     approved_on: Optional[datetime] = FieldInfo(alias="approvedOn", default=None)
     """Data em que o evento foi aprovado. Formato ISO 8601."""
 
@@ -109,6 +115,11 @@ class ResultDividendsDataStockDividend(BaseModel):
 
 
 class ResultDividendsData(BaseModel):
+    """Objeto contendo informações sobre dividendos, JCP e outros eventos corporativos.
+
+    Retornado apenas se `dividends=true` for especificado na requisição.
+    """
+
     cash_dividends: Optional[List[ResultDividendsDataCashDividend]] = FieldInfo(alias="cashDividends", default=None)
     """Lista de proventos pagos em dinheiro (Dividendos e JCP)."""
 
@@ -120,6 +131,8 @@ class ResultDividendsData(BaseModel):
 
 
 class ResultHistoricalDataPrice(BaseModel):
+    """Representa um ponto na série histórica de preços de um ativo."""
+
     adjusted_close: Optional[float] = FieldInfo(alias="adjustedClose", default=None)
     """
     Preço de fechamento ajustado para proventos (dividendos, JCP, bonificações,
@@ -149,6 +162,11 @@ class ResultHistoricalDataPrice(BaseModel):
 
 
 class ResultSummaryProfile(BaseModel):
+    """Resumo do perfil da empresa.
+
+    Retornado apenas se `modules` incluir `summaryProfile`.
+    """
+
     address1: Optional[str] = None
     """Linha 1 do endereço da sede da empresa."""
 
@@ -205,6 +223,10 @@ class ResultSummaryProfile(BaseModel):
 
 
 class Result(BaseModel):
+    """
+    Contém os dados detalhados de um ativo específico retornado pelo endpoint `/api/quote/{tickers}`.
+    """
+
     average_daily_volume10_day: Optional[float] = FieldInfo(alias="averageDailyVolume10Day", default=None)
     """Média do volume financeiro diário negociado nos últimos 10 dias."""
 
@@ -460,6 +482,8 @@ class Result(BaseModel):
 
 
 class QuoteRetrieveResponse(BaseModel):
+    """Resposta principal do endpoint `/api/quote/{tickers}`."""
+
     requested_at: Optional[datetime] = FieldInfo(alias="requestedAt", default=None)
     """Timestamp indicando quando a requisição foi recebida pelo servidor.
 

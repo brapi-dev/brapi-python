@@ -11,6 +11,8 @@ __all__ = ["CryptoRetrieveResponse", "Coin", "CoinHistoricalDataPrice"]
 
 
 class CoinHistoricalDataPrice(BaseModel):
+    """Representa um ponto na série histórica de preços de uma criptomoeda."""
+
     adjusted_close: Optional[float] = FieldInfo(alias="adjustedClose", default=None)
     """Preço de fechamento ajustado (geralmente igual ao `close` para cripto)."""
 
@@ -37,6 +39,10 @@ class CoinHistoricalDataPrice(BaseModel):
 
 
 class Coin(BaseModel):
+    """
+    Contém os dados detalhados de uma criptomoeda específica retornada pelo endpoint `/api/v2/crypto`.
+    """
+
     coin: Optional[str] = None
     """Sigla (ticker) da criptomoeda (ex: `BTC`, `ETH`)."""
 
@@ -113,5 +119,7 @@ class Coin(BaseModel):
 
 
 class CryptoRetrieveResponse(BaseModel):
+    """Resposta principal do endpoint `/api/v2/crypto`."""
+
     coins: Optional[List[Coin]] = None
     """Array contendo os resultados detalhados para cada criptomoeda solicitada."""

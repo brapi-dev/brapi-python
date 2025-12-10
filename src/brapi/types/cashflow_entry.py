@@ -12,6 +12,10 @@ __all__ = ["CashflowEntry"]
 
 
 class CashflowEntry(BaseModel):
+    """
+    Representa os dados de uma Demonstração do Fluxo de Caixa (DFC) para um período específico (anual ou trimestral).
+    """
+
     adjustments_to_profit_or_loss: Optional[float] = FieldInfo(alias="adjustmentsToProfitOrLoss", default=None)
     """
     Ajustes ao lucro/prejuízo (depreciação, amortização, equivalência patrimonial,

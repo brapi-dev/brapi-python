@@ -17,6 +17,8 @@ class Currency(BaseModel):
 
 
 class CurrencyListAvailableResponse(BaseModel):
+    """Resposta do endpoint que lista todas as moedas fiduciárias disponíveis."""
+
     currencies: Optional[List[Currency]] = None
     """
     Lista de objetos, cada um contendo o nome de uma moeda fiduciária ou par

@@ -12,6 +12,10 @@ __all__ = ["DefaultKeyStatisticsEntry"]
 
 
 class DefaultKeyStatisticsEntry(BaseModel):
+    """
+    Representa um conjunto de principais indicadores e estatísticas financeiras para um período (TTM, anual ou trimestral).
+    """
+
     api_52_week_change: Optional[float] = FieldInfo(alias="52WeekChange", default=None)
     """Variação percentual do preço da ação nas últimas 52 semanas."""
 
