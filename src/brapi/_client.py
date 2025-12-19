@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import os
-from typing import Any, Dict, Mapping, cast
+from typing import TYPE_CHECKING, Any, Dict, Mapping, cast
 from typing_extensions import Self, Literal, override
 
 import httpx
@@ -20,8 +20,8 @@ from ._types import (
     not_given,
 )
 from ._utils import is_given, get_async_library
+from ._compat import cached_property
 from ._version import __version__
-from .resources import quote, available
 from ._streaming import Stream as Stream, AsyncStream as AsyncStream
 from ._exceptions import BrapiError, APIStatusError
 from ._base_client import (
@@ -29,7 +29,12 @@ from ._base_client import (
     SyncAPIClient,
     AsyncAPIClient,
 )
-from .resources.v2 import v2
+
+if TYPE_CHECKING:
+    from .resources import v2, quote, available
+    from .resources.quote import QuoteResource, AsyncQuoteResource
+    from .resources.v2.v2 import V2Resource, AsyncV2Resource
+    from .resources.available import AvailableResource, AsyncAvailableResource
 
 __all__ = [
     "ENVIRONMENTS",
@@ -50,12 +55,6 @@ ENVIRONMENTS: Dict[str, str] = {
 
 
 class Brapi(SyncAPIClient):
-    quote: quote.QuoteResource
-    available: available.AvailableResource
-    v2: v2.V2Resource
-    with_raw_response: BrapiWithRawResponse
-    with_streaming_response: BrapiWithStreamedResponse
-
     # client options
     api_key: str
 
@@ -134,11 +133,31 @@ class Brapi(SyncAPIClient):
             _strict_response_validation=_strict_response_validation,
         )
 
-        self.quote = quote.QuoteResource(self)
-        self.available = available.AvailableResource(self)
-        self.v2 = v2.V2Resource(self)
-        self.with_raw_response = BrapiWithRawResponse(self)
-        self.with_streaming_response = BrapiWithStreamedResponse(self)
+    @cached_property
+    def quote(self) -> QuoteResource:
+        from .resources.quote import QuoteResource
+
+        return QuoteResource(self)
+
+    @cached_property
+    def available(self) -> AvailableResource:
+        from .resources.available import AvailableResource
+
+        return AvailableResource(self)
+
+    @cached_property
+    def v2(self) -> V2Resource:
+        from .resources.v2 import V2Resource
+
+        return V2Resource(self)
+
+    @cached_property
+    def with_raw_response(self) -> BrapiWithRawResponse:
+        return BrapiWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> BrapiWithStreamedResponse:
+        return BrapiWithStreamedResponse(self)
 
     @property
     @override
@@ -248,12 +267,6 @@ class Brapi(SyncAPIClient):
 
 
 class AsyncBrapi(AsyncAPIClient):
-    quote: quote.AsyncQuoteResource
-    available: available.AsyncAvailableResource
-    v2: v2.AsyncV2Resource
-    with_raw_response: AsyncBrapiWithRawResponse
-    with_streaming_response: AsyncBrapiWithStreamedResponse
-
     # client options
     api_key: str
 
@@ -332,11 +345,31 @@ class AsyncBrapi(AsyncAPIClient):
             _strict_response_validation=_strict_response_validation,
         )
 
-        self.quote = quote.AsyncQuoteResource(self)
-        self.available = available.AsyncAvailableResource(self)
-        self.v2 = v2.AsyncV2Resource(self)
-        self.with_raw_response = AsyncBrapiWithRawResponse(self)
-        self.with_streaming_response = AsyncBrapiWithStreamedResponse(self)
+    @cached_property
+    def quote(self) -> AsyncQuoteResource:
+        from .resources.quote import AsyncQuoteResource
+
+        return AsyncQuoteResource(self)
+
+    @cached_property
+    def available(self) -> AsyncAvailableResource:
+        from .resources.available import AsyncAvailableResource
+
+        return AsyncAvailableResource(self)
+
+    @cached_property
+    def v2(self) -> AsyncV2Resource:
+        from .resources.v2 import AsyncV2Resource
+
+        return AsyncV2Resource(self)
+
+    @cached_property
+    def with_raw_response(self) -> AsyncBrapiWithRawResponse:
+        return AsyncBrapiWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncBrapiWithStreamedResponse:
+        return AsyncBrapiWithStreamedResponse(self)
 
     @property
     @override
@@ -446,31 +479,103 @@ class AsyncBrapi(AsyncAPIClient):
 
 
 class BrapiWithRawResponse:
+    _client: Brapi
+
     def __init__(self, client: Brapi) -> None:
-        self.quote = quote.QuoteResourceWithRawResponse(client.quote)
-        self.available = available.AvailableResourceWithRawResponse(client.available)
-        self.v2 = v2.V2ResourceWithRawResponse(client.v2)
+        self._client = client
+
+    @cached_property
+    def quote(self) -> quote.QuoteResourceWithRawResponse:
+        from .resources.quote import QuoteResourceWithRawResponse
+
+        return QuoteResourceWithRawResponse(self._client.quote)
+
+    @cached_property
+    def available(self) -> available.AvailableResourceWithRawResponse:
+        from .resources.available import AvailableResourceWithRawResponse
+
+        return AvailableResourceWithRawResponse(self._client.available)
+
+    @cached_property
+    def v2(self) -> v2.V2ResourceWithRawResponse:
+        from .resources.v2 import V2ResourceWithRawResponse
+
+        return V2ResourceWithRawResponse(self._client.v2)
 
 
 class AsyncBrapiWithRawResponse:
+    _client: AsyncBrapi
+
     def __init__(self, client: AsyncBrapi) -> None:
-        self.quote = quote.AsyncQuoteResourceWithRawResponse(client.quote)
-        self.available = available.AsyncAvailableResourceWithRawResponse(client.available)
-        self.v2 = v2.AsyncV2ResourceWithRawResponse(client.v2)
+        self._client = client
+
+    @cached_property
+    def quote(self) -> quote.AsyncQuoteResourceWithRawResponse:
+        from .resources.quote import AsyncQuoteResourceWithRawResponse
+
+        return AsyncQuoteResourceWithRawResponse(self._client.quote)
+
+    @cached_property
+    def available(self) -> available.AsyncAvailableResourceWithRawResponse:
+        from .resources.available import AsyncAvailableResourceWithRawResponse
+
+        return AsyncAvailableResourceWithRawResponse(self._client.available)
+
+    @cached_property
+    def v2(self) -> v2.AsyncV2ResourceWithRawResponse:
+        from .resources.v2 import AsyncV2ResourceWithRawResponse
+
+        return AsyncV2ResourceWithRawResponse(self._client.v2)
 
 
 class BrapiWithStreamedResponse:
+    _client: Brapi
+
     def __init__(self, client: Brapi) -> None:
-        self.quote = quote.QuoteResourceWithStreamingResponse(client.quote)
-        self.available = available.AvailableResourceWithStreamingResponse(client.available)
-        self.v2 = v2.V2ResourceWithStreamingResponse(client.v2)
+        self._client = client
+
+    @cached_property
+    def quote(self) -> quote.QuoteResourceWithStreamingResponse:
+        from .resources.quote import QuoteResourceWithStreamingResponse
+
+        return QuoteResourceWithStreamingResponse(self._client.quote)
+
+    @cached_property
+    def available(self) -> available.AvailableResourceWithStreamingResponse:
+        from .resources.available import AvailableResourceWithStreamingResponse
+
+        return AvailableResourceWithStreamingResponse(self._client.available)
+
+    @cached_property
+    def v2(self) -> v2.V2ResourceWithStreamingResponse:
+        from .resources.v2 import V2ResourceWithStreamingResponse
+
+        return V2ResourceWithStreamingResponse(self._client.v2)
 
 
 class AsyncBrapiWithStreamedResponse:
+    _client: AsyncBrapi
+
     def __init__(self, client: AsyncBrapi) -> None:
-        self.quote = quote.AsyncQuoteResourceWithStreamingResponse(client.quote)
-        self.available = available.AsyncAvailableResourceWithStreamingResponse(client.available)
-        self.v2 = v2.AsyncV2ResourceWithStreamingResponse(client.v2)
+        self._client = client
+
+    @cached_property
+    def quote(self) -> quote.AsyncQuoteResourceWithStreamingResponse:
+        from .resources.quote import AsyncQuoteResourceWithStreamingResponse
+
+        return AsyncQuoteResourceWithStreamingResponse(self._client.quote)
+
+    @cached_property
+    def available(self) -> available.AsyncAvailableResourceWithStreamingResponse:
+        from .resources.available import AsyncAvailableResourceWithStreamingResponse
+
+        return AsyncAvailableResourceWithStreamingResponse(self._client.available)
+
+    @cached_property
+    def v2(self) -> v2.AsyncV2ResourceWithStreamingResponse:
+        from .resources.v2 import AsyncV2ResourceWithStreamingResponse
+
+        return AsyncV2ResourceWithStreamingResponse(self._client.v2)
 
 
 Client = Brapi
