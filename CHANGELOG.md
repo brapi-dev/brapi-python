@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.0.5 (2025-12-19)
+
+Full Changelog: [v1.0.4...v1.0.5](https://github.com/brapi-dev/brapi-python/compare/v1.0.4...v1.0.5)
+
+### Bug Fixes
+
+* use async_to_httpx_files in patch method ([a061229](https://github.com/brapi-dev/brapi-python/commit/a0612291f12c3dbc71faab50d3beb93848801db3))
+
+
+### Chores
+
+* **internal:** add `--fix` argument to lint script ([76c6f31](https://github.com/brapi-dev/brapi-python/commit/76c6f31884a3fc3588c955002aba49679fd42e9b))
+* **internal:** add missing files argument to base client ([cababd6](https://github.com/brapi-dev/brapi-python/commit/cababd656bcc34c68419a4d00812965f92e0fa5c))
+* speedup initial import ([7261e02](https://github.com/brapi-dev/brapi-python/commit/7261e025f7cf5448c964892296d7c54999926cdd))
+
 ## 1.0.4 (2025-12-09)
 
 Full Changelog: [v1.0.3...v1.0.4](https://github.com/brapi-dev/brapi-python/compare/v1.0.3...v1.0.4)
