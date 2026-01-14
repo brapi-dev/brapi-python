@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.1.0 (2026-01-14)
+
+Full Changelog: [v1.0.5...v1.1.0](https://github.com/brapi-dev/brapi-python/compare/v1.0.5...v1.1.0)
+
+### Features
+
+* **client:** add support for binary request streaming ([f7eb87e](https://github.com/brapi-dev/brapi-python/commit/f7eb87e9fc953d88d4089f62da193dac2348f940))
+
+
+### Chores
+
+* **internal:** codegen related update ([320cbf8](https://github.com/brapi-dev/brapi-python/commit/320cbf88b64040419879dd30e0afd4e349ddbd16))
+
 ## 1.0.5 (2025-12-19)
 
 Full Changelog: [v1.0.4...v1.0.5](https://github.com/brapi-dev/brapi-python/compare/v1.0.4...v1.0.5)
