@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.2.0 (2026-01-30)
+
+Full Changelog: [v1.1.0...v1.2.0](https://github.com/brapi-dev/brapi-python/compare/v1.1.0...v1.2.0)
+
+### Features
+
+* **client:** add custom JSON encoder for extended type support ([05834cc](https://github.com/brapi-dev/brapi-python/commit/05834ccc9e905ba5a730eacf03080b93d6acede9))
+
+
+### Chores
+
+* **ci:** upgrade `actions/github-script` ([c133c8f](https://github.com/brapi-dev/brapi-python/commit/c133c8fa5a7baffae64a019c1fe7825033320509))
+* **internal:** update `actions/checkout` version ([3cafae4](https://github.com/brapi-dev/brapi-python/commit/3cafae4bb3e4f151d053cb677159303489836eb9))
+
 ## 1.1.0 (2026-01-14)
 
 Full Changelog: [v1.0.5...v1.1.0](https://github.com/brapi-dev/brapi-python/compare/v1.0.5...v1.1.0)
