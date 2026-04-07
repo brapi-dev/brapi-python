@@ -8,23 +8,5 @@ __all__ = ["CurrencyListAvailableParams"]
 
 
 class CurrencyListAvailableParams(TypedDict, total=False):
-    token: str
-    """
-    **Obrigatório caso não esteja adicionado como header "Authorization".** Seu
-    token de autenticação pessoal da API Brapi.
-
-    **Formas de Envio:**
-
-    1.  **Query Parameter:** Adicione `?token=SEU_TOKEN` ao final da URL.
-    2.  **HTTP Header:** Inclua o header `Authorization: Bearer SEU_TOKEN` na sua
-        requisição.
-
-    Ambos os métodos são aceitos, mas pelo menos um deles deve ser utilizado.
-    Obtenha seu token em [brapi.dev/dashboard](https://brapi.dev/dashboard).
-    """
-
     search: str
-    """
-    **Opcional.** Termo para filtrar a lista pelo nome da moeda (correspondência
-    parcial, case-insensitive).
-    """
+    """Filtrar pares de moedas por nome ou descrição"""

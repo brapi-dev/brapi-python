@@ -135,12 +135,19 @@ class Brapi(SyncAPIClient):
 
     @cached_property
     def quote(self) -> QuoteResource:
+        """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices da B3.
+
+        Obtenha preços em tempo real, dados fundamentalistas, históricos e dividendos.
+        """
         from .resources.quote import QuoteResource
 
         return QuoteResource(self)
 
     @cached_property
     def available(self) -> AvailableResource:
+        """
+        Ferramentas auxiliares para descobrir ativos disponíveis e verificar a saúde da API.
+        """
         from .resources.available import AvailableResource
 
         return AvailableResource(self)
@@ -163,12 +170,6 @@ class Brapi(SyncAPIClient):
     @override
     def qs(self) -> Querystring:
         return Querystring(array_format="comma")
-
-    @property
-    @override
-    def auth_headers(self) -> dict[str, str]:
-        api_key = self.api_key
-        return {"Authorization": f"Bearer {api_key}"}
 
     @property
     @override
@@ -347,12 +348,19 @@ class AsyncBrapi(AsyncAPIClient):
 
     @cached_property
     def quote(self) -> AsyncQuoteResource:
+        """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices da B3.
+
+        Obtenha preços em tempo real, dados fundamentalistas, históricos e dividendos.
+        """
         from .resources.quote import AsyncQuoteResource
 
         return AsyncQuoteResource(self)
 
     @cached_property
     def available(self) -> AsyncAvailableResource:
+        """
+        Ferramentas auxiliares para descobrir ativos disponíveis e verificar a saúde da API.
+        """
         from .resources.available import AsyncAvailableResource
 
         return AsyncAvailableResource(self)
@@ -375,12 +383,6 @@ class AsyncBrapi(AsyncAPIClient):
     @override
     def qs(self) -> Querystring:
         return Querystring(array_format="comma")
-
-    @property
-    @override
-    def auth_headers(self) -> dict[str, str]:
-        api_key = self.api_key
-        return {"Authorization": f"Bearer {api_key}"}
 
     @property
     @override
@@ -486,12 +488,19 @@ class BrapiWithRawResponse:
 
     @cached_property
     def quote(self) -> quote.QuoteResourceWithRawResponse:
+        """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices da B3.
+
+        Obtenha preços em tempo real, dados fundamentalistas, históricos e dividendos.
+        """
         from .resources.quote import QuoteResourceWithRawResponse
 
         return QuoteResourceWithRawResponse(self._client.quote)
 
     @cached_property
     def available(self) -> available.AvailableResourceWithRawResponse:
+        """
+        Ferramentas auxiliares para descobrir ativos disponíveis e verificar a saúde da API.
+        """
         from .resources.available import AvailableResourceWithRawResponse
 
         return AvailableResourceWithRawResponse(self._client.available)
@@ -511,12 +520,19 @@ class AsyncBrapiWithRawResponse:
 
     @cached_property
     def quote(self) -> quote.AsyncQuoteResourceWithRawResponse:
+        """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices da B3.
+
+        Obtenha preços em tempo real, dados fundamentalistas, históricos e dividendos.
+        """
         from .resources.quote import AsyncQuoteResourceWithRawResponse
 
         return AsyncQuoteResourceWithRawResponse(self._client.quote)
 
     @cached_property
     def available(self) -> available.AsyncAvailableResourceWithRawResponse:
+        """
+        Ferramentas auxiliares para descobrir ativos disponíveis e verificar a saúde da API.
+        """
         from .resources.available import AsyncAvailableResourceWithRawResponse
 
         return AsyncAvailableResourceWithRawResponse(self._client.available)
@@ -536,12 +552,19 @@ class BrapiWithStreamedResponse:
 
     @cached_property
     def quote(self) -> quote.QuoteResourceWithStreamingResponse:
+        """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices da B3.
+
+        Obtenha preços em tempo real, dados fundamentalistas, históricos e dividendos.
+        """
         from .resources.quote import QuoteResourceWithStreamingResponse
 
         return QuoteResourceWithStreamingResponse(self._client.quote)
 
     @cached_property
     def available(self) -> available.AvailableResourceWithStreamingResponse:
+        """
+        Ferramentas auxiliares para descobrir ativos disponíveis e verificar a saúde da API.
+        """
         from .resources.available import AvailableResourceWithStreamingResponse
 
         return AvailableResourceWithStreamingResponse(self._client.available)
@@ -561,12 +584,19 @@ class AsyncBrapiWithStreamedResponse:
 
     @cached_property
     def quote(self) -> quote.AsyncQuoteResourceWithStreamingResponse:
+        """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices da B3.
+
+        Obtenha preços em tempo real, dados fundamentalistas, históricos e dividendos.
+        """
         from .resources.quote import AsyncQuoteResourceWithStreamingResponse
 
         return AsyncQuoteResourceWithStreamingResponse(self._client.quote)
 
     @cached_property
     def available(self) -> available.AsyncAvailableResourceWithStreamingResponse:
+        """
+        Ferramentas auxiliares para descobrir ativos disponíveis e verificar a saúde da API.
+        """
         from .resources.available import AsyncAvailableResourceWithStreamingResponse
 
         return AsyncAvailableResourceWithStreamingResponse(self._client.available)
