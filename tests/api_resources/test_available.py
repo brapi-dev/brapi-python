@@ -27,8 +27,7 @@ class TestAvailable:
     @parametrize
     def test_method_list_with_all_params(self, client: Brapi) -> None:
         available = client.available.list(
-            token="token",
-            search="search",
+            search="PETR",
         )
         assert_matches_type(AvailableListResponse, available, path=["response"])
 
@@ -70,8 +69,7 @@ class TestAsyncAvailable:
     @parametrize
     async def test_method_list_with_all_params(self, async_client: AsyncBrapi) -> None:
         available = await async_client.available.list(
-            token="token",
-            search="search",
+            search="PETR",
         )
         assert_matches_type(AvailableListResponse, available, path=["response"])
 

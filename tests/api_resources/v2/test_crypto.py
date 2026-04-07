@@ -23,29 +23,24 @@ class TestCrypto:
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve(self, client: Brapi) -> None:
-        crypto = client.v2.crypto.retrieve(
-            coin="coin",
-        )
+        crypto = client.v2.crypto.retrieve()
         assert_matches_type(CryptoRetrieveResponse, crypto, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve_with_all_params(self, client: Brapi) -> None:
         crypto = client.v2.crypto.retrieve(
-            coin="coin",
-            token="token",
-            currency="currency",
-            interval="1m",
-            range="1d",
+            coin="BTC,ETH",
+            currency="BRL",
+            interval="interval",
+            range="range",
         )
         assert_matches_type(CryptoRetrieveResponse, crypto, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_retrieve(self, client: Brapi) -> None:
-        response = client.v2.crypto.with_raw_response.retrieve(
-            coin="coin",
-        )
+        response = client.v2.crypto.with_raw_response.retrieve()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -55,9 +50,7 @@ class TestCrypto:
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_retrieve(self, client: Brapi) -> None:
-        with client.v2.crypto.with_streaming_response.retrieve(
-            coin="coin",
-        ) as response:
+        with client.v2.crypto.with_streaming_response.retrieve() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
@@ -76,8 +69,7 @@ class TestCrypto:
     @parametrize
     def test_method_list_available_with_all_params(self, client: Brapi) -> None:
         crypto = client.v2.crypto.list_available(
-            token="token",
-            search="search",
+            search="BTC",
         )
         assert_matches_type(CryptoListAvailableResponse, crypto, path=["response"])
 
@@ -112,29 +104,24 @@ class TestAsyncCrypto:
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve(self, async_client: AsyncBrapi) -> None:
-        crypto = await async_client.v2.crypto.retrieve(
-            coin="coin",
-        )
+        crypto = await async_client.v2.crypto.retrieve()
         assert_matches_type(CryptoRetrieveResponse, crypto, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve_with_all_params(self, async_client: AsyncBrapi) -> None:
         crypto = await async_client.v2.crypto.retrieve(
-            coin="coin",
-            token="token",
-            currency="currency",
-            interval="1m",
-            range="1d",
+            coin="BTC,ETH",
+            currency="BRL",
+            interval="interval",
+            range="range",
         )
         assert_matches_type(CryptoRetrieveResponse, crypto, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_retrieve(self, async_client: AsyncBrapi) -> None:
-        response = await async_client.v2.crypto.with_raw_response.retrieve(
-            coin="coin",
-        )
+        response = await async_client.v2.crypto.with_raw_response.retrieve()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -144,9 +131,7 @@ class TestAsyncCrypto:
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_retrieve(self, async_client: AsyncBrapi) -> None:
-        async with async_client.v2.crypto.with_streaming_response.retrieve(
-            coin="coin",
-        ) as response:
+        async with async_client.v2.crypto.with_streaming_response.retrieve() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
@@ -165,8 +150,7 @@ class TestAsyncCrypto:
     @parametrize
     async def test_method_list_available_with_all_params(self, async_client: AsyncBrapi) -> None:
         crypto = await async_client.v2.crypto.list_available(
-            token="token",
-            search="search",
+            search="BTC",
         )
         assert_matches_type(CryptoListAvailableResponse, crypto, path=["response"])
 

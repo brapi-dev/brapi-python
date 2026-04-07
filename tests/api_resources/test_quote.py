@@ -21,7 +21,7 @@ class TestQuote:
     @parametrize
     def test_method_retrieve(self, client: Brapi) -> None:
         quote = client.quote.retrieve(
-            tickers="PETR4,MGLU3",
+            tickers="PETR4,VALE3",
         )
         assert_matches_type(QuoteRetrieveResponse, quote, path=["response"])
 
@@ -29,13 +29,14 @@ class TestQuote:
     @parametrize
     def test_method_retrieve_with_all_params(self, client: Brapi) -> None:
         quote = client.quote.retrieve(
-            tickers="PETR4,MGLU3",
+            tickers="PETR4,VALE3",
             token="token",
-            dividends=True,
-            fundamental=True,
-            interval="1d",
-            modules=["summaryProfile", "balanceSheetHistory", "financialData"],
-            range="5d",
+            dividends="true",
+            end_date="2024-12-31",
+            interval="1m",
+            modules="summaryProfile,balanceSheetHistory,financialData",
+            range="1d",
+            start_date="2024-01-01",
         )
         assert_matches_type(QuoteRetrieveResponse, quote, path=["response"])
 
@@ -43,7 +44,7 @@ class TestQuote:
     @parametrize
     def test_raw_response_retrieve(self, client: Brapi) -> None:
         response = client.quote.with_raw_response.retrieve(
-            tickers="PETR4,MGLU3",
+            tickers="PETR4,VALE3",
         )
 
         assert response.is_closed is True
@@ -55,7 +56,7 @@ class TestQuote:
     @parametrize
     def test_streaming_response_retrieve(self, client: Brapi) -> None:
         with client.quote.with_streaming_response.retrieve(
-            tickers="PETR4,MGLU3",
+            tickers="PETR4,VALE3",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -84,10 +85,10 @@ class TestQuote:
     def test_method_list_with_all_params(self, client: Brapi) -> None:
         quote = client.quote.list(
             token="token",
-            limit=1,
-            page=1,
+            limit="limit",
+            page="page",
             search="search",
-            sector="Retail Trade",
+            sector="sector",
             sort_by="name",
             sort_order="asc",
             type="stock",
@@ -126,7 +127,7 @@ class TestAsyncQuote:
     @parametrize
     async def test_method_retrieve(self, async_client: AsyncBrapi) -> None:
         quote = await async_client.quote.retrieve(
-            tickers="PETR4,MGLU3",
+            tickers="PETR4,VALE3",
         )
         assert_matches_type(QuoteRetrieveResponse, quote, path=["response"])
 
@@ -134,13 +135,14 @@ class TestAsyncQuote:
     @parametrize
     async def test_method_retrieve_with_all_params(self, async_client: AsyncBrapi) -> None:
         quote = await async_client.quote.retrieve(
-            tickers="PETR4,MGLU3",
+            tickers="PETR4,VALE3",
             token="token",
-            dividends=True,
-            fundamental=True,
-            interval="1d",
-            modules=["summaryProfile", "balanceSheetHistory", "financialData"],
-            range="5d",
+            dividends="true",
+            end_date="2024-12-31",
+            interval="1m",
+            modules="summaryProfile,balanceSheetHistory,financialData",
+            range="1d",
+            start_date="2024-01-01",
         )
         assert_matches_type(QuoteRetrieveResponse, quote, path=["response"])
 
@@ -148,7 +150,7 @@ class TestAsyncQuote:
     @parametrize
     async def test_raw_response_retrieve(self, async_client: AsyncBrapi) -> None:
         response = await async_client.quote.with_raw_response.retrieve(
-            tickers="PETR4,MGLU3",
+            tickers="PETR4,VALE3",
         )
 
         assert response.is_closed is True
@@ -160,7 +162,7 @@ class TestAsyncQuote:
     @parametrize
     async def test_streaming_response_retrieve(self, async_client: AsyncBrapi) -> None:
         async with async_client.quote.with_streaming_response.retrieve(
-            tickers="PETR4,MGLU3",
+            tickers="PETR4,VALE3",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -189,10 +191,10 @@ class TestAsyncQuote:
     async def test_method_list_with_all_params(self, async_client: AsyncBrapi) -> None:
         quote = await async_client.quote.list(
             token="token",
-            limit=1,
-            page=1,
+            limit="limit",
+            page="page",
             search="search",
-            sector="Retail Trade",
+            sector="sector",
             sort_by="name",
             sort_order="asc",
             type="stock",

@@ -23,26 +23,21 @@ class TestCurrency:
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve(self, client: Brapi) -> None:
-        currency = client.v2.currency.retrieve(
-            currency="USD-BRL,EUR-USD",
-        )
+        currency = client.v2.currency.retrieve()
         assert_matches_type(CurrencyRetrieveResponse, currency, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve_with_all_params(self, client: Brapi) -> None:
         currency = client.v2.currency.retrieve(
-            currency="USD-BRL,EUR-USD",
-            token="token",
+            currency="USD-BRL",
         )
         assert_matches_type(CurrencyRetrieveResponse, currency, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_retrieve(self, client: Brapi) -> None:
-        response = client.v2.currency.with_raw_response.retrieve(
-            currency="USD-BRL,EUR-USD",
-        )
+        response = client.v2.currency.with_raw_response.retrieve()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -52,9 +47,7 @@ class TestCurrency:
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_retrieve(self, client: Brapi) -> None:
-        with client.v2.currency.with_streaming_response.retrieve(
-            currency="USD-BRL,EUR-USD",
-        ) as response:
+        with client.v2.currency.with_streaming_response.retrieve() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
@@ -73,8 +66,7 @@ class TestCurrency:
     @parametrize
     def test_method_list_available_with_all_params(self, client: Brapi) -> None:
         currency = client.v2.currency.list_available(
-            token="token",
-            search="search",
+            search="USD",
         )
         assert_matches_type(CurrencyListAvailableResponse, currency, path=["response"])
 
@@ -109,26 +101,21 @@ class TestAsyncCurrency:
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve(self, async_client: AsyncBrapi) -> None:
-        currency = await async_client.v2.currency.retrieve(
-            currency="USD-BRL,EUR-USD",
-        )
+        currency = await async_client.v2.currency.retrieve()
         assert_matches_type(CurrencyRetrieveResponse, currency, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve_with_all_params(self, async_client: AsyncBrapi) -> None:
         currency = await async_client.v2.currency.retrieve(
-            currency="USD-BRL,EUR-USD",
-            token="token",
+            currency="USD-BRL",
         )
         assert_matches_type(CurrencyRetrieveResponse, currency, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_retrieve(self, async_client: AsyncBrapi) -> None:
-        response = await async_client.v2.currency.with_raw_response.retrieve(
-            currency="USD-BRL,EUR-USD",
-        )
+        response = await async_client.v2.currency.with_raw_response.retrieve()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -138,9 +125,7 @@ class TestAsyncCurrency:
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_retrieve(self, async_client: AsyncBrapi) -> None:
-        async with async_client.v2.currency.with_streaming_response.retrieve(
-            currency="USD-BRL,EUR-USD",
-        ) as response:
+        async with async_client.v2.currency.with_streaming_response.retrieve() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
@@ -159,8 +144,7 @@ class TestAsyncCurrency:
     @parametrize
     async def test_method_list_available_with_all_params(self, async_client: AsyncBrapi) -> None:
         currency = await async_client.v2.currency.list_available(
-            token="token",
-            search="search",
+            search="USD",
         )
         assert_matches_type(CurrencyListAvailableResponse, currency, path=["response"])
 

@@ -25,11 +25,10 @@ pip install brapi
 The full API of this library can be found in [api.md](api.md).
 
 ```python
-import os
 from brapi import Brapi
 
 client = Brapi(
-    api_key=os.environ.get("BRAPI_API_KEY"),  # This is the default and can be omitted
+    api_key="My API Key",
     # defaults to "production".
     environment="environment_1",
 )
@@ -40,22 +39,16 @@ quote = client.quote.retrieve(
 print(quote.requested_at)
 ```
 
-While you can provide an `api_key` keyword argument,
-we recommend using [python-dotenv](https://pypi.org/project/python-dotenv/)
-to add `BRAPI_API_KEY="My API Key"` to your `.env` file
-so that your API Key is not stored in source control.
-
 ## Async usage
 
 Simply import `AsyncBrapi` instead of `Brapi` and use `await` with each API call:
 
 ```python
-import os
 import asyncio
 from brapi import AsyncBrapi
 
 client = AsyncBrapi(
-    api_key=os.environ.get("BRAPI_API_KEY"),  # This is the default and can be omitted
+    api_key="My API Key",
     # defaults to "production".
     environment="environment_1",
 )
@@ -87,7 +80,6 @@ pip install brapi[aiohttp]
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
 
 ```python
-import os
 import asyncio
 from brapi import DefaultAioHttpClient
 from brapi import AsyncBrapi
@@ -95,7 +87,7 @@ from brapi import AsyncBrapi
 
 async def main() -> None:
     async with AsyncBrapi(
-        api_key=os.environ.get("BRAPI_API_KEY"),  # This is the default and can be omitted
+        api_key="My API Key",
         http_client=DefaultAioHttpClient(),
     ) as client:
         quote = await client.quote.retrieve(
@@ -129,7 +121,9 @@ All errors inherit from `brapi.APIError`.
 import brapi
 from brapi import Brapi
 
-client = Brapi()
+client = Brapi(
+    api_key="My API Key",
+)
 
 try:
     client.quote.retrieve(
@@ -172,6 +166,7 @@ from brapi import Brapi
 
 # Configure the default for all requests:
 client = Brapi(
+    api_key="My API Key",
     # default is 2
     max_retries=0,
 )
@@ -192,12 +187,14 @@ from brapi import Brapi
 
 # Configure the default for all requests:
 client = Brapi(
+    api_key="My API Key",
     # 20 seconds (default is 1 minute)
     timeout=20.0,
 )
 
 # More granular control:
 client = Brapi(
+    api_key="My API Key",
     timeout=httpx.Timeout(60.0, read=5.0, write=10.0, connect=2.0),
 )
 
@@ -244,7 +241,9 @@ The "raw" Response object can be accessed by prefixing `.with_raw_response.` to 
 ```py
 from brapi import Brapi
 
-client = Brapi()
+client = Brapi(
+    api_key="My API Key",
+)
 response = client.quote.with_raw_response.retrieve(
     tickers="REPLACE_ME",
 )
@@ -323,6 +322,7 @@ import httpx
 from brapi import Brapi, DefaultHttpxClient
 
 client = Brapi(
+    api_key="My API Key",
     # Or use the `BRAPI_BASE_URL` env var
     base_url="http://my.test.server.example.com:8083",
     http_client=DefaultHttpxClient(
@@ -345,7 +345,9 @@ By default the library closes underlying HTTP connections whenever the client is
 ```py
 from brapi import Brapi
 
-with Brapi() as client:
+with Brapi(
+    api_key="My API Key",
+) as client:
   # make requests here
   ...
 

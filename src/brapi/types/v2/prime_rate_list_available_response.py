@@ -1,6 +1,9 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import List, Optional
+from typing import List
+from datetime import datetime
+
+from pydantic import Field as FieldInfo
 
 from ..._models import BaseModel
 
@@ -8,12 +11,9 @@ __all__ = ["PrimeRateListAvailableResponse"]
 
 
 class PrimeRateListAvailableResponse(BaseModel):
-    """
-    Resposta do endpoint `/api/v2/prime-rate/available` que lista os países disponíveis para consulta de taxa básica de juros (SELIC).
-    """
+    countries: List[str]
 
-    countries: Optional[List[str]] = None
-    """
-    Lista de países com dados de taxa básica de juros (SELIC) disponíveis para
-    consulta.
-    """
+    message: str
+
+    requested_at: datetime = FieldInfo(alias="requestedAt")
+    """Data e hora da requisição em formato ISO 8601"""
