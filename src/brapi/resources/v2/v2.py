@@ -57,16 +57,10 @@ class V2Resource(SyncAPIResource):
 
     @cached_property
     def inflation(self) -> InflationResource:
-        """
-        Acompanhe os principais indicadores econômicos do Brasil, incluindo inflação (IPCA, IGP-M) e Taxa Selic.
-        """
         return InflationResource(self._client)
 
     @cached_property
     def prime_rate(self) -> PrimeRateResource:
-        """
-        Acompanhe os principais indicadores econômicos do Brasil, incluindo inflação (IPCA, IGP-M) e Taxa Selic.
-        """
         return PrimeRateResource(self._client)
 
     @cached_property
@@ -106,16 +100,10 @@ class AsyncV2Resource(AsyncAPIResource):
 
     @cached_property
     def inflation(self) -> AsyncInflationResource:
-        """
-        Acompanhe os principais indicadores econômicos do Brasil, incluindo inflação (IPCA, IGP-M) e Taxa Selic.
-        """
         return AsyncInflationResource(self._client)
 
     @cached_property
     def prime_rate(self) -> AsyncPrimeRateResource:
-        """
-        Acompanhe os principais indicadores econômicos do Brasil, incluindo inflação (IPCA, IGP-M) e Taxa Selic.
-        """
         return AsyncPrimeRateResource(self._client)
 
     @cached_property
@@ -158,16 +146,10 @@ class V2ResourceWithRawResponse:
 
     @cached_property
     def inflation(self) -> InflationResourceWithRawResponse:
-        """
-        Acompanhe os principais indicadores econômicos do Brasil, incluindo inflação (IPCA, IGP-M) e Taxa Selic.
-        """
         return InflationResourceWithRawResponse(self._v2.inflation)
 
     @cached_property
     def prime_rate(self) -> PrimeRateResourceWithRawResponse:
-        """
-        Acompanhe os principais indicadores econômicos do Brasil, incluindo inflação (IPCA, IGP-M) e Taxa Selic.
-        """
         return PrimeRateResourceWithRawResponse(self._v2.prime_rate)
 
 
@@ -191,16 +173,10 @@ class AsyncV2ResourceWithRawResponse:
 
     @cached_property
     def inflation(self) -> AsyncInflationResourceWithRawResponse:
-        """
-        Acompanhe os principais indicadores econômicos do Brasil, incluindo inflação (IPCA, IGP-M) e Taxa Selic.
-        """
         return AsyncInflationResourceWithRawResponse(self._v2.inflation)
 
     @cached_property
     def prime_rate(self) -> AsyncPrimeRateResourceWithRawResponse:
-        """
-        Acompanhe os principais indicadores econômicos do Brasil, incluindo inflação (IPCA, IGP-M) e Taxa Selic.
-        """
         return AsyncPrimeRateResourceWithRawResponse(self._v2.prime_rate)
 
 
@@ -224,16 +200,10 @@ class V2ResourceWithStreamingResponse:
 
     @cached_property
     def inflation(self) -> InflationResourceWithStreamingResponse:
-        """
-        Acompanhe os principais indicadores econômicos do Brasil, incluindo inflação (IPCA, IGP-M) e Taxa Selic.
-        """
         return InflationResourceWithStreamingResponse(self._v2.inflation)
 
     @cached_property
     def prime_rate(self) -> PrimeRateResourceWithStreamingResponse:
-        """
-        Acompanhe os principais indicadores econômicos do Brasil, incluindo inflação (IPCA, IGP-M) e Taxa Selic.
-        """
         return PrimeRateResourceWithStreamingResponse(self._v2.prime_rate)
 
 
@@ -257,14 +227,8 @@ class AsyncV2ResourceWithStreamingResponse:
 
     @cached_property
     def inflation(self) -> AsyncInflationResourceWithStreamingResponse:
-        """
-        Acompanhe os principais indicadores econômicos do Brasil, incluindo inflação (IPCA, IGP-M) e Taxa Selic.
-        """
         return AsyncInflationResourceWithStreamingResponse(self._v2.inflation)
 
     @cached_property
     def prime_rate(self) -> AsyncPrimeRateResourceWithStreamingResponse:
-        """
-        Acompanhe os principais indicadores econômicos do Brasil, incluindo inflação (IPCA, IGP-M) e Taxa Selic.
-        """
         return AsyncPrimeRateResourceWithStreamingResponse(self._v2.prime_rate)
