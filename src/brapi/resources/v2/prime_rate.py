@@ -23,10 +23,6 @@ __all__ = ["PrimeRateResource", "AsyncPrimeRateResource"]
 
 
 class PrimeRateResource(SyncAPIResource):
-    """
-    Acompanhe os principais indicadores econômicos do Brasil, incluindo inflação (IPCA, IGP-M) e Taxa Selic.
-    """
-
     @cached_property
     def with_raw_response(self) -> PrimeRateResourceWithRawResponse:
         """
@@ -195,10 +191,6 @@ class PrimeRateResource(SyncAPIResource):
 
 
 class AsyncPrimeRateResource(AsyncAPIResource):
-    """
-    Acompanhe os principais indicadores econômicos do Brasil, incluindo inflação (IPCA, IGP-M) e Taxa Selic.
-    """
-
     @cached_property
     def with_raw_response(self) -> AsyncPrimeRateResourceWithRawResponse:
         """
