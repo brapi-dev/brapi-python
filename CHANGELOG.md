@@ -1,5 +1,36 @@
 # Changelog
 
+## 1.3.0 (2026-05-14)
+
+Full Changelog: [v1.2.0...v1.3.0](https://github.com/brapi-dev/brapi-python/compare/v1.2.0...v1.3.0)
+
+### Features
+
+* **api:** api update ([d14ac86](https://github.com/brapi-dev/brapi-python/commit/d14ac86534b391d76741c66288b6de13587b04c8))
+* **api:** api update ([e5b6f83](https://github.com/brapi-dev/brapi-python/commit/e5b6f83dfaa8e56f3ee5f8d3cbb63f20ef134d75))
+* **api:** api update ([3cd15f0](https://github.com/brapi-dev/brapi-python/commit/3cd15f03d4ef87c43d54a307b5de78cb1668d5fd))
+
+
+### Chores
+
+* format all `api.md` files ([691c9c6](https://github.com/brapi-dev/brapi-python/commit/691c9c699beb5779f2593de827024d861963eb73))
+* **internal:** add request options to SSE classes ([c83d52b](https://github.com/brapi-dev/brapi-python/commit/c83d52b1acbd6d9f062aa08aea4633d2ff465ab3))
+* **internal:** bump dependencies ([2afb698](https://github.com/brapi-dev/brapi-python/commit/2afb69816a7f44ee93344c61f94eb86f4c340e9f))
+* **internal:** codegen related update ([9d762c1](https://github.com/brapi-dev/brapi-python/commit/9d762c157eedd219a2b2b3759071ac25b8d369a2))
+* **internal:** codegen related update ([12bc0a4](https://github.com/brapi-dev/brapi-python/commit/12bc0a45ac8548a0088485b390d2b62b5c5d4067))
+* **internal:** codegen related update ([9e205f4](https://github.com/brapi-dev/brapi-python/commit/9e205f4d519846a0df06ff9692614ddb8db7cd68))
+* **internal:** codegen related update ([1cd1130](https://github.com/brapi-dev/brapi-python/commit/1cd11301a9c48f7e87080f3c0fed1b7ffe65d24e))
+* **internal:** codegen related update ([ca33256](https://github.com/brapi-dev/brapi-python/commit/ca33256ebbce63bc4d1704fed00dfec12fcaee3e))
+* **internal:** codegen related update ([c544f50](https://github.com/brapi-dev/brapi-python/commit/c544f50c8fd0ffe00e9736da46380290f355ead6))
+* **internal:** codegen related update ([6692c9b](https://github.com/brapi-dev/brapi-python/commit/6692c9b20d96d03d072e1db6b56bbcdfe1d852a5))
+* **internal:** codegen related update ([b344fe8](https://github.com/brapi-dev/brapi-python/commit/b344fe8ef180aa53bcba7cae0ab1736031f79941))
+* **internal:** codegen related update ([c48bfd7](https://github.com/brapi-dev/brapi-python/commit/c48bfd77ef22184d9befd319f68a4653e68f03b2))
+* **internal:** fix lint error on Python 3.14 ([8f891ca](https://github.com/brapi-dev/brapi-python/commit/8f891ca4cd532ff0b5bc2ea4748868189d1ac5bf))
+* **internal:** make `test_proxy_environment_variables` more resilient ([a298056](https://github.com/brapi-dev/brapi-python/commit/a298056128baf138f8493c80d34ecc8d67af02fa))
+* **internal:** make `test_proxy_environment_variables` more resilient to env ([a2e60c5](https://github.com/brapi-dev/brapi-python/commit/a2e60c5bb3762cf3de9e7bb7d54a3e6b91a77fb4))
+* **internal:** remove mock server code ([02c10f5](https://github.com/brapi-dev/brapi-python/commit/02c10f56762ea1456bc03934ebddd6c6f78fef81))
+* update mock server docs ([4b7594f](https://github.com/brapi-dev/brapi-python/commit/4b7594fc083f530ddddeaa052a641efaccaf8d6b))
+
 ## 1.2.0 (2026-01-30)
 
 Full Changelog: [v1.1.0...v1.2.0](https://github.com/brapi-dev/brapi-python/compare/v1.1.0...v1.2.0)
