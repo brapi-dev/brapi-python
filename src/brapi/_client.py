@@ -148,7 +148,7 @@ class Brapi(SyncAPIClient):
 
     @cached_property
     def quote(self) -> QuoteResource:
-        """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices da B3.
+        """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices brasileiros.
 
         Obtenha preços em tempo real, dados fundamentalistas, históricos e dividendos.
         """
@@ -370,7 +370,7 @@ class AsyncBrapi(AsyncAPIClient):
 
     @cached_property
     def quote(self) -> AsyncQuoteResource:
-        """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices da B3.
+        """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices brasileiros.
 
         Obtenha preços em tempo real, dados fundamentalistas, históricos e dividendos.
         """
@@ -510,7 +510,7 @@ class BrapiWithRawResponse:
 
     @cached_property
     def quote(self) -> quote.QuoteResourceWithRawResponse:
-        """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices da B3.
+        """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices brasileiros.
 
         Obtenha preços em tempo real, dados fundamentalistas, históricos e dividendos.
         """
@@ -542,7 +542,7 @@ class AsyncBrapiWithRawResponse:
 
     @cached_property
     def quote(self) -> quote.AsyncQuoteResourceWithRawResponse:
-        """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices da B3.
+        """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices brasileiros.
 
         Obtenha preços em tempo real, dados fundamentalistas, históricos e dividendos.
         """
@@ -574,7 +574,7 @@ class BrapiWithStreamedResponse:
 
     @cached_property
     def quote(self) -> quote.QuoteResourceWithStreamingResponse:
-        """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices da B3.
+        """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices brasileiros.
 
         Obtenha preços em tempo real, dados fundamentalistas, históricos e dividendos.
         """
@@ -606,7 +606,7 @@ class AsyncBrapiWithStreamedResponse:
 
     @cached_property
     def quote(self) -> quote.AsyncQuoteResourceWithStreamingResponse:
-        """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices da B3.
+        """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices brasileiros.
 
         Obtenha preços em tempo real, dados fundamentalistas, históricos e dividendos.
         """

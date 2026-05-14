@@ -62,7 +62,7 @@ class AvailableResource(SyncAPIResource):
 
         ### Funcionalidades
 
-        - **Ações da B3:** Todas as ações, FIIs, BDRs e ETFs negociados na bolsa
+        - **Ações brasileiras:** Todas as ações, FIIs, BDRs e ETFs negociados na bolsa
           brasileira
         - **Índices:** Principais índices do mercado brasileiro (Ibovespa, IBrX, IFIX,
           etc.)
@@ -72,7 +72,8 @@ class AvailableResource(SyncAPIResource):
 
         - **Sem Autenticação:** Este endpoint é **público** e não requer token
         - **Cache:** Dados cacheados por 15 minutos
-        - **Atualização automática:** Conforme novos ativos são listados na B3
+        - **Atualização automática:** Conforme novos ativos são listados na bolsa
+          brasileira
 
         ### Exemplos de Uso
 
@@ -110,7 +111,7 @@ class AvailableResource(SyncAPIResource):
         Use os códigos retornados como parâmetro no endpoint `/api/quote/{tickers}` para
         obter cotações detalhadas.
 
-        **Fonte:** B3 (Bolsa de Valores do Brasil)
+        **Fonte:** Bolsa de Valores do Brasil
 
         **Plano Mínimo:** Gratuito **Autenticação:** Não necessária (Público)
 
@@ -179,7 +180,7 @@ class AsyncAvailableResource(AsyncAPIResource):
 
         ### Funcionalidades
 
-        - **Ações da B3:** Todas as ações, FIIs, BDRs e ETFs negociados na bolsa
+        - **Ações brasileiras:** Todas as ações, FIIs, BDRs e ETFs negociados na bolsa
           brasileira
         - **Índices:** Principais índices do mercado brasileiro (Ibovespa, IBrX, IFIX,
           etc.)
@@ -189,7 +190,8 @@ class AsyncAvailableResource(AsyncAPIResource):
 
         - **Sem Autenticação:** Este endpoint é **público** e não requer token
         - **Cache:** Dados cacheados por 15 minutos
-        - **Atualização automática:** Conforme novos ativos são listados na B3
+        - **Atualização automática:** Conforme novos ativos são listados na bolsa
+          brasileira
 
         ### Exemplos de Uso
 
@@ -227,7 +229,7 @@ class AsyncAvailableResource(AsyncAPIResource):
         Use os códigos retornados como parâmetro no endpoint `/api/quote/{tickers}` para
         obter cotações detalhadas.
 
-        **Fonte:** B3 (Bolsa de Valores do Brasil)
+        **Fonte:** Bolsa de Valores do Brasil
 
         **Plano Mínimo:** Gratuito **Autenticação:** Não necessária (Público)
 
