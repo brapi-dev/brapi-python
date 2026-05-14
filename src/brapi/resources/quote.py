@@ -25,7 +25,7 @@ __all__ = ["QuoteResource", "AsyncQuoteResource"]
 
 
 class QuoteResource(SyncAPIResource):
-    """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices da B3.
+    """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices brasileiros.
 
     Obtenha preços em tempo real, dados fundamentalistas, históricos e dividendos.
     """
@@ -370,7 +370,7 @@ class QuoteResource(SyncAPIResource):
 
 
 class AsyncQuoteResource(AsyncAPIResource):
-    """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices da B3.
+    """Consulte informações detalhadas sobre ações, BDRs, ETFs e índices brasileiros.
 
     Obtenha preços em tempo real, dados fundamentalistas, históricos e dividendos.
     """
