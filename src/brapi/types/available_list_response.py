@@ -8,13 +8,8 @@ __all__ = ["AvailableListResponse"]
 
 
 class AvailableListResponse(BaseModel):
-    """Resposta do endpoint que lista todos os tickers disponíveis."""
-
     indexes: List[str]
-    """Lista de tickers de **índices** disponíveis (ex: `^BVSP`, `^IFIX`)."""
+    """Lista de índices disponíveis"""
 
     stocks: List[str]
-    """
-    Lista de tickers de **ações, FIIs, BDRs e ETFs** disponíveis (ex: `PETR4`,
-    `VALE3`, `MXRF11`).
-    """
+    """Lista de códigos de ações disponíveis"""

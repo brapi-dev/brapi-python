@@ -5,11 +5,7 @@ Types:
 ```python
 from brapi.types import (
     BalanceSheetEntry,
-    CashflowEntry,
-    DefaultKeyStatisticsEntry,
     FinancialDataEntry,
-    IncomeStatementEntry,
-    ValueAddedEntry,
     QuoteRetrieveResponse,
     QuoteListResponse,
 )
@@ -71,7 +67,7 @@ from brapi.types.v2 import InflationRetrieveResponse, InflationListAvailableResp
 Methods:
 
 - <code title="get /api/v2/inflation">client.v2.inflation.<a href="./src/brapi/resources/v2/inflation.py">retrieve</a>(\*\*<a href="src/brapi/types/v2/inflation_retrieve_params.py">params</a>) -> <a href="./src/brapi/types/v2/inflation_retrieve_response.py">InflationRetrieveResponse</a></code>
-- <code title="get /api/v2/inflation/available">client.v2.inflation.<a href="./src/brapi/resources/v2/inflation.py">list_available</a>(\*\*<a href="src/brapi/types/v2/inflation_list_available_params.py">params</a>) -> <a href="./src/brapi/types/v2/inflation_list_available_response.py">InflationListAvailableResponse</a></code>
+- <code title="get /api/v2/inflation/available">client.v2.inflation.<a href="./src/brapi/resources/v2/inflation.py">list_available</a>() -> <a href="./src/brapi/types/v2/inflation_list_available_response.py">InflationListAvailableResponse</a></code>
 
 ## PrimeRate
 
@@ -84,4 +80,4 @@ from brapi.types.v2 import PrimeRateRetrieveResponse, PrimeRateListAvailableResp
 Methods:
 
 - <code title="get /api/v2/prime-rate">client.v2.prime_rate.<a href="./src/brapi/resources/v2/prime_rate.py">retrieve</a>(\*\*<a href="src/brapi/types/v2/prime_rate_retrieve_params.py">params</a>) -> <a href="./src/brapi/types/v2/prime_rate_retrieve_response.py">PrimeRateRetrieveResponse</a></code>
-- <code title="get /api/v2/prime-rate/available">client.v2.prime_rate.<a href="./src/brapi/resources/v2/prime_rate.py">list_available</a>(\*\*<a href="src/brapi/types/v2/prime_rate_list_available_params.py">params</a>) -> <a href="./src/brapi/types/v2/prime_rate_list_available_response.py">PrimeRateListAvailableResponse</a></code>
+- <code title="get /api/v2/prime-rate/available">client.v2.prime_rate.<a href="./src/brapi/resources/v2/prime_rate.py">list_available</a>() -> <a href="./src/brapi/types/v2/prime_rate_list_available_response.py">PrimeRateListAvailableResponse</a></code>

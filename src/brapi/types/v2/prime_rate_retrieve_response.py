@@ -1,6 +1,7 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import List, Optional
+from typing import List
+from datetime import datetime
 
 from pydantic import Field as FieldInfo
 
@@ -10,25 +11,19 @@ __all__ = ["PrimeRateRetrieveResponse", "PrimeRate"]
 
 
 class PrimeRate(BaseModel):
-    """
-    Representa um registro individual de taxa básica de juros (SELIC) para uma data específica.
-    """
+    date: str
 
-    date: Optional[str] = None
-    """Data do registro no formato DD/MM/YYYY."""
+    epoch_date: float = FieldInfo(alias="epochDate")
 
-    epoch_date: Optional[int] = FieldInfo(alias="epochDate", default=None)
-    """Timestamp em milissegundos (formato epoch) correspondente à data do registro."""
-
-    value: Optional[str] = None
-    """Valor da taxa básica de juros (SELIC) para a data correspondente."""
+    value: str
+    """Taxa SELIC meta anualizada (% a.a.)"""
 
 
 class PrimeRateRetrieveResponse(BaseModel):
-    """Resposta principal do endpoint `/api/v2/prime-rate`."""
+    prime_rate: List[PrimeRate] = FieldInfo(alias="prime-rate")
 
-    prime_rate: Optional[List[PrimeRate]] = FieldInfo(alias="prime-rate", default=None)
-    """
-    Array contendo os registros históricos de taxa básica de juros (SELIC) para o
-    país e período solicitados.
-    """
+    requested_at: datetime = FieldInfo(alias="requestedAt")
+    """Data e hora da requisição em formato ISO 8601"""
+
+    took: int
+    """Tempo de processamento em milissegundos"""

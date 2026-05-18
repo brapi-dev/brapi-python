@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing_extensions import Literal
-
 import httpx
 
 from ..._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
@@ -25,6 +23,10 @@ __all__ = ["CryptoResource", "AsyncCryptoResource"]
 
 
 class CryptoResource(SyncAPIResource):
+    """
+    Obtenha cotações em tempo real e dados históricos de criptomoedas, disponíveis em diversas moedas de referência.
+    """
+
     @cached_property
     def with_raw_response(self) -> CryptoResourceWithRawResponse:
         """
@@ -47,12 +49,10 @@ class CryptoResource(SyncAPIResource):
     def retrieve(
         self,
         *,
-        coin: str,
-        token: str | Omit = omit,
+        coin: str | Omit = omit,
         currency: str | Omit = omit,
-        interval: Literal["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h", "1d", "5d", "1wk", "1mo", "3mo"]
-        | Omit = omit,
-        range: Literal["1d", "5d", "1mo", "3mo", "6mo", "1y", "2y", "5y", "10y", "ytd", "max"] | Omit = omit,
+        interval: str | Omit = omit,
+        range: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -61,77 +61,54 @@ class CryptoResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> CryptoRetrieveResponse:
         """
-        Obtenha cotações atualizadas e dados históricos para uma ou mais criptomoedas.
+        Retorna cotações atualizadas de uma ou mais criptomoedas, com conversão para
+        diferentes moedas fiduciárias.
 
         ### Funcionalidades:
 
-        - **Cotação Múltipla:** Consulte várias criptomoedas em uma única requisição
-          usando o parâmetro `coin`.
-        - **Moeda de Referência:** Especifique a moeda fiduciária para a cotação com
-          `currency` (padrão: BRL).
-        - **Dados Históricos:** Solicite séries históricas usando `range` e `interval`
-          (similar ao endpoint de ações).
+        - **Cotação Atual:** Preço, variação 24h, volume, market cap
+        - **Múltiplas Moedas:** Consulte várias criptos em uma requisição (separadas por
+          vírgula)
+        - **Conversão de Moeda:** BRL (padrão), USD, EUR e outras
+        - **Dados Históricos:** OHLCV via parâmetros `range` e `interval`
 
         ### Autenticação:
 
-        Requer token de autenticação via `token` (query) ou `Authorization` (header).
+        Bearer token ou query param `token`. Obtenha em brapi.dev/dashboard.
 
-        ### Exemplo de Requisição:
-
-        **Cotação de Bitcoin (BTC) e Ethereum (ETH) em Dólar Americano (USD):**
+        ### Exemplos de Requisição:
 
         ```bash
-        curl -X GET "https://brapi.dev/api/v2/crypto?coin=BTC,ETH&currency=USD&token=SEU_TOKEN"
+        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto?coin=BTC&currency=BRL"
+        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto?coin=BTC,ETH,SOL&currency=USD"
+        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto?coin=BTC&currency=BRL&range=1mo&interval=1d"
         ```
 
-        **Cotação de Cardano (ADA) em Real (BRL) com histórico do último mês (intervalo
-        diário):**
+        ### Moedas de Conversão:
 
-        ```bash
-        curl -X GET "https://brapi.dev/api/v2/crypto?coin=ADA&currency=BRL&range=1mo&interval=1d&token=SEU_TOKEN"
-        ```
+        BRL (Real), USD (Dólar), EUR (Euro), GBP (Libra) e outras
 
-        ### Resposta:
+        ### Campos da Resposta:
 
-        A resposta contém um array `coins`, onde cada objeto representa uma criptomoeda
-        solicitada, incluindo sua cotação atual, dados de mercado e, opcionalmente, a
-        série histórica (`historicalDataPrice`).
+        - `coin` — Símbolo da criptomoeda
+        - `coinName` — Nome completo
+        - `currency` — Moeda de cotação
+        - `regularMarketPrice` — Preço atual
+        - `regularMarketChange` — Variação em valor absoluto
+        - `regularMarketChangePercent` — Variação percentual (%)
+        - `regularMarketDayHigh` / `regularMarketDayLow` — Máxima/Mínima do dia
+        - `regularMarketVolume` — Volume negociado
+
+        **Plano Mínimo:** Startup **Autenticação:** Necessária
 
         Args:
-          coin: **Obrigatório.** Uma ou mais siglas (tickers) de criptomoedas que você deseja
-              consultar. Separe múltiplas siglas por vírgula (`,`).
+          coin: Sigla(s) das criptomoedas separadas por vírgula
 
-              - **Exemplos:** `BTC`, `ETH,ADA`, `SOL`.
+          currency: Moeda para cotação (padrão: BRL)
 
-          token: **Obrigatório caso não esteja adicionado como header "Authorization".** Seu
-              token de autenticação pessoal da API Brapi.
+          interval: Intervalo dos dados históricos
 
-              **Formas de Envio:**
-
-              1.  **Query Parameter:** Adicione `?token=SEU_TOKEN` ao final da URL.
-              2.  **HTTP Header:** Inclua o header `Authorization: Bearer SEU_TOKEN` na sua
-                  requisição.
-
-              Ambos os métodos são aceitos, mas pelo menos um deles deve ser utilizado.
-              Obtenha seu token em [brapi.dev/dashboard](https://brapi.dev/dashboard).
-
-          currency: **Opcional.** A sigla da moeda fiduciária na qual a cotação da(s) criptomoeda(s)
-              deve ser retornada. Se omitido, o padrão é `BRL` (Real Brasileiro).
-
-          interval: **Opcional.** Define a granularidade (intervalo) dos dados históricos de preço
-              (`historicalDataPrice`). Requer que `range` também seja especificado. Funciona
-              de forma análoga ao endpoint de ações.
-
-              - Valores: `1m`, `2m`, `5m`, `15m`, `30m`, `60m`, `90m`, `1h`, `1d`, `5d`,
-                `1wk`, `1mo`, `3mo`.
-
-          range: **Opcional.** Define o período para os dados históricos de preço
-              (`historicalDataPrice`). Funciona de forma análoga ao endpoint de ações. Se
-              omitido, apenas a cotação mais recente é retornada (a menos que `interval` seja
-              usado).
-
-              - Valores: `1d`, `5d`, `1mo`, `3mo`, `6mo`, `1y`, `2y`, `5y`, `10y`, `ytd`,
-                `max`.
+          range: Período para dados históricos
 
           extra_headers: Send extra headers
 
@@ -151,7 +128,6 @@ class CryptoResource(SyncAPIResource):
                 query=maybe_transform(
                     {
                         "coin": coin,
-                        "token": token,
                         "currency": currency,
                         "interval": interval,
                         "range": range,
@@ -165,7 +141,6 @@ class CryptoResource(SyncAPIResource):
     def list_available(
         self,
         *,
-        token: str | Omit = omit,
         search: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -175,53 +150,38 @@ class CryptoResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> CryptoListAvailableResponse:
         """
-        Obtenha a lista completa de todas as siglas (tickers) de criptomoedas que a API
-        Brapi suporta para consulta no endpoint `/api/v2/crypto`.
+        Retorna a lista de criptomoedas disponíveis para consulta no endpoint
+        `/api/v2/crypto`.
 
-        ### Funcionalidade:
+        ### Criptomoedas Populares:
 
-        - Retorna um array `coins` com as siglas.
-        - Pode ser filtrado usando o parâmetro `search`.
+        - **BTC** — Bitcoin
+        - **ETH** — Ethereum
+        - **BNB** — Binance Coin
+        - **SOL** — Solana
+        - **ADA** — Cardano
+        - **XRP** — Ripple
+        - **DOGE** — Dogecoin
+        - **DOT** — Polkadot
+        - **MATIC** — Polygon
+        - **LTC** — Litecoin
+        - E centenas de outras...
 
-        ### Autenticação:
+        ### Uso:
 
-        Requer token de autenticação via `token` (query) ou `Authorization` (header).
+        Use os símbolos retornados como valor do parâmetro `coin` no endpoint principal.
 
-        ### Exemplo de Requisição:
-
-        **Listar todas as criptomoedas disponíveis:**
+        ### Exemplos de Requisição:
 
         ```bash
-        curl -X GET "https://brapi.dev/api/v2/crypto/available?token=SEU_TOKEN"
+        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto/available"
+        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto/available?search=BTC"
         ```
 
-        **Buscar criptomoedas cujo ticker contenha 'DOGE':**
-
-        ```bash
-        curl -X GET "https://brapi.dev/api/v2/crypto/available?search=DOGE&token=SEU_TOKEN"
-        ```
-
-        ### Resposta:
-
-        A resposta é um objeto JSON com a chave `coins`, contendo um array de strings
-        com as siglas das criptomoedas (ex: `["BTC", "ETH", "LTC", "XRP"]`).
+        **Plano Mínimo:** Startup **Autenticação:** Necessária
 
         Args:
-          token: **Obrigatório caso não esteja adicionado como header "Authorization".** Seu
-              token de autenticação pessoal da API Brapi.
-
-              **Formas de Envio:**
-
-              1.  **Query Parameter:** Adicione `?token=SEU_TOKEN` ao final da URL.
-              2.  **HTTP Header:** Inclua o header `Authorization: Bearer SEU_TOKEN` na sua
-                  requisição.
-
-              Ambos os métodos são aceitos, mas pelo menos um deles deve ser utilizado.
-              Obtenha seu token em [brapi.dev/dashboard](https://brapi.dev/dashboard).
-
-          search: **Opcional.** Termo para filtrar a lista de siglas de criptomoedas
-              (correspondência parcial, case-insensitive). Se omitido, retorna todas as
-              siglas.
+          search: Filtrar criptomoedas por símbolo
 
           extra_headers: Send extra headers
 
@@ -238,19 +198,17 @@ class CryptoResource(SyncAPIResource):
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                query=maybe_transform(
-                    {
-                        "token": token,
-                        "search": search,
-                    },
-                    crypto_list_available_params.CryptoListAvailableParams,
-                ),
+                query=maybe_transform({"search": search}, crypto_list_available_params.CryptoListAvailableParams),
             ),
             cast_to=CryptoListAvailableResponse,
         )
 
 
 class AsyncCryptoResource(AsyncAPIResource):
+    """
+    Obtenha cotações em tempo real e dados históricos de criptomoedas, disponíveis em diversas moedas de referência.
+    """
+
     @cached_property
     def with_raw_response(self) -> AsyncCryptoResourceWithRawResponse:
         """
@@ -273,12 +231,10 @@ class AsyncCryptoResource(AsyncAPIResource):
     async def retrieve(
         self,
         *,
-        coin: str,
-        token: str | Omit = omit,
+        coin: str | Omit = omit,
         currency: str | Omit = omit,
-        interval: Literal["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h", "1d", "5d", "1wk", "1mo", "3mo"]
-        | Omit = omit,
-        range: Literal["1d", "5d", "1mo", "3mo", "6mo", "1y", "2y", "5y", "10y", "ytd", "max"] | Omit = omit,
+        interval: str | Omit = omit,
+        range: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -287,77 +243,54 @@ class AsyncCryptoResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> CryptoRetrieveResponse:
         """
-        Obtenha cotações atualizadas e dados históricos para uma ou mais criptomoedas.
+        Retorna cotações atualizadas de uma ou mais criptomoedas, com conversão para
+        diferentes moedas fiduciárias.
 
         ### Funcionalidades:
 
-        - **Cotação Múltipla:** Consulte várias criptomoedas em uma única requisição
-          usando o parâmetro `coin`.
-        - **Moeda de Referência:** Especifique a moeda fiduciária para a cotação com
-          `currency` (padrão: BRL).
-        - **Dados Históricos:** Solicite séries históricas usando `range` e `interval`
-          (similar ao endpoint de ações).
+        - **Cotação Atual:** Preço, variação 24h, volume, market cap
+        - **Múltiplas Moedas:** Consulte várias criptos em uma requisição (separadas por
+          vírgula)
+        - **Conversão de Moeda:** BRL (padrão), USD, EUR e outras
+        - **Dados Históricos:** OHLCV via parâmetros `range` e `interval`
 
         ### Autenticação:
 
-        Requer token de autenticação via `token` (query) ou `Authorization` (header).
+        Bearer token ou query param `token`. Obtenha em brapi.dev/dashboard.
 
-        ### Exemplo de Requisição:
-
-        **Cotação de Bitcoin (BTC) e Ethereum (ETH) em Dólar Americano (USD):**
+        ### Exemplos de Requisição:
 
         ```bash
-        curl -X GET "https://brapi.dev/api/v2/crypto?coin=BTC,ETH&currency=USD&token=SEU_TOKEN"
+        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto?coin=BTC&currency=BRL"
+        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto?coin=BTC,ETH,SOL&currency=USD"
+        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto?coin=BTC&currency=BRL&range=1mo&interval=1d"
         ```
 
-        **Cotação de Cardano (ADA) em Real (BRL) com histórico do último mês (intervalo
-        diário):**
+        ### Moedas de Conversão:
 
-        ```bash
-        curl -X GET "https://brapi.dev/api/v2/crypto?coin=ADA&currency=BRL&range=1mo&interval=1d&token=SEU_TOKEN"
-        ```
+        BRL (Real), USD (Dólar), EUR (Euro), GBP (Libra) e outras
 
-        ### Resposta:
+        ### Campos da Resposta:
 
-        A resposta contém um array `coins`, onde cada objeto representa uma criptomoeda
-        solicitada, incluindo sua cotação atual, dados de mercado e, opcionalmente, a
-        série histórica (`historicalDataPrice`).
+        - `coin` — Símbolo da criptomoeda
+        - `coinName` — Nome completo
+        - `currency` — Moeda de cotação
+        - `regularMarketPrice` — Preço atual
+        - `regularMarketChange` — Variação em valor absoluto
+        - `regularMarketChangePercent` — Variação percentual (%)
+        - `regularMarketDayHigh` / `regularMarketDayLow` — Máxima/Mínima do dia
+        - `regularMarketVolume` — Volume negociado
+
+        **Plano Mínimo:** Startup **Autenticação:** Necessária
 
         Args:
-          coin: **Obrigatório.** Uma ou mais siglas (tickers) de criptomoedas que você deseja
-              consultar. Separe múltiplas siglas por vírgula (`,`).
+          coin: Sigla(s) das criptomoedas separadas por vírgula
 
-              - **Exemplos:** `BTC`, `ETH,ADA`, `SOL`.
+          currency: Moeda para cotação (padrão: BRL)
 
-          token: **Obrigatório caso não esteja adicionado como header "Authorization".** Seu
-              token de autenticação pessoal da API Brapi.
+          interval: Intervalo dos dados históricos
 
-              **Formas de Envio:**
-
-              1.  **Query Parameter:** Adicione `?token=SEU_TOKEN` ao final da URL.
-              2.  **HTTP Header:** Inclua o header `Authorization: Bearer SEU_TOKEN` na sua
-                  requisição.
-
-              Ambos os métodos são aceitos, mas pelo menos um deles deve ser utilizado.
-              Obtenha seu token em [brapi.dev/dashboard](https://brapi.dev/dashboard).
-
-          currency: **Opcional.** A sigla da moeda fiduciária na qual a cotação da(s) criptomoeda(s)
-              deve ser retornada. Se omitido, o padrão é `BRL` (Real Brasileiro).
-
-          interval: **Opcional.** Define a granularidade (intervalo) dos dados históricos de preço
-              (`historicalDataPrice`). Requer que `range` também seja especificado. Funciona
-              de forma análoga ao endpoint de ações.
-
-              - Valores: `1m`, `2m`, `5m`, `15m`, `30m`, `60m`, `90m`, `1h`, `1d`, `5d`,
-                `1wk`, `1mo`, `3mo`.
-
-          range: **Opcional.** Define o período para os dados históricos de preço
-              (`historicalDataPrice`). Funciona de forma análoga ao endpoint de ações. Se
-              omitido, apenas a cotação mais recente é retornada (a menos que `interval` seja
-              usado).
-
-              - Valores: `1d`, `5d`, `1mo`, `3mo`, `6mo`, `1y`, `2y`, `5y`, `10y`, `ytd`,
-                `max`.
+          range: Período para dados históricos
 
           extra_headers: Send extra headers
 
@@ -377,7 +310,6 @@ class AsyncCryptoResource(AsyncAPIResource):
                 query=await async_maybe_transform(
                     {
                         "coin": coin,
-                        "token": token,
                         "currency": currency,
                         "interval": interval,
                         "range": range,
@@ -391,7 +323,6 @@ class AsyncCryptoResource(AsyncAPIResource):
     async def list_available(
         self,
         *,
-        token: str | Omit = omit,
         search: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -401,53 +332,38 @@ class AsyncCryptoResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> CryptoListAvailableResponse:
         """
-        Obtenha a lista completa de todas as siglas (tickers) de criptomoedas que a API
-        Brapi suporta para consulta no endpoint `/api/v2/crypto`.
+        Retorna a lista de criptomoedas disponíveis para consulta no endpoint
+        `/api/v2/crypto`.
 
-        ### Funcionalidade:
+        ### Criptomoedas Populares:
 
-        - Retorna um array `coins` com as siglas.
-        - Pode ser filtrado usando o parâmetro `search`.
+        - **BTC** — Bitcoin
+        - **ETH** — Ethereum
+        - **BNB** — Binance Coin
+        - **SOL** — Solana
+        - **ADA** — Cardano
+        - **XRP** — Ripple
+        - **DOGE** — Dogecoin
+        - **DOT** — Polkadot
+        - **MATIC** — Polygon
+        - **LTC** — Litecoin
+        - E centenas de outras...
 
-        ### Autenticação:
+        ### Uso:
 
-        Requer token de autenticação via `token` (query) ou `Authorization` (header).
+        Use os símbolos retornados como valor do parâmetro `coin` no endpoint principal.
 
-        ### Exemplo de Requisição:
-
-        **Listar todas as criptomoedas disponíveis:**
+        ### Exemplos de Requisição:
 
         ```bash
-        curl -X GET "https://brapi.dev/api/v2/crypto/available?token=SEU_TOKEN"
+        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto/available"
+        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto/available?search=BTC"
         ```
 
-        **Buscar criptomoedas cujo ticker contenha 'DOGE':**
-
-        ```bash
-        curl -X GET "https://brapi.dev/api/v2/crypto/available?search=DOGE&token=SEU_TOKEN"
-        ```
-
-        ### Resposta:
-
-        A resposta é um objeto JSON com a chave `coins`, contendo um array de strings
-        com as siglas das criptomoedas (ex: `["BTC", "ETH", "LTC", "XRP"]`).
+        **Plano Mínimo:** Startup **Autenticação:** Necessária
 
         Args:
-          token: **Obrigatório caso não esteja adicionado como header "Authorization".** Seu
-              token de autenticação pessoal da API Brapi.
-
-              **Formas de Envio:**
-
-              1.  **Query Parameter:** Adicione `?token=SEU_TOKEN` ao final da URL.
-              2.  **HTTP Header:** Inclua o header `Authorization: Bearer SEU_TOKEN` na sua
-                  requisição.
-
-              Ambos os métodos são aceitos, mas pelo menos um deles deve ser utilizado.
-              Obtenha seu token em [brapi.dev/dashboard](https://brapi.dev/dashboard).
-
-          search: **Opcional.** Termo para filtrar a lista de siglas de criptomoedas
-              (correspondência parcial, case-insensitive). Se omitido, retorna todas as
-              siglas.
+          search: Filtrar criptomoedas por símbolo
 
           extra_headers: Send extra headers
 
@@ -465,11 +381,7 @@ class AsyncCryptoResource(AsyncAPIResource):
                 extra_body=extra_body,
                 timeout=timeout,
                 query=await async_maybe_transform(
-                    {
-                        "token": token,
-                        "search": search,
-                    },
-                    crypto_list_available_params.CryptoListAvailableParams,
+                    {"search": search}, crypto_list_available_params.CryptoListAvailableParams
                 ),
             ),
             cast_to=CryptoListAvailableResponse,

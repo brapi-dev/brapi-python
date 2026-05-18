@@ -20,41 +20,34 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestCurrency:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve(self, client: Brapi) -> None:
-        currency = client.v2.currency.retrieve(
-            currency="USD-BRL,EUR-USD",
-        )
+        currency = client.v2.currency.retrieve()
         assert_matches_type(CurrencyRetrieveResponse, currency, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve_with_all_params(self, client: Brapi) -> None:
         currency = client.v2.currency.retrieve(
-            currency="USD-BRL,EUR-USD",
-            token="token",
+            currency="USD-BRL",
         )
         assert_matches_type(CurrencyRetrieveResponse, currency, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_retrieve(self, client: Brapi) -> None:
-        response = client.v2.currency.with_raw_response.retrieve(
-            currency="USD-BRL,EUR-USD",
-        )
+        response = client.v2.currency.with_raw_response.retrieve()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         currency = response.parse()
         assert_matches_type(CurrencyRetrieveResponse, currency, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_retrieve(self, client: Brapi) -> None:
-        with client.v2.currency.with_streaming_response.retrieve(
-            currency="USD-BRL,EUR-USD",
-        ) as response:
+        with client.v2.currency.with_streaming_response.retrieve() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
@@ -63,22 +56,21 @@ class TestCurrency:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list_available(self, client: Brapi) -> None:
         currency = client.v2.currency.list_available()
         assert_matches_type(CurrencyListAvailableResponse, currency, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list_available_with_all_params(self, client: Brapi) -> None:
         currency = client.v2.currency.list_available(
-            token="token",
-            search="search",
+            search="USD",
         )
         assert_matches_type(CurrencyListAvailableResponse, currency, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_list_available(self, client: Brapi) -> None:
         response = client.v2.currency.with_raw_response.list_available()
@@ -88,7 +80,7 @@ class TestCurrency:
         currency = response.parse()
         assert_matches_type(CurrencyListAvailableResponse, currency, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_list_available(self, client: Brapi) -> None:
         with client.v2.currency.with_streaming_response.list_available() as response:
@@ -106,41 +98,34 @@ class TestAsyncCurrency:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve(self, async_client: AsyncBrapi) -> None:
-        currency = await async_client.v2.currency.retrieve(
-            currency="USD-BRL,EUR-USD",
-        )
+        currency = await async_client.v2.currency.retrieve()
         assert_matches_type(CurrencyRetrieveResponse, currency, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve_with_all_params(self, async_client: AsyncBrapi) -> None:
         currency = await async_client.v2.currency.retrieve(
-            currency="USD-BRL,EUR-USD",
-            token="token",
+            currency="USD-BRL",
         )
         assert_matches_type(CurrencyRetrieveResponse, currency, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_retrieve(self, async_client: AsyncBrapi) -> None:
-        response = await async_client.v2.currency.with_raw_response.retrieve(
-            currency="USD-BRL,EUR-USD",
-        )
+        response = await async_client.v2.currency.with_raw_response.retrieve()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         currency = await response.parse()
         assert_matches_type(CurrencyRetrieveResponse, currency, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_retrieve(self, async_client: AsyncBrapi) -> None:
-        async with async_client.v2.currency.with_streaming_response.retrieve(
-            currency="USD-BRL,EUR-USD",
-        ) as response:
+        async with async_client.v2.currency.with_streaming_response.retrieve() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
@@ -149,22 +134,21 @@ class TestAsyncCurrency:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list_available(self, async_client: AsyncBrapi) -> None:
         currency = await async_client.v2.currency.list_available()
         assert_matches_type(CurrencyListAvailableResponse, currency, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list_available_with_all_params(self, async_client: AsyncBrapi) -> None:
         currency = await async_client.v2.currency.list_available(
-            token="token",
-            search="search",
+            search="USD",
         )
         assert_matches_type(CurrencyListAvailableResponse, currency, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_list_available(self, async_client: AsyncBrapi) -> None:
         response = await async_client.v2.currency.with_raw_response.list_available()
@@ -174,7 +158,7 @@ class TestAsyncCurrency:
         currency = await response.parse()
         assert_matches_type(CurrencyListAvailableResponse, currency, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_list_available(self, async_client: AsyncBrapi) -> None:
         async with async_client.v2.currency.with_streaming_response.list_available() as response:

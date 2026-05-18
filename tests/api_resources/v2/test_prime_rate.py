@@ -9,11 +9,7 @@ import pytest
 
 from brapi import Brapi, AsyncBrapi
 from tests.utils import assert_matches_type
-from brapi._utils import parse_date
-from brapi.types.v2 import (
-    PrimeRateRetrieveResponse,
-    PrimeRateListAvailableResponse,
-)
+from brapi.types.v2 import PrimeRateRetrieveResponse, PrimeRateListAvailableResponse
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -21,27 +17,25 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestPrimeRate:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve(self, client: Brapi) -> None:
         prime_rate = client.v2.prime_rate.retrieve()
         assert_matches_type(PrimeRateRetrieveResponse, prime_rate, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve_with_all_params(self, client: Brapi) -> None:
         prime_rate = client.v2.prime_rate.retrieve(
-            token="token",
-            country="country",
-            end=parse_date("2019-12-27"),
-            historical=True,
+            end="31/12/2023",
+            historical="false",
             sort_by="date",
-            sort_order="asc",
-            start=parse_date("2019-12-27"),
+            sort_order="desc",
+            start="01/01/2023",
         )
         assert_matches_type(PrimeRateRetrieveResponse, prime_rate, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_retrieve(self, client: Brapi) -> None:
         response = client.v2.prime_rate.with_raw_response.retrieve()
@@ -51,7 +45,7 @@ class TestPrimeRate:
         prime_rate = response.parse()
         assert_matches_type(PrimeRateRetrieveResponse, prime_rate, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_retrieve(self, client: Brapi) -> None:
         with client.v2.prime_rate.with_streaming_response.retrieve() as response:
@@ -63,22 +57,13 @@ class TestPrimeRate:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list_available(self, client: Brapi) -> None:
         prime_rate = client.v2.prime_rate.list_available()
         assert_matches_type(PrimeRateListAvailableResponse, prime_rate, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
-    @parametrize
-    def test_method_list_available_with_all_params(self, client: Brapi) -> None:
-        prime_rate = client.v2.prime_rate.list_available(
-            token="token",
-            search="search",
-        )
-        assert_matches_type(PrimeRateListAvailableResponse, prime_rate, path=["response"])
-
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_list_available(self, client: Brapi) -> None:
         response = client.v2.prime_rate.with_raw_response.list_available()
@@ -88,7 +73,7 @@ class TestPrimeRate:
         prime_rate = response.parse()
         assert_matches_type(PrimeRateListAvailableResponse, prime_rate, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_list_available(self, client: Brapi) -> None:
         with client.v2.prime_rate.with_streaming_response.list_available() as response:
@@ -106,27 +91,25 @@ class TestAsyncPrimeRate:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve(self, async_client: AsyncBrapi) -> None:
         prime_rate = await async_client.v2.prime_rate.retrieve()
         assert_matches_type(PrimeRateRetrieveResponse, prime_rate, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve_with_all_params(self, async_client: AsyncBrapi) -> None:
         prime_rate = await async_client.v2.prime_rate.retrieve(
-            token="token",
-            country="country",
-            end=parse_date("2019-12-27"),
-            historical=True,
+            end="31/12/2023",
+            historical="false",
             sort_by="date",
-            sort_order="asc",
-            start=parse_date("2019-12-27"),
+            sort_order="desc",
+            start="01/01/2023",
         )
         assert_matches_type(PrimeRateRetrieveResponse, prime_rate, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_retrieve(self, async_client: AsyncBrapi) -> None:
         response = await async_client.v2.prime_rate.with_raw_response.retrieve()
@@ -136,7 +119,7 @@ class TestAsyncPrimeRate:
         prime_rate = await response.parse()
         assert_matches_type(PrimeRateRetrieveResponse, prime_rate, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_retrieve(self, async_client: AsyncBrapi) -> None:
         async with async_client.v2.prime_rate.with_streaming_response.retrieve() as response:
@@ -148,22 +131,13 @@ class TestAsyncPrimeRate:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list_available(self, async_client: AsyncBrapi) -> None:
         prime_rate = await async_client.v2.prime_rate.list_available()
         assert_matches_type(PrimeRateListAvailableResponse, prime_rate, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
-    @parametrize
-    async def test_method_list_available_with_all_params(self, async_client: AsyncBrapi) -> None:
-        prime_rate = await async_client.v2.prime_rate.list_available(
-            token="token",
-            search="search",
-        )
-        assert_matches_type(PrimeRateListAvailableResponse, prime_rate, path=["response"])
-
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_list_available(self, async_client: AsyncBrapi) -> None:
         response = await async_client.v2.prime_rate.with_raw_response.list_available()
@@ -173,7 +147,7 @@ class TestAsyncPrimeRate:
         prime_rate = await response.parse()
         assert_matches_type(PrimeRateListAvailableResponse, prime_rate, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_list_available(self, async_client: AsyncBrapi) -> None:
         async with async_client.v2.prime_rate.with_streaming_response.list_available() as response:
