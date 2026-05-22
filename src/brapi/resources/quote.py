@@ -195,7 +195,7 @@ class QuoteResource(SyncAPIResource):
 
         ### Fonte dos Dados:
 
-        B3 (Bolsa de Valores do Brasil), CVM (Comissão de Valores Mobiliários)
+        CVM (Comissão de Valores Mobiliários)
 
         **Plano Mínimo:** Gratuito (limitado a 1 ticker/requisição e módulos básicos)
         **Autenticação:** Necessária para produção (tickers de teste PETR4 e VALE3
@@ -540,7 +540,7 @@ class AsyncQuoteResource(AsyncAPIResource):
 
         ### Fonte dos Dados:
 
-        B3 (Bolsa de Valores do Brasil), CVM (Comissão de Valores Mobiliários)
+        CVM (Comissão de Valores Mobiliários)
 
         **Plano Mínimo:** Gratuito (limitado a 1 ticker/requisição e módulos básicos)
         **Autenticação:** Necessária para produção (tickers de teste PETR4 e VALE3
