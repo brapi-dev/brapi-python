@@ -36,7 +36,7 @@ client = Brapi(
 quote = client.quote.retrieve(
     tickers="REPLACE_ME",
 )
-print(quote.requested_at)
+print(quote.guidance)
 ```
 
 ## Async usage
@@ -58,7 +58,7 @@ async def main() -> None:
     quote = await client.quote.retrieve(
         tickers="REPLACE_ME",
     )
-    print(quote.requested_at)
+    print(quote.guidance)
 
 
 asyncio.run(main())
@@ -93,7 +93,7 @@ async def main() -> None:
         quote = await client.quote.retrieve(
             tickers="REPLACE_ME",
         )
-        print(quote.requested_at)
+        print(quote.guidance)
 
 
 asyncio.run(main())
@@ -250,7 +250,7 @@ response = client.quote.with_raw_response.retrieve(
 print(response.headers.get('X-My-Header'))
 
 quote = response.parse()  # get the object that `quote.retrieve()` would have returned
-print(quote.requested_at)
+print(quote.guidance)
 ```
 
 These methods return an [`APIResponse`](https://github.com/brapi-dev/brapi-python/tree/main/src/brapi/_response.py) object.

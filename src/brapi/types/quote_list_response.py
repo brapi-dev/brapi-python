@@ -37,6 +37,12 @@ class Stock(BaseModel):
     stock: str
     """Ticker do ativo"""
 
+    sub_type: Optional[str] = FieldInfo(alias="subType", default=None)
+    """
+    Classificação aditiva do ativo: stock, unit, fii, etf, fi-infra, fi-agro, fip,
+    fidc ou bdr
+    """
+
     type: Optional[str] = None
     """Tipo do ativo"""
 
@@ -48,6 +54,8 @@ class QuoteListResponse(BaseModel):
     available_sectors: List[str] = FieldInfo(alias="availableSectors")
 
     available_stock_types: List[str] = FieldInfo(alias="availableStockTypes")
+
+    available_sub_type_types: List[str] = FieldInfo(alias="availableSubTypeTypes")
 
     indexes: List[Index]
 

@@ -91,6 +91,7 @@ class TestQuote:
             sector="sector",
             sort_by="name",
             sort_order="asc",
+            sub_type="stock",
             type="stock",
         )
         assert_matches_type(QuoteListResponse, quote, path=["response"])
@@ -197,6 +198,7 @@ class TestAsyncQuote:
             sector="sector",
             sort_by="name",
             sort_order="asc",
+            sub_type="stock",
             type="stock",
         )
         assert_matches_type(QuoteListResponse, quote, path=["response"])
