@@ -261,6 +261,7 @@ class QuoteResource(SyncAPIResource):
         sector: str | Omit = omit,
         sort_by: Literal["name", "close", "change", "change_abs", "volume", "market_cap_basic"] | Omit = omit,
         sort_order: Literal["asc", "desc"] | Omit = omit,
+        sub_type: Literal["stock", "unit", "fii", "etf", "fi-infra", "fi-agro", "fip", "fidc", "bdr"] | Omit = omit,
         type: Literal["stock", "fund", "bdr"] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -279,6 +280,8 @@ class QuoteResource(SyncAPIResource):
         - **Busca por Nome ou Ticker:** Encontre ativos digitando "Petrobras", "PETR4"
           ou qualquer termo.
         - **Filtros por Tipo:** Ações (stock), Fundos Imobiliários (fund), BDRs (bdr).
+        - **Filtros por Subtipo:** Units, FIIs, ETFs, FI-Infra, FI-Agro, FIPs, FIDCs e
+          BDRs via `subType`.
         - **Filtros por Setor:** Energia, Financeiro, Tecnologia, Saúde, etc.
         - **Ordenação Flexível:** Ordene por volume, preço, market cap ou nome.
         - **Paginação:** Controle o número de resultados com `limit` e `page`.
@@ -299,6 +302,9 @@ class QuoteResource(SyncAPIResource):
 
         # Filtrar por tipo e ordenar por volume
         curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/quote/list?type=stock&sortBy=volume&sortOrder=desc&limit=10"
+
+        # Filtrar por subtipo
+        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/quote/list?subType=fi-agro&limit=10"
 
         # Listar apenas FIIs de um setor específico
         curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/quote/list?type=fund&sector=Logística&limit=20"
@@ -334,6 +340,9 @@ class QuoteResource(SyncAPIResource):
 
           sort_order: Ordem de classificação
 
+          sub_type: Filtrar por classificação aditiva: stock, unit, fii, etf, fi-infra, fi-agro,
+              fip, fidc ou bdr
+
           type: Filtrar por tipo de ativo
 
           extra_headers: Send extra headers
@@ -360,6 +369,7 @@ class QuoteResource(SyncAPIResource):
                         "sector": sector,
                         "sort_by": sort_by,
                         "sort_order": sort_order,
+                        "sub_type": sub_type,
                         "type": type,
                     },
                     quote_list_params.QuoteListParams,
@@ -606,6 +616,7 @@ class AsyncQuoteResource(AsyncAPIResource):
         sector: str | Omit = omit,
         sort_by: Literal["name", "close", "change", "change_abs", "volume", "market_cap_basic"] | Omit = omit,
         sort_order: Literal["asc", "desc"] | Omit = omit,
+        sub_type: Literal["stock", "unit", "fii", "etf", "fi-infra", "fi-agro", "fip", "fidc", "bdr"] | Omit = omit,
         type: Literal["stock", "fund", "bdr"] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -624,6 +635,8 @@ class AsyncQuoteResource(AsyncAPIResource):
         - **Busca por Nome ou Ticker:** Encontre ativos digitando "Petrobras", "PETR4"
           ou qualquer termo.
         - **Filtros por Tipo:** Ações (stock), Fundos Imobiliários (fund), BDRs (bdr).
+        - **Filtros por Subtipo:** Units, FIIs, ETFs, FI-Infra, FI-Agro, FIPs, FIDCs e
+          BDRs via `subType`.
         - **Filtros por Setor:** Energia, Financeiro, Tecnologia, Saúde, etc.
         - **Ordenação Flexível:** Ordene por volume, preço, market cap ou nome.
         - **Paginação:** Controle o número de resultados com `limit` e `page`.
@@ -644,6 +657,9 @@ class AsyncQuoteResource(AsyncAPIResource):
 
         # Filtrar por tipo e ordenar por volume
         curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/quote/list?type=stock&sortBy=volume&sortOrder=desc&limit=10"
+
+        # Filtrar por subtipo
+        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/quote/list?subType=fi-agro&limit=10"
 
         # Listar apenas FIIs de um setor específico
         curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/quote/list?type=fund&sector=Logística&limit=20"
@@ -679,6 +695,9 @@ class AsyncQuoteResource(AsyncAPIResource):
 
           sort_order: Ordem de classificação
 
+          sub_type: Filtrar por classificação aditiva: stock, unit, fii, etf, fi-infra, fi-agro,
+              fip, fidc ou bdr
+
           type: Filtrar por tipo de ativo
 
           extra_headers: Send extra headers
@@ -705,6 +724,7 @@ class AsyncQuoteResource(AsyncAPIResource):
                         "sector": sector,
                         "sort_by": sort_by,
                         "sort_order": sort_order,
+                        "sub_type": sub_type,
                         "type": type,
                     },
                     quote_list_params.QuoteListParams,

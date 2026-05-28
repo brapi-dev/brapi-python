@@ -17,6 +17,8 @@ __all__ = [
     "ResultDividendsDataStockDividend",
     "ResultHistoricalDataPrice",
     "ResultSummaryProfile",
+    "Guidance",
+    "GuidanceDetails",
 ]
 
 
@@ -320,6 +322,20 @@ class Result(BaseModel):
     """Valores válidos para o parâmetro range"""
 
 
+class GuidanceDetails(BaseModel):
+    reason: str
+
+    suggested_endpoint: str = FieldInfo(alias="suggestedEndpoint")
+
+
+class Guidance(BaseModel):
+    code: str
+
+    details: GuidanceDetails
+
+    message: str
+
+
 class QuoteRetrieveResponse(BaseModel):
     requested_at: datetime = FieldInfo(alias="requestedAt")
     """Data e hora da requisição em formato ISO 8601"""
@@ -328,3 +344,9 @@ class QuoteRetrieveResponse(BaseModel):
 
     took: int
     """Tempo de processamento em milissegundos"""
+
+    guidance: Optional[List[Guidance]] = None
+    """
+    Dicas contextuais quando a requisição funciona mas existe um endpoint mais
+    adequado para o caso de uso.
+    """
