@@ -64,8 +64,7 @@ class AvailableResource(SyncAPIResource):
 
         - **Ações brasileiras:** Todas as ações, FIIs, BDRs e ETFs negociados na bolsa
           brasileira
-        - **Índices:** Principais índices do mercado brasileiro (Ibovespa, IBrX, IFIX,
-          etc.)
+        - **Índices:** Índices do mercado brasileiro com cotação disponível na API
         - **Filtro por Nome:** Use `search` para filtrar por código ou nome do ativo
 
         ### Características
@@ -91,20 +90,12 @@ class AvailableResource(SyncAPIResource):
         ### Índices Disponíveis
 
         - `^BVSP` — Ibovespa (Índice Bovespa)
-        - `^IBX50` — IBrX 50
-        - `^IBX100` — IBrX 100
-        - `^IDIV` — Índice Dividendos
-        - `^SMLL` — Índice Small Cap
-        - `^IFIX` — Índice de Fundos Imobiliários
-        - `^IFNC` — Índice Financeiro
-        - `^ICON` — Índice de Consumo
-        - `^IEEX` — Índice de Energia Elétrica
-        - `^IMOB` — Índice Imobiliário
+        - `IFIX.SA` — Índice de Fundos Imobiliários
 
         ### Campos da Resposta
 
         - `stocks` — Array com códigos das ações (ex: ["PETR4", "VALE3", "ITUB4", ...])
-        - `indexes` — Array com códigos dos índices (ex: ["^BVSP", "^IFIX", ...])
+        - `indexes` — Array com códigos dos índices (ex: ["^BVSP", "IFIX.SA"])
 
         ### Como Usar
 
@@ -182,8 +173,7 @@ class AsyncAvailableResource(AsyncAPIResource):
 
         - **Ações brasileiras:** Todas as ações, FIIs, BDRs e ETFs negociados na bolsa
           brasileira
-        - **Índices:** Principais índices do mercado brasileiro (Ibovespa, IBrX, IFIX,
-          etc.)
+        - **Índices:** Índices do mercado brasileiro com cotação disponível na API
         - **Filtro por Nome:** Use `search` para filtrar por código ou nome do ativo
 
         ### Características
@@ -209,20 +199,12 @@ class AsyncAvailableResource(AsyncAPIResource):
         ### Índices Disponíveis
 
         - `^BVSP` — Ibovespa (Índice Bovespa)
-        - `^IBX50` — IBrX 50
-        - `^IBX100` — IBrX 100
-        - `^IDIV` — Índice Dividendos
-        - `^SMLL` — Índice Small Cap
-        - `^IFIX` — Índice de Fundos Imobiliários
-        - `^IFNC` — Índice Financeiro
-        - `^ICON` — Índice de Consumo
-        - `^IEEX` — Índice de Energia Elétrica
-        - `^IMOB` — Índice Imobiliário
+        - `IFIX.SA` — Índice de Fundos Imobiliários
 
         ### Campos da Resposta
 
         - `stocks` — Array com códigos das ações (ex: ["PETR4", "VALE3", "ITUB4", ...])
-        - `indexes` — Array com códigos dos índices (ex: ["^BVSP", "^IFIX", ...])
+        - `indexes` — Array com códigos dos índices (ex: ["^BVSP", "IFIX.SA"])
 
         ### Como Usar
 
