@@ -109,8 +109,7 @@ class PrimeRateResource(SyncAPIResource):
 
         ### Fonte dos Dados
 
-        Banco Central do Brasil (BCB) — Série temporal 432 do Sistema Gerador de Séries
-        Temporais (SGS)
+        Banco Central do Brasil (BCB) — meta SELIC publicada como série temporal oficial
 
         **Plano Mínimo:** Startup | **Autenticação:** Necessária
 
@@ -277,8 +276,7 @@ class AsyncPrimeRateResource(AsyncAPIResource):
 
         ### Fonte dos Dados
 
-        Banco Central do Brasil (BCB) — Série temporal 432 do Sistema Gerador de Séries
-        Temporais (SGS)
+        Banco Central do Brasil (BCB) — meta SELIC publicada como série temporal oficial
 
         **Plano Mínimo:** Startup | **Autenticação:** Necessária
 
