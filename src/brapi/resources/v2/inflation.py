@@ -108,8 +108,8 @@ class InflationResource(SyncAPIResource):
 
         ### Fonte dos Dados
 
-        Banco Central do Brasil (BCB) — Série temporal 13522 do Sistema Gerador de
-        Séries Temporais (SGS)
+        Banco Central do Brasil (BCB) — indicador IPCA publicado como série temporal
+        oficial
 
         **Plano Mínimo:** Startup | **Autenticação:** Necessária
 
@@ -275,8 +275,8 @@ class AsyncInflationResource(AsyncAPIResource):
 
         ### Fonte dos Dados
 
-        Banco Central do Brasil (BCB) — Série temporal 13522 do Sistema Gerador de
-        Séries Temporais (SGS)
+        Banco Central do Brasil (BCB) — indicador IPCA publicado como série temporal
+        oficial
 
         **Plano Mínimo:** Startup | **Autenticação:** Necessária
 
