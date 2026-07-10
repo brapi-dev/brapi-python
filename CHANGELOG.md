@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.6.0 (2026-07-10)
+
+Full Changelog: [v1.5.0...v1.6.0](https://github.com/brapi-dev/brapi-python/compare/v1.5.0...v1.6.0)
+
+### Features
+
+* **api:** api update ([d4af396](https://github.com/brapi-dev/brapi-python/commit/d4af396ab6df3bc4745c6c77157f7447f93b4cc6))
+
 ## 1.5.0 (2026-06-23)
 
 Full Changelog: [v1.4.0...v1.5.0](https://github.com/brapi-dev/brapi-python/compare/v1.4.0...v1.5.0)
