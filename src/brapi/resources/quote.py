@@ -261,6 +261,7 @@ class QuoteResource(SyncAPIResource):
         sector: str | Omit = omit,
         sort_by: Literal["name", "close", "change", "change_abs", "volume", "market_cap_basic"] | Omit = omit,
         sort_order: Literal["asc", "desc"] | Omit = omit,
+        subsector: str | Omit = omit,
         sub_type: Literal["stock", "unit", "fii", "etf", "fi-infra", "fi-agro", "fip", "fidc", "bdr"] | Omit = omit,
         type: Literal["stock", "fund", "bdr"] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -340,6 +341,8 @@ class QuoteResource(SyncAPIResource):
 
           sort_order: Ordem de classificação
 
+          subsector: Filtrar pelo subsetor B3
+
           sub_type: Filtrar por classificação aditiva: stock, unit, fii, etf, fi-infra, fi-agro,
               fip, fidc ou bdr
 
@@ -369,6 +372,7 @@ class QuoteResource(SyncAPIResource):
                         "sector": sector,
                         "sort_by": sort_by,
                         "sort_order": sort_order,
+                        "subsector": subsector,
                         "sub_type": sub_type,
                         "type": type,
                     },
@@ -616,6 +620,7 @@ class AsyncQuoteResource(AsyncAPIResource):
         sector: str | Omit = omit,
         sort_by: Literal["name", "close", "change", "change_abs", "volume", "market_cap_basic"] | Omit = omit,
         sort_order: Literal["asc", "desc"] | Omit = omit,
+        subsector: str | Omit = omit,
         sub_type: Literal["stock", "unit", "fii", "etf", "fi-infra", "fi-agro", "fip", "fidc", "bdr"] | Omit = omit,
         type: Literal["stock", "fund", "bdr"] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -695,6 +700,8 @@ class AsyncQuoteResource(AsyncAPIResource):
 
           sort_order: Ordem de classificação
 
+          subsector: Filtrar pelo subsetor B3
+
           sub_type: Filtrar por classificação aditiva: stock, unit, fii, etf, fi-infra, fi-agro,
               fip, fidc ou bdr
 
@@ -724,6 +731,7 @@ class AsyncQuoteResource(AsyncAPIResource):
                         "sector": sector,
                         "sort_by": sort_by,
                         "sort_order": sort_order,
+                        "subsector": subsector,
                         "sub_type": sub_type,
                         "type": type,
                     },
