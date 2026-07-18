@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.7.0 (2026-07-18)
+
+Full Changelog: [v1.6.0...v1.7.0](https://github.com/brapi-dev/brapi-python/compare/v1.6.0...v1.7.0)
+
+### Features
+
+* **api:** api update ([26541f2](https://github.com/brapi-dev/brapi-python/commit/26541f26d59fb1c56c09d3eb229dc3aaba57edc1))
+* **api:** api update ([bb284b5](https://github.com/brapi-dev/brapi-python/commit/bb284b566f4543033d89fd10055457d7a6d7bd70))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([7e697d6](https://github.com/brapi-dev/brapi-python/commit/7e697d6099b1e28a9babeb18df7f81749d7f23f8))
+
 ## 1.6.0 (2026-07-10)
 
 Full Changelog: [v1.5.0...v1.6.0](https://github.com/brapi-dev/brapi-python/compare/v1.5.0...v1.6.0)
