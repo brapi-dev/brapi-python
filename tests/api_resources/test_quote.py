@@ -91,6 +91,7 @@ class TestQuote:
             sector="sector",
             sort_by="name",
             sort_order="asc",
+            subsector="subsector",
             sub_type="stock",
             type="stock",
         )
@@ -198,6 +199,7 @@ class TestAsyncQuote:
             sector="sector",
             sort_by="name",
             sort_order="asc",
+            subsector="subsector",
             sub_type="stock",
             type="stock",
         )

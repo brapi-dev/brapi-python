@@ -77,7 +77,6 @@ class CurrencyResource(SyncAPIResource):
         ```bash
         curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/currency?currency=USD-BRL"
         curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/currency?currency=USD-BRL,EUR-BRL,GBP-BRL"
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/currency?currency=BTC-BRL"
         ```
 
         ### Pares de Moedas Populares:
@@ -85,10 +84,7 @@ class CurrencyResource(SyncAPIResource):
         - `USD-BRL` — Dólar Americano / Real
         - `EUR-BRL` — Euro / Real
         - `GBP-BRL` — Libra Esterlina / Real
-        - `ARS-BRL` — Peso Argentino / Real
         - `EUR-USD` — Euro / Dólar
-        - `BTC-BRL` — Bitcoin / Real
-        - `ETH-BRL` — Ethereum / Real
 
         ### Campos da Resposta:
 
@@ -102,7 +98,7 @@ class CurrencyResource(SyncAPIResource):
 
         ### Fonte dos Dados:
 
-        Banco Central do Brasil (PTAX) / Yahoo Finance
+        Banco Central do Brasil (PTAX)
 
         **Plano Mínimo:** Startup **Autenticação:** Necessária
 
@@ -151,10 +147,9 @@ class CurrencyResource(SyncAPIResource):
 
         ### Pares Disponíveis:
 
-        - **Moedas Fiduciárias:** USD-BRL, EUR-BRL, GBP-BRL, ARS-BRL, CAD-BRL, AUD-BRL,
-          JPY-BRL, CNY-BRL
-        - **Cross Rates:** EUR-USD, GBP-USD
-        - **Criptomoedas:** BTC-BRL, ETH-BRL
+        - **Moedas Fiduciárias:** USD, EUR, GBP, JPY, CHF, CAD, AUD, DKK, NOK e SEK
+          contra BRL
+        - **Cross Rates:** pares entre as moedas PTAX suportadas, como EUR-USD e GBP-USD
 
         ### Exemplos de Requisição:
 
@@ -244,7 +239,6 @@ class AsyncCurrencyResource(AsyncAPIResource):
         ```bash
         curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/currency?currency=USD-BRL"
         curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/currency?currency=USD-BRL,EUR-BRL,GBP-BRL"
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/currency?currency=BTC-BRL"
         ```
 
         ### Pares de Moedas Populares:
@@ -252,10 +246,7 @@ class AsyncCurrencyResource(AsyncAPIResource):
         - `USD-BRL` — Dólar Americano / Real
         - `EUR-BRL` — Euro / Real
         - `GBP-BRL` — Libra Esterlina / Real
-        - `ARS-BRL` — Peso Argentino / Real
         - `EUR-USD` — Euro / Dólar
-        - `BTC-BRL` — Bitcoin / Real
-        - `ETH-BRL` — Ethereum / Real
 
         ### Campos da Resposta:
 
@@ -269,7 +260,7 @@ class AsyncCurrencyResource(AsyncAPIResource):
 
         ### Fonte dos Dados:
 
-        Banco Central do Brasil (PTAX) / Yahoo Finance
+        Banco Central do Brasil (PTAX)
 
         **Plano Mínimo:** Startup **Autenticação:** Necessária
 
@@ -320,10 +311,9 @@ class AsyncCurrencyResource(AsyncAPIResource):
 
         ### Pares Disponíveis:
 
-        - **Moedas Fiduciárias:** USD-BRL, EUR-BRL, GBP-BRL, ARS-BRL, CAD-BRL, AUD-BRL,
-          JPY-BRL, CNY-BRL
-        - **Cross Rates:** EUR-USD, GBP-USD
-        - **Criptomoedas:** BTC-BRL, ETH-BRL
+        - **Moedas Fiduciárias:** USD, EUR, GBP, JPY, CHF, CAD, AUD, DKK, NOK e SEK
+          contra BRL
+        - **Cross Rates:** pares entre as moedas PTAX suportadas, como EUR-USD e GBP-USD
 
         ### Exemplos de Requisição:
 
