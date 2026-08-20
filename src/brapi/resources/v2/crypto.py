@@ -90,14 +90,14 @@ class CryptoResource(SyncAPIResource):
 
         ### Campos da Resposta:
 
-        - `coin` — Símbolo da criptomoeda
-        - `coinName` — Nome completo
-        - `currency` — Moeda de cotação
-        - `regularMarketPrice` — Preço atual
-        - `regularMarketChange` — Variação em valor absoluto
-        - `regularMarketChangePercent` — Variação percentual (%)
-        - `regularMarketDayHigh` / `regularMarketDayLow` — Máxima/Mínima do dia
-        - `regularMarketVolume` — Volume negociado
+        - `coin` - Símbolo da criptomoeda
+        - `coinName` - Nome completo
+        - `currency` - Moeda de cotação
+        - `regularMarketPrice` - Preço atual
+        - `regularMarketChange` - Variação em valor absoluto
+        - `regularMarketChangePercent` - Variação percentual (%)
+        - `regularMarketDayHigh` / `regularMarketDayLow` - Máxima/Mínima do dia
+        - `regularMarketVolume` - Volume negociado
 
         **Plano Mínimo:** Startup **Autenticação:** Necessária
 
@@ -155,16 +155,16 @@ class CryptoResource(SyncAPIResource):
 
         ### Criptomoedas Populares:
 
-        - **BTC** — Bitcoin
-        - **ETH** — Ethereum
-        - **BNB** — Binance Coin
-        - **SOL** — Solana
-        - **ADA** — Cardano
-        - **XRP** — Ripple
-        - **DOGE** — Dogecoin
-        - **DOT** — Polkadot
-        - **MATIC** — Polygon
-        - **LTC** — Litecoin
+        - **BTC** - Bitcoin
+        - **ETH** - Ethereum
+        - **BNB** - Binance Coin
+        - **SOL** - Solana
+        - **ADA** - Cardano
+        - **XRP** - Ripple
+        - **DOGE** - Dogecoin
+        - **DOT** - Polkadot
+        - **MATIC** - Polygon
+        - **LTC** - Litecoin
         - E centenas de outras...
 
         ### Uso:
@@ -272,14 +272,14 @@ class AsyncCryptoResource(AsyncAPIResource):
 
         ### Campos da Resposta:
 
-        - `coin` — Símbolo da criptomoeda
-        - `coinName` — Nome completo
-        - `currency` — Moeda de cotação
-        - `regularMarketPrice` — Preço atual
-        - `regularMarketChange` — Variação em valor absoluto
-        - `regularMarketChangePercent` — Variação percentual (%)
-        - `regularMarketDayHigh` / `regularMarketDayLow` — Máxima/Mínima do dia
-        - `regularMarketVolume` — Volume negociado
+        - `coin` - Símbolo da criptomoeda
+        - `coinName` - Nome completo
+        - `currency` - Moeda de cotação
+        - `regularMarketPrice` - Preço atual
+        - `regularMarketChange` - Variação em valor absoluto
+        - `regularMarketChangePercent` - Variação percentual (%)
+        - `regularMarketDayHigh` / `regularMarketDayLow` - Máxima/Mínima do dia
+        - `regularMarketVolume` - Volume negociado
 
         **Plano Mínimo:** Startup **Autenticação:** Necessária
 
@@ -337,16 +337,16 @@ class AsyncCryptoResource(AsyncAPIResource):
 
         ### Criptomoedas Populares:
 
-        - **BTC** — Bitcoin
-        - **ETH** — Ethereum
-        - **BNB** — Binance Coin
-        - **SOL** — Solana
-        - **ADA** — Cardano
-        - **XRP** — Ripple
-        - **DOGE** — Dogecoin
-        - **DOT** — Polkadot
-        - **MATIC** — Polygon
-        - **LTC** — Litecoin
+        - **BTC** - Bitcoin
+        - **ETH** - Ethereum
+        - **BNB** - Binance Coin
+        - **SOL** - Solana
+        - **ADA** - Cardano
+        - **XRP** - Ripple
+        - **DOGE** - Dogecoin
+        - **DOT** - Polkadot
+        - **MATIC** - Polygon
+        - **LTC** - Litecoin
         - E centenas de outras...
 
         ### Uso:

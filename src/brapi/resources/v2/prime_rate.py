@@ -96,9 +96,9 @@ class PrimeRateResource(SyncAPIResource):
 
         ### Campos da Resposta
 
-        - `date` — Data no formato DD/MM/YYYY
-        - `value` — Taxa SELIC meta anualizada (% a.a.)
-        - `epochDate` — Data em timestamp Unix (milissegundos)
+        - `date` - Data no formato DD/MM/YYYY
+        - `value` - Taxa SELIC meta anualizada (% a.a.)
+        - `epochDate` - Data em timestamp Unix (milissegundos)
 
         ### Sobre a SELIC
 
@@ -109,7 +109,7 @@ class PrimeRateResource(SyncAPIResource):
 
         ### Fonte dos Dados
 
-        Banco Central do Brasil (BCB) — meta SELIC publicada como série temporal oficial
+        Banco Central do Brasil (BCB) - meta SELIC publicada como série temporal oficial
 
         **Plano Mínimo:** Startup | **Autenticação:** Necessária
 
@@ -168,7 +168,7 @@ class PrimeRateResource(SyncAPIResource):
 
         ### Países Disponíveis
 
-        - **brazil** — Taxa SELIC (Banco Central)
+        - **brazil** - Taxa SELIC (Banco Central)
 
         Use o valor retornado como referência para futuras expansões do endpoint.
 
@@ -263,9 +263,9 @@ class AsyncPrimeRateResource(AsyncAPIResource):
 
         ### Campos da Resposta
 
-        - `date` — Data no formato DD/MM/YYYY
-        - `value` — Taxa SELIC meta anualizada (% a.a.)
-        - `epochDate` — Data em timestamp Unix (milissegundos)
+        - `date` - Data no formato DD/MM/YYYY
+        - `value` - Taxa SELIC meta anualizada (% a.a.)
+        - `epochDate` - Data em timestamp Unix (milissegundos)
 
         ### Sobre a SELIC
 
@@ -276,7 +276,7 @@ class AsyncPrimeRateResource(AsyncAPIResource):
 
         ### Fonte dos Dados
 
-        Banco Central do Brasil (BCB) — meta SELIC publicada como série temporal oficial
+        Banco Central do Brasil (BCB) - meta SELIC publicada como série temporal oficial
 
         **Plano Mínimo:** Startup | **Autenticação:** Necessária
 
@@ -335,7 +335,7 @@ class AsyncPrimeRateResource(AsyncAPIResource):
 
         ### Países Disponíveis
 
-        - **brazil** — Taxa SELIC (Banco Central)
+        - **brazil** - Taxa SELIC (Banco Central)
 
         Use o valor retornado como referência para futuras expansões do endpoint.
 

@@ -89,13 +89,13 @@ class AvailableResource(SyncAPIResource):
 
         ### Índices Disponíveis
 
-        - `^BVSP` — Ibovespa (Índice Bovespa)
-        - `IFIX.SA` — Índice de Fundos Imobiliários
+        - `^BVSP` - Ibovespa (Índice Bovespa)
+        - `IFIX.SA` - Índice de Fundos Imobiliários
 
         ### Campos da Resposta
 
-        - `stocks` — Array com códigos das ações (ex: ["PETR4", "VALE3", "ITUB4", ...])
-        - `indexes` — Array com códigos dos índices (ex: ["^BVSP", "IFIX.SA"])
+        - `stocks` - Array com códigos das ações (ex: ["PETR4", "VALE3", "ITUB4", ...])
+        - `indexes` - Array com códigos dos índices (ex: ["^BVSP", "IFIX.SA"])
 
         ### Como Usar
 
@@ -198,13 +198,13 @@ class AsyncAvailableResource(AsyncAPIResource):
 
         ### Índices Disponíveis
 
-        - `^BVSP` — Ibovespa (Índice Bovespa)
-        - `IFIX.SA` — Índice de Fundos Imobiliários
+        - `^BVSP` - Ibovespa (Índice Bovespa)
+        - `IFIX.SA` - Índice de Fundos Imobiliários
 
         ### Campos da Resposta
 
-        - `stocks` — Array com códigos das ações (ex: ["PETR4", "VALE3", "ITUB4", ...])
-        - `indexes` — Array com códigos dos índices (ex: ["^BVSP", "IFIX.SA"])
+        - `stocks` - Array com códigos das ações (ex: ["PETR4", "VALE3", "ITUB4", ...])
+        - `indexes` - Array com códigos dos índices (ex: ["^BVSP", "IFIX.SA"])
 
         ### Como Usar
 

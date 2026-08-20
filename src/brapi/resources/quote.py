@@ -120,78 +120,78 @@ class QuoteResource(SyncAPIResource):
 
         ### Módulos Disponíveis:
 
-        - `summaryProfile` — Perfil da empresa (CNPJ, setor, descrição, website,
+        - `summaryProfile` - Perfil da empresa (CNPJ, setor, descrição, website,
           funcionários)
-        - `balanceSheetHistory` — Balanço Patrimonial anual
-        - `balanceSheetHistoryQuarterly` — Balanço Patrimonial trimestral
-        - `incomeStatementHistory` — DRE anual (Demonstração de Resultado do Exercício)
-        - `incomeStatementHistoryQuarterly` — DRE trimestral
-        - `financialData` — Indicadores financeiros atuais (TTM - Trailing Twelve
+        - `balanceSheetHistory` - Balanço Patrimonial anual
+        - `balanceSheetHistoryQuarterly` - Balanço Patrimonial trimestral
+        - `incomeStatementHistory` - DRE anual (Demonstração de Resultado do Exercício)
+        - `incomeStatementHistoryQuarterly` - DRE trimestral
+        - `financialData` - Indicadores financeiros atuais (TTM - Trailing Twelve
           Months)
-        - `financialDataHistory` — Histórico anual de indicadores financeiros
-        - `financialDataHistoryQuarterly` — Histórico trimestral de indicadores
+        - `financialDataHistory` - Histórico anual de indicadores financeiros
+        - `financialDataHistoryQuarterly` - Histórico trimestral de indicadores
           financeiros
-        - `defaultKeyStatistics` — Estatísticas-chave (P/L, P/VP, ROE, Dividend Yield,
+        - `defaultKeyStatistics` - Estatísticas-chave (P/L, P/VP, ROE, Dividend Yield,
           etc)
-        - `defaultKeyStatisticsHistory` — Histórico anual de estatísticas-chave
-        - `defaultKeyStatisticsHistoryQuarterly` — Histórico trimestral de
+        - `defaultKeyStatisticsHistory` - Histórico anual de estatísticas-chave
+        - `defaultKeyStatisticsHistoryQuarterly` - Histórico trimestral de
           estatísticas-chave
-        - `cashflowHistory` — Fluxo de Caixa anual
-        - `cashflowHistoryQuarterly` — Fluxo de Caixa trimestral
-        - `valueAddedHistory` — DVA anual (Demonstração de Valor Adicionado)
-        - `valueAddedHistoryQuarterly` — DVA trimestral
+        - `cashflowHistory` - Fluxo de Caixa anual
+        - `cashflowHistoryQuarterly` - Fluxo de Caixa trimestral
+        - `valueAddedHistory` - DVA anual (Demonstração de Valor Adicionado)
+        - `valueAddedHistoryQuarterly` - DVA trimestral
 
         ### Intervalos Válidos (histórico):
 
-        - `1d` — Diário
-        - `5d` — 5 dias
-        - `1wk` — Semanal
-        - `1mo` — Mensal
-        - `3mo` — Trimestral
+        - `1d` - Diário
+        - `5d` - 5 dias
+        - `1wk` - Semanal
+        - `1mo` - Mensal
+        - `3mo` - Trimestral
 
         ### Períodos Válidos (range):
 
-        - `1d` — Último dia
-        - `5d` — Últimos 5 dias
-        - `1mo` — Último mês
-        - `3mo` — Últimos 3 meses
-        - `6mo` — Últimos 6 meses
-        - `1y` — Último ano
-        - `2y` — Últimos 2 anos
-        - `5y` — Últimos 5 anos
-        - `10y` — Últimos 10 anos
-        - `ytd` — Ano até hoje
-        - `max` — Máximo disponível
+        - `1d` - Último dia
+        - `5d` - Últimos 5 dias
+        - `1mo` - Último mês
+        - `3mo` - Últimos 3 meses
+        - `6mo` - Últimos 6 meses
+        - `1y` - Último ano
+        - `2y` - Últimos 2 anos
+        - `5y` - Últimos 5 anos
+        - `10y` - Últimos 10 anos
+        - `ytd` - Ano até hoje
+        - `max` - Máximo disponível
 
         ### Campos Principais da Resposta:
 
-        - `symbol` — Ticker do ativo (ex: PETR4)
-        - `shortName` — Nome curto da empresa
-        - `currency` — Moeda (BRL)
-        - `regularMarketPrice` — Preço atual em BRL
-        - `regularMarketChange` — Variação absoluta
-        - `regularMarketChangePercent` — Variação percentual (%)
-        - `regularMarketVolume` — Volume de negociação do dia
-        - `regularMarketDayHigh` — Máxima do dia
-        - `regularMarketDayLow` — Mínima do dia
-        - `fiftyTwoWeekHigh` — Máxima de 52 semanas
-        - `fiftyTwoWeekLow` — Mínima de 52 semanas
-        - `marketCap` — Capitalização de mercado
-        - `historicalDataPrice` — Array de dados OHLCV (quando `range`/`interval`
+        - `symbol` - Ticker do ativo (ex: PETR4)
+        - `shortName` - Nome curto da empresa
+        - `currency` - Moeda (BRL)
+        - `regularMarketPrice` - Preço atual em BRL
+        - `regularMarketChange` - Variação absoluta
+        - `regularMarketChangePercent` - Variação percentual (%)
+        - `regularMarketVolume` - Volume de negociação do dia
+        - `regularMarketDayHigh` - Máxima do dia
+        - `regularMarketDayLow` - Mínima do dia
+        - `fiftyTwoWeekHigh` - Máxima de 52 semanas
+        - `fiftyTwoWeekLow` - Mínima de 52 semanas
+        - `marketCap` - Capitalização de mercado
+        - `historicalDataPrice` - Array de dados OHLCV (quando `range`/`interval`
           fornecidos)
-        - `dividendsData` — Histórico de dividendos (quando `dividends=true`)
+        - `dividendsData` - Histórico de dividendos (quando `dividends=true`)
 
         ### Tickers Populares (Teste):
 
-        - `PETR4` — Petrobras (Energia)
-        - `VALE3` — Vale (Mineração)
-        - `ITUB4` — Itaú Unibanco (Financeiro)
-        - `BBDC4` — Bradesco (Financeiro)
-        - `ABEV3` — Ambev (Consumo)
-        - `WEGE3` — WEG (Indústria)
-        - `RENT3` — Localiza (Transporte)
-        - `BBAS3` — Banco do Brasil (Financeiro)
-        - `MGLU3` — Magazine Luiza (Varejo)
+        - `PETR4` - Petrobras (Energia)
+        - `VALE3` - Vale (Mineração)
+        - `ITUB4` - Itaú Unibanco (Financeiro)
+        - `BBDC4` - Bradesco (Financeiro)
+        - `ABEV3` - Ambev (Consumo)
+        - `WEGE3` - WEG (Indústria)
+        - `RENT3` - Localiza (Transporte)
+        - `BBAS3` - Banco do Brasil (Financeiro)
+        - `MGLU3` - Magazine Luiza (Varejo)
 
         ### Fonte dos Dados:
 
@@ -313,16 +313,16 @@ class QuoteResource(SyncAPIResource):
 
         ### Parâmetros de Ordenação:
 
-        - `volume` — Volume de negociação do dia
-        - `close` — Preço de fechamento
-        - `market_cap_basic` — Capitalização de mercado
-        - `name` — Nome da empresa (alfabético)
+        - `volume` - Volume de negociação do dia
+        - `close` - Preço de fechamento
+        - `market_cap_basic` - Capitalização de mercado
+        - `name` - Nome da empresa (alfabético)
 
         ### Tipos de Ativo:
 
-        - `stock` — Ações (Ações ordinárias e preferenciais)
-        - `fund` — Fundos Imobiliários (FIIs) e ETFs
-        - `bdr` — BDRs (Brazilian Depositary Receipts)
+        - `stock` - Ações (Ações ordinárias e preferenciais)
+        - `fund` - Fundos Imobiliários (FIIs) e ETFs
+        - `bdr` - BDRs (Brazilian Depositary Receipts)
 
         **Plano Mínimo:** Gratuito **Autenticação:** Necessária (Bearer Token)
 
@@ -479,78 +479,78 @@ class AsyncQuoteResource(AsyncAPIResource):
 
         ### Módulos Disponíveis:
 
-        - `summaryProfile` — Perfil da empresa (CNPJ, setor, descrição, website,
+        - `summaryProfile` - Perfil da empresa (CNPJ, setor, descrição, website,
           funcionários)
-        - `balanceSheetHistory` — Balanço Patrimonial anual
-        - `balanceSheetHistoryQuarterly` — Balanço Patrimonial trimestral
-        - `incomeStatementHistory` — DRE anual (Demonstração de Resultado do Exercício)
-        - `incomeStatementHistoryQuarterly` — DRE trimestral
-        - `financialData` — Indicadores financeiros atuais (TTM - Trailing Twelve
+        - `balanceSheetHistory` - Balanço Patrimonial anual
+        - `balanceSheetHistoryQuarterly` - Balanço Patrimonial trimestral
+        - `incomeStatementHistory` - DRE anual (Demonstração de Resultado do Exercício)
+        - `incomeStatementHistoryQuarterly` - DRE trimestral
+        - `financialData` - Indicadores financeiros atuais (TTM - Trailing Twelve
           Months)
-        - `financialDataHistory` — Histórico anual de indicadores financeiros
-        - `financialDataHistoryQuarterly` — Histórico trimestral de indicadores
+        - `financialDataHistory` - Histórico anual de indicadores financeiros
+        - `financialDataHistoryQuarterly` - Histórico trimestral de indicadores
           financeiros
-        - `defaultKeyStatistics` — Estatísticas-chave (P/L, P/VP, ROE, Dividend Yield,
+        - `defaultKeyStatistics` - Estatísticas-chave (P/L, P/VP, ROE, Dividend Yield,
           etc)
-        - `defaultKeyStatisticsHistory` — Histórico anual de estatísticas-chave
-        - `defaultKeyStatisticsHistoryQuarterly` — Histórico trimestral de
+        - `defaultKeyStatisticsHistory` - Histórico anual de estatísticas-chave
+        - `defaultKeyStatisticsHistoryQuarterly` - Histórico trimestral de
           estatísticas-chave
-        - `cashflowHistory` — Fluxo de Caixa anual
-        - `cashflowHistoryQuarterly` — Fluxo de Caixa trimestral
-        - `valueAddedHistory` — DVA anual (Demonstração de Valor Adicionado)
-        - `valueAddedHistoryQuarterly` — DVA trimestral
+        - `cashflowHistory` - Fluxo de Caixa anual
+        - `cashflowHistoryQuarterly` - Fluxo de Caixa trimestral
+        - `valueAddedHistory` - DVA anual (Demonstração de Valor Adicionado)
+        - `valueAddedHistoryQuarterly` - DVA trimestral
 
         ### Intervalos Válidos (histórico):
 
-        - `1d` — Diário
-        - `5d` — 5 dias
-        - `1wk` — Semanal
-        - `1mo` — Mensal
-        - `3mo` — Trimestral
+        - `1d` - Diário
+        - `5d` - 5 dias
+        - `1wk` - Semanal
+        - `1mo` - Mensal
+        - `3mo` - Trimestral
 
         ### Períodos Válidos (range):
 
-        - `1d` — Último dia
-        - `5d` — Últimos 5 dias
-        - `1mo` — Último mês
-        - `3mo` — Últimos 3 meses
-        - `6mo` — Últimos 6 meses
-        - `1y` — Último ano
-        - `2y` — Últimos 2 anos
-        - `5y` — Últimos 5 anos
-        - `10y` — Últimos 10 anos
-        - `ytd` — Ano até hoje
-        - `max` — Máximo disponível
+        - `1d` - Último dia
+        - `5d` - Últimos 5 dias
+        - `1mo` - Último mês
+        - `3mo` - Últimos 3 meses
+        - `6mo` - Últimos 6 meses
+        - `1y` - Último ano
+        - `2y` - Últimos 2 anos
+        - `5y` - Últimos 5 anos
+        - `10y` - Últimos 10 anos
+        - `ytd` - Ano até hoje
+        - `max` - Máximo disponível
 
         ### Campos Principais da Resposta:
 
-        - `symbol` — Ticker do ativo (ex: PETR4)
-        - `shortName` — Nome curto da empresa
-        - `currency` — Moeda (BRL)
-        - `regularMarketPrice` — Preço atual em BRL
-        - `regularMarketChange` — Variação absoluta
-        - `regularMarketChangePercent` — Variação percentual (%)
-        - `regularMarketVolume` — Volume de negociação do dia
-        - `regularMarketDayHigh` — Máxima do dia
-        - `regularMarketDayLow` — Mínima do dia
-        - `fiftyTwoWeekHigh` — Máxima de 52 semanas
-        - `fiftyTwoWeekLow` — Mínima de 52 semanas
-        - `marketCap` — Capitalização de mercado
-        - `historicalDataPrice` — Array de dados OHLCV (quando `range`/`interval`
+        - `symbol` - Ticker do ativo (ex: PETR4)
+        - `shortName` - Nome curto da empresa
+        - `currency` - Moeda (BRL)
+        - `regularMarketPrice` - Preço atual em BRL
+        - `regularMarketChange` - Variação absoluta
+        - `regularMarketChangePercent` - Variação percentual (%)
+        - `regularMarketVolume` - Volume de negociação do dia
+        - `regularMarketDayHigh` - Máxima do dia
+        - `regularMarketDayLow` - Mínima do dia
+        - `fiftyTwoWeekHigh` - Máxima de 52 semanas
+        - `fiftyTwoWeekLow` - Mínima de 52 semanas
+        - `marketCap` - Capitalização de mercado
+        - `historicalDataPrice` - Array de dados OHLCV (quando `range`/`interval`
           fornecidos)
-        - `dividendsData` — Histórico de dividendos (quando `dividends=true`)
+        - `dividendsData` - Histórico de dividendos (quando `dividends=true`)
 
         ### Tickers Populares (Teste):
 
-        - `PETR4` — Petrobras (Energia)
-        - `VALE3` — Vale (Mineração)
-        - `ITUB4` — Itaú Unibanco (Financeiro)
-        - `BBDC4` — Bradesco (Financeiro)
-        - `ABEV3` — Ambev (Consumo)
-        - `WEGE3` — WEG (Indústria)
-        - `RENT3` — Localiza (Transporte)
-        - `BBAS3` — Banco do Brasil (Financeiro)
-        - `MGLU3` — Magazine Luiza (Varejo)
+        - `PETR4` - Petrobras (Energia)
+        - `VALE3` - Vale (Mineração)
+        - `ITUB4` - Itaú Unibanco (Financeiro)
+        - `BBDC4` - Bradesco (Financeiro)
+        - `ABEV3` - Ambev (Consumo)
+        - `WEGE3` - WEG (Indústria)
+        - `RENT3` - Localiza (Transporte)
+        - `BBAS3` - Banco do Brasil (Financeiro)
+        - `MGLU3` - Magazine Luiza (Varejo)
 
         ### Fonte dos Dados:
 
@@ -672,16 +672,16 @@ class AsyncQuoteResource(AsyncAPIResource):
 
         ### Parâmetros de Ordenação:
 
-        - `volume` — Volume de negociação do dia
-        - `close` — Preço de fechamento
-        - `market_cap_basic` — Capitalização de mercado
-        - `name` — Nome da empresa (alfabético)
+        - `volume` - Volume de negociação do dia
+        - `close` - Preço de fechamento
+        - `market_cap_basic` - Capitalização de mercado
+        - `name` - Nome da empresa (alfabético)
 
         ### Tipos de Ativo:
 
-        - `stock` — Ações (Ações ordinárias e preferenciais)
-        - `fund` — Fundos Imobiliários (FIIs) e ETFs
-        - `bdr` — BDRs (Brazilian Depositary Receipts)
+        - `stock` - Ações (Ações ordinárias e preferenciais)
+        - `fund` - Fundos Imobiliários (FIIs) e ETFs
+        - `bdr` - BDRs (Brazilian Depositary Receipts)
 
         **Plano Mínimo:** Gratuito **Autenticação:** Necessária (Bearer Token)
 
