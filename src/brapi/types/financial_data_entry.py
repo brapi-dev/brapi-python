@@ -23,7 +23,7 @@ class FinancialDataEntry(BaseModel):
 
     earnings_growth: Optional[float] = FieldInfo(alias="earningsGrowth", default=None)
     """
-    Crescimento do lucro do controlador (TTM) — variação dos últimos 4 trimestres em
+    Crescimento do lucro do controlador (TTM) - variação dos últimos 4 trimestres em
     relação aos 4 trimestres imediatamente anteriores, usando Lucro Líquido
     Atribuível aos Controladores. Para crescimento anual (DRE de exercício vs.
     exercício anterior), use earningsGrowthAnnual.
@@ -31,7 +31,7 @@ class FinancialDataEntry(BaseModel):
 
     earnings_growth_annual: Optional[float] = FieldInfo(alias="earningsGrowthAnnual", default=None)
     """
-    Crescimento anual do lucro do controlador — variação do Lucro Líquido Atribuível
+    Crescimento anual do lucro do controlador - variação do Lucro Líquido Atribuível
     aos Controladores do último exercício social completo em relação ao exercício
     anterior.
     """
@@ -74,14 +74,14 @@ class FinancialDataEntry(BaseModel):
 
     revenue_growth: Optional[float] = FieldInfo(alias="revenueGrowth", default=None)
     """
-    Crescimento da receita (TTM) — variação da receita dos últimos 4 trimestres em
+    Crescimento da receita (TTM) - variação da receita dos últimos 4 trimestres em
     relação aos 4 trimestres imediatamente anteriores. Para crescimento anual (DRE
     de exercício vs. exercício anterior), use revenueGrowthAnnual.
     """
 
     revenue_growth_annual: Optional[float] = FieldInfo(alias="revenueGrowthAnnual", default=None)
     """
-    Crescimento anual da receita — variação da Receita Líquida do último exercício
+    Crescimento anual da receita - variação da Receita Líquida do último exercício
     social completo em relação ao exercício anterior.
     """
 

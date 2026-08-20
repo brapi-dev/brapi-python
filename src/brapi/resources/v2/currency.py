@@ -81,20 +81,20 @@ class CurrencyResource(SyncAPIResource):
 
         ### Pares de Moedas Populares:
 
-        - `USD-BRL` — Dólar Americano / Real
-        - `EUR-BRL` — Euro / Real
-        - `GBP-BRL` — Libra Esterlina / Real
-        - `EUR-USD` — Euro / Dólar
+        - `USD-BRL` - Dólar Americano / Real
+        - `EUR-BRL` - Euro / Real
+        - `GBP-BRL` - Libra Esterlina / Real
+        - `EUR-USD` - Euro / Dólar
 
         ### Campos da Resposta:
 
-        - `fromCurrency` / `toCurrency` — Par de moedas
-        - `name` — Nome do par
-        - `bidPrice` — Preço de compra
-        - `askPrice` — Preço de venda
-        - `high` / `low` — Máxima/Mínima do dia
-        - `bidVariation` — Variação do preço de compra
-        - `percentageChange` — Variação percentual (%)
+        - `fromCurrency` / `toCurrency` - Par de moedas
+        - `name` - Nome do par
+        - `bidPrice` - Preço de compra
+        - `askPrice` - Preço de venda
+        - `high` / `low` - Máxima/Mínima do dia
+        - `bidVariation` - Variação do preço de compra
+        - `percentageChange` - Variação percentual (%)
 
         ### Fonte dos Dados:
 
@@ -243,20 +243,20 @@ class AsyncCurrencyResource(AsyncAPIResource):
 
         ### Pares de Moedas Populares:
 
-        - `USD-BRL` — Dólar Americano / Real
-        - `EUR-BRL` — Euro / Real
-        - `GBP-BRL` — Libra Esterlina / Real
-        - `EUR-USD` — Euro / Dólar
+        - `USD-BRL` - Dólar Americano / Real
+        - `EUR-BRL` - Euro / Real
+        - `GBP-BRL` - Libra Esterlina / Real
+        - `EUR-USD` - Euro / Dólar
 
         ### Campos da Resposta:
 
-        - `fromCurrency` / `toCurrency` — Par de moedas
-        - `name` — Nome do par
-        - `bidPrice` — Preço de compra
-        - `askPrice` — Preço de venda
-        - `high` / `low` — Máxima/Mínima do dia
-        - `bidVariation` — Variação do preço de compra
-        - `percentageChange` — Variação percentual (%)
+        - `fromCurrency` / `toCurrency` - Par de moedas
+        - `name` - Nome do par
+        - `bidPrice` - Preço de compra
+        - `askPrice` - Preço de venda
+        - `high` / `low` - Máxima/Mínima do dia
+        - `bidVariation` - Variação do preço de compra
+        - `percentageChange` - Variação percentual (%)
 
         ### Fonte dos Dados:
 
