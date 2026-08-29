@@ -56,6 +56,7 @@ class QuoteResource(SyncAPIResource):
         token: str | Omit = omit,
         dividends: Literal["true", "false"] | Omit = omit,
         end_date: str | Omit = omit,
+        include_raw: Literal["true", "false"] | Omit = omit,
         interval: Literal["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h", "1d", "5d", "1wk", "1mo", "3mo"]
         | Omit = omit,
         modules: str | Omit = omit,
@@ -86,8 +87,10 @@ class QuoteResource(SyncAPIResource):
         `fiftyTwoWeekLow` e `marketCap`.
 
         Com `range` e `interval`: `historicalDataPrice` com a série OHLCV. Com
-        `dividends=true`: `dividendsData` com dividendos, JCP e bonificações. Com
-        `modules`: um objeto por módulo pedido.
+        `includeRaw=true` e intervalo diário: os campos `rawOpen`, `rawHigh`, `rawLow` e
+        `rawClose` quando existirem no banco. Intervalos intradiários não retornam
+        campos `raw*`. Com `dividends=true`: `dividendsData` com dividendos, JCP e
+        bonificações. Com `modules`: um objeto por módulo pedido.
 
         ### Parâmetros de histórico
 
@@ -136,6 +139,9 @@ class QuoteResource(SyncAPIResource):
 
           end_date: Data final para dados históricos (formato YYYY-MM-DD)
 
+          include_raw: Incluir preços OHLC originais armazenados no banco da brapi para intervalos
+              diários. Use includeRaw=true. Disponível no plano Pro.
+
           interval: Intervalo/granularidade dos dados históricos
 
           modules: Módulos de dados adicionais separados por vírgula
@@ -166,6 +172,7 @@ class QuoteResource(SyncAPIResource):
                         "token": token,
                         "dividends": dividends,
                         "end_date": end_date,
+                        "include_raw": include_raw,
                         "interval": interval,
                         "modules": modules,
                         "range": range,
@@ -310,6 +317,7 @@ class AsyncQuoteResource(AsyncAPIResource):
         token: str | Omit = omit,
         dividends: Literal["true", "false"] | Omit = omit,
         end_date: str | Omit = omit,
+        include_raw: Literal["true", "false"] | Omit = omit,
         interval: Literal["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h", "1d", "5d", "1wk", "1mo", "3mo"]
         | Omit = omit,
         modules: str | Omit = omit,
@@ -340,8 +348,10 @@ class AsyncQuoteResource(AsyncAPIResource):
         `fiftyTwoWeekLow` e `marketCap`.
 
         Com `range` e `interval`: `historicalDataPrice` com a série OHLCV. Com
-        `dividends=true`: `dividendsData` com dividendos, JCP e bonificações. Com
-        `modules`: um objeto por módulo pedido.
+        `includeRaw=true` e intervalo diário: os campos `rawOpen`, `rawHigh`, `rawLow` e
+        `rawClose` quando existirem no banco. Intervalos intradiários não retornam
+        campos `raw*`. Com `dividends=true`: `dividendsData` com dividendos, JCP e
+        bonificações. Com `modules`: um objeto por módulo pedido.
 
         ### Parâmetros de histórico
 
@@ -390,6 +400,9 @@ class AsyncQuoteResource(AsyncAPIResource):
 
           end_date: Data final para dados históricos (formato YYYY-MM-DD)
 
+          include_raw: Incluir preços OHLC originais armazenados no banco da brapi para intervalos
+              diários. Use includeRaw=true. Disponível no plano Pro.
+
           interval: Intervalo/granularidade dos dados históricos
 
           modules: Módulos de dados adicionais separados por vírgula
@@ -420,6 +433,7 @@ class AsyncQuoteResource(AsyncAPIResource):
                         "token": token,
                         "dividends": dividends,
                         "end_date": end_date,
+                        "include_raw": include_raw,
                         "interval": interval,
                         "modules": modules,
                         "range": range,
