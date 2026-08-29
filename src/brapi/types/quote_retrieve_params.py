@@ -19,6 +19,12 @@ class QuoteRetrieveParams(TypedDict, total=False):
     end_date: Annotated[str, PropertyInfo(alias="endDate")]
     """Data final para dados históricos (formato YYYY-MM-DD)"""
 
+    include_raw: Annotated[Literal["true", "false"], PropertyInfo(alias="includeRaw")]
+    """
+    Incluir preços OHLC originais armazenados no banco da brapi para intervalos
+    diários. Use includeRaw=true. Disponível no plano Pro.
+    """
+
     interval: Literal["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h", "1d", "5d", "1wk", "1mo", "3mo"]
     """Intervalo/granularidade dos dados históricos"""
 

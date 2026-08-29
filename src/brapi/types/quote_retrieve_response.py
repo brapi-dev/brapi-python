@@ -118,6 +118,34 @@ class ResultHistoricalDataPrice(BaseModel):
     volume: int
     """Volume financeiro negociado no intervalo."""
 
+    raw_close: Optional[float] = FieldInfo(alias="rawClose", default=None)
+    """Preço de fechamento original armazenado no banco da brapi.
+
+    Retornado com includeRaw=true em intervalos diários no plano Pro. Pode ser nulo
+    quando não houver valor no banco.
+    """
+
+    raw_high: Optional[float] = FieldInfo(alias="rawHigh", default=None)
+    """Preço máximo original armazenado no banco da brapi.
+
+    Retornado com includeRaw=true em intervalos diários no plano Pro. Pode ser nulo
+    quando não houver valor no banco.
+    """
+
+    raw_low: Optional[float] = FieldInfo(alias="rawLow", default=None)
+    """Preço mínimo original armazenado no banco da brapi.
+
+    Retornado com includeRaw=true em intervalos diários no plano Pro. Pode ser nulo
+    quando não houver valor no banco.
+    """
+
+    raw_open: Optional[float] = FieldInfo(alias="rawOpen", default=None)
+    """Preço de abertura original armazenado no banco da brapi.
+
+    Retornado com includeRaw=true em intervalos diários no plano Pro. Pode ser nulo
+    quando não houver valor no banco.
+    """
+
 
 class ResultSummaryProfile(BaseModel):
     """Perfil da empresa (quando modules inclui summaryProfile)"""
