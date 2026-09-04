@@ -53,6 +53,12 @@ class ResultDividendsDataCashDividend(BaseModel):
     remarks: str
     """Observações"""
 
+    raw_rate: Optional[float] = FieldInfo(alias="rawRate", default=None)
+    """Valor por ação convertido para a escala dos preços brutos com base histórica.
+
+    Retornado com includeRaw=true.
+    """
+
 
 class ResultDividendsDataStockDividend(BaseModel):
     approved_on: Optional[str] = FieldInfo(alias="approvedOn", default=None)
