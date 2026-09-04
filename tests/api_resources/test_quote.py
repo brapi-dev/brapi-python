@@ -33,6 +33,7 @@ class TestQuote:
             token="token",
             dividends="true",
             end_date="2024-12-31",
+            include_raw="true",
             interval="1m",
             modules="summaryProfile,balanceSheetHistory,financialData",
             range="1d",
@@ -91,6 +92,7 @@ class TestQuote:
             sector="sector",
             sort_by="name",
             sort_order="asc",
+            subsector="subsector",
             sub_type="stock",
             type="stock",
         )
@@ -140,6 +142,7 @@ class TestAsyncQuote:
             token="token",
             dividends="true",
             end_date="2024-12-31",
+            include_raw="true",
             interval="1m",
             modules="summaryProfile,balanceSheetHistory,financialData",
             range="1d",
@@ -198,6 +201,7 @@ class TestAsyncQuote:
             sector="sector",
             sort_by="name",
             sort_order="asc",
+            subsector="subsector",
             sub_type="stock",
             type="stock",
         )

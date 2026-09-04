@@ -29,6 +29,9 @@ class ResultDividendsDataCashDividend(BaseModel):
     asset_issued: str = FieldInfo(alias="assetIssued")
     """Código ISIN do ativo emissor"""
 
+    ex_date: Optional[str] = FieldInfo(alias="exDate", default=None)
+    """Data ex (primeiro dia sem direito ao provento)"""
+
     isin_code: str = FieldInfo(alias="isinCode")
     """Código ISIN"""
 
@@ -50,6 +53,12 @@ class ResultDividendsDataCashDividend(BaseModel):
     remarks: str
     """Observações"""
 
+    raw_rate: Optional[float] = FieldInfo(alias="rawRate", default=None)
+    """Valor por ação convertido para a escala dos preços brutos com base histórica.
+
+    Retornado com includeRaw=true.
+    """
+
 
 class ResultDividendsDataStockDividend(BaseModel):
     approved_on: Optional[str] = FieldInfo(alias="approvedOn", default=None)
@@ -60,6 +69,9 @@ class ResultDividendsDataStockDividend(BaseModel):
 
     complete_factor: str = FieldInfo(alias="completeFactor")
     """Fator completo (ex: 2 para 1)"""
+
+    ex_date: Optional[str] = FieldInfo(alias="exDate", default=None)
+    """Data ex do evento corporativo"""
 
     factor: float
     """Fator do desdobramento/grupamento"""
@@ -117,6 +129,34 @@ class ResultHistoricalDataPrice(BaseModel):
 
     volume: int
     """Volume financeiro negociado no intervalo."""
+
+    raw_close: Optional[float] = FieldInfo(alias="rawClose", default=None)
+    """Preço de fechamento original armazenado no banco da brapi.
+
+    Retornado com includeRaw=true em intervalos diários no plano Pro. Pode ser nulo
+    quando não houver valor no banco.
+    """
+
+    raw_high: Optional[float] = FieldInfo(alias="rawHigh", default=None)
+    """Preço máximo original armazenado no banco da brapi.
+
+    Retornado com includeRaw=true em intervalos diários no plano Pro. Pode ser nulo
+    quando não houver valor no banco.
+    """
+
+    raw_low: Optional[float] = FieldInfo(alias="rawLow", default=None)
+    """Preço mínimo original armazenado no banco da brapi.
+
+    Retornado com includeRaw=true em intervalos diários no plano Pro. Pode ser nulo
+    quando não houver valor no banco.
+    """
+
+    raw_open: Optional[float] = FieldInfo(alias="rawOpen", default=None)
+    """Preço de abertura original armazenado no banco da brapi.
+
+    Retornado com includeRaw=true em intervalos diários no plano Pro. Pode ser nulo
+    quando não houver valor no banco.
+    """
 
 
 class ResultSummaryProfile(BaseModel):

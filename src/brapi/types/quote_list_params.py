@@ -33,6 +33,9 @@ class QuoteListParams(TypedDict, total=False):
     sort_order: Annotated[Literal["asc", "desc"], PropertyInfo(alias="sortOrder")]
     """Ordem de classificação"""
 
+    subsector: str
+    """Filtrar pelo subsetor B3"""
+
     sub_type: Annotated[
         Literal["stock", "unit", "fii", "etf", "fi-infra", "fi-agro", "fip", "fidc", "bdr"],
         PropertyInfo(alias="subType"),

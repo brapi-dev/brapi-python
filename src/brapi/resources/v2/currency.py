@@ -58,53 +58,15 @@ class CurrencyResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> CurrencyRetrieveResponse:
         """
-        Retorna cotações atualizadas de pares de moedas, com preço de compra/venda,
-        variação e extremos do dia.
+        Cotação de pares de moedas, no formato `ORIGEM-DESTINO`, como `USD-BRL`.
 
-        ### Funcionalidades:
+        Cada par traz preço de compra (`bid`), de venda (`ask`), máxima, mínima e
+        variação do dia.
 
-        - **Cotação Atual:** Preço de compra (bid), venda (ask), máxima, mínima,
-          variação
-        - **Múltiplos Pares:** Consulte vários em uma requisição (separados por vírgula)
-        - **Formato:** `ORIGEM-DESTINO` (ex: `USD-BRL`)
+        Peça vários pares na mesma chamada em `currency=USD-BRL,EUR-BRL,GBP-BRL`.
 
-        ### Autenticação:
-
-        Bearer token ou query param `token`. Obtenha em brapi.dev/dashboard.
-
-        ### Exemplos de Requisição:
-
-        ```bash
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/currency?currency=USD-BRL"
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/currency?currency=USD-BRL,EUR-BRL,GBP-BRL"
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/currency?currency=BTC-BRL"
-        ```
-
-        ### Pares de Moedas Populares:
-
-        - `USD-BRL` — Dólar Americano / Real
-        - `EUR-BRL` — Euro / Real
-        - `GBP-BRL` — Libra Esterlina / Real
-        - `ARS-BRL` — Peso Argentino / Real
-        - `EUR-USD` — Euro / Dólar
-        - `BTC-BRL` — Bitcoin / Real
-        - `ETH-BRL` — Ethereum / Real
-
-        ### Campos da Resposta:
-
-        - `fromCurrency` / `toCurrency` — Par de moedas
-        - `name` — Nome do par
-        - `bidPrice` — Preço de compra
-        - `askPrice` — Preço de venda
-        - `high` / `low` — Máxima/Mínima do dia
-        - `bidVariation` — Variação do preço de compra
-        - `percentageChange` — Variação percentual (%)
-
-        ### Fonte dos Dados:
-
-        Banco Central do Brasil (PTAX) / Yahoo Finance
-
-        **Plano Mínimo:** Startup **Autenticação:** Necessária
+        A diferença entre `bid` e `ask` é o spread. Casas de câmbio e bancos cobram
+        spread bem maior que esse, então não use o número como preço de balcão.
 
         Args:
           currency: Par(es) de moedas separados por vírgula (ex: USD-BRL,EUR-BRL)
@@ -141,29 +103,12 @@ class CurrencyResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> CurrencyListAvailableResponse:
         """
-        Retorna a lista de pares de moedas disponíveis para consulta no endpoint
-        `/api/v2/currency`.
+        Os pares que `/api/v2/currency` aceita, no formato `ORIGEM-DESTINO`.
 
-        ### Formato:
+        A cobertura inclui USD, EUR, GBP, JPY, CHF, CAD, AUD, DKK, NOK e SEK contra o
+        real, mais os cruzamentos entre as moedas PTAX, como `EUR-USD` e `GBP-USD`.
 
-        ORIGEM-DESTINO, onde ORIGEM é o código da moeda de origem e DESTINO a moeda de
-        destino
-
-        ### Pares Disponíveis:
-
-        - **Moedas Fiduciárias:** USD-BRL, EUR-BRL, GBP-BRL, ARS-BRL, CAD-BRL, AUD-BRL,
-          JPY-BRL, CNY-BRL
-        - **Cross Rates:** EUR-USD, GBP-USD
-        - **Criptomoedas:** BTC-BRL, ETH-BRL
-
-        ### Exemplos de Requisição:
-
-        ```bash
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/currency/available"
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/currency/available?search=USD"
-        ```
-
-        **Plano Mínimo:** Startup **Autenticação:** Necessária
+        Filtre com `search`.
 
         Args:
           search: Filtrar pares de moedas por nome ou descrição
@@ -225,53 +170,15 @@ class AsyncCurrencyResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> CurrencyRetrieveResponse:
         """
-        Retorna cotações atualizadas de pares de moedas, com preço de compra/venda,
-        variação e extremos do dia.
+        Cotação de pares de moedas, no formato `ORIGEM-DESTINO`, como `USD-BRL`.
 
-        ### Funcionalidades:
+        Cada par traz preço de compra (`bid`), de venda (`ask`), máxima, mínima e
+        variação do dia.
 
-        - **Cotação Atual:** Preço de compra (bid), venda (ask), máxima, mínima,
-          variação
-        - **Múltiplos Pares:** Consulte vários em uma requisição (separados por vírgula)
-        - **Formato:** `ORIGEM-DESTINO` (ex: `USD-BRL`)
+        Peça vários pares na mesma chamada em `currency=USD-BRL,EUR-BRL,GBP-BRL`.
 
-        ### Autenticação:
-
-        Bearer token ou query param `token`. Obtenha em brapi.dev/dashboard.
-
-        ### Exemplos de Requisição:
-
-        ```bash
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/currency?currency=USD-BRL"
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/currency?currency=USD-BRL,EUR-BRL,GBP-BRL"
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/currency?currency=BTC-BRL"
-        ```
-
-        ### Pares de Moedas Populares:
-
-        - `USD-BRL` — Dólar Americano / Real
-        - `EUR-BRL` — Euro / Real
-        - `GBP-BRL` — Libra Esterlina / Real
-        - `ARS-BRL` — Peso Argentino / Real
-        - `EUR-USD` — Euro / Dólar
-        - `BTC-BRL` — Bitcoin / Real
-        - `ETH-BRL` — Ethereum / Real
-
-        ### Campos da Resposta:
-
-        - `fromCurrency` / `toCurrency` — Par de moedas
-        - `name` — Nome do par
-        - `bidPrice` — Preço de compra
-        - `askPrice` — Preço de venda
-        - `high` / `low` — Máxima/Mínima do dia
-        - `bidVariation` — Variação do preço de compra
-        - `percentageChange` — Variação percentual (%)
-
-        ### Fonte dos Dados:
-
-        Banco Central do Brasil (PTAX) / Yahoo Finance
-
-        **Plano Mínimo:** Startup **Autenticação:** Necessária
+        A diferença entre `bid` e `ask` é o spread. Casas de câmbio e bancos cobram
+        spread bem maior que esse, então não use o número como preço de balcão.
 
         Args:
           currency: Par(es) de moedas separados por vírgula (ex: USD-BRL,EUR-BRL)
@@ -310,29 +217,12 @@ class AsyncCurrencyResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> CurrencyListAvailableResponse:
         """
-        Retorna a lista de pares de moedas disponíveis para consulta no endpoint
-        `/api/v2/currency`.
+        Os pares que `/api/v2/currency` aceita, no formato `ORIGEM-DESTINO`.
 
-        ### Formato:
+        A cobertura inclui USD, EUR, GBP, JPY, CHF, CAD, AUD, DKK, NOK e SEK contra o
+        real, mais os cruzamentos entre as moedas PTAX, como `EUR-USD` e `GBP-USD`.
 
-        ORIGEM-DESTINO, onde ORIGEM é o código da moeda de origem e DESTINO a moeda de
-        destino
-
-        ### Pares Disponíveis:
-
-        - **Moedas Fiduciárias:** USD-BRL, EUR-BRL, GBP-BRL, ARS-BRL, CAD-BRL, AUD-BRL,
-          JPY-BRL, CNY-BRL
-        - **Cross Rates:** EUR-USD, GBP-USD
-        - **Criptomoedas:** BTC-BRL, ETH-BRL
-
-        ### Exemplos de Requisição:
-
-        ```bash
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/currency/available"
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/currency/available?search=USD"
-        ```
-
-        **Plano Mínimo:** Startup **Autenticação:** Necessária
+        Filtre com `search`.
 
         Args:
           search: Filtrar pares de moedas por nome ou descrição

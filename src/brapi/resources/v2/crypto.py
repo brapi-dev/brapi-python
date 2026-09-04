@@ -61,45 +61,21 @@ class CryptoResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> CryptoRetrieveResponse:
         """
-        Retorna cotações atualizadas de uma ou mais criptomoedas, com conversão para
-        diferentes moedas fiduciárias.
+        Cotação de uma ou mais criptomoedas, convertida para a moeda que você escolher.
 
-        ### Funcionalidades:
+        Cada moeda traz preço, variação de 24 horas, volume e market cap. O padrão é
+        `currency=BRL`, e você pode pedir `USD`, `EUR` e outras.
 
-        - **Cotação Atual:** Preço, variação 24h, volume, market cap
-        - **Múltiplas Moedas:** Consulte várias criptos em uma requisição (separadas por
-          vírgula)
-        - **Conversão de Moeda:** BRL (padrão), USD, EUR e outras
-        - **Dados Históricos:** OHLCV via parâmetros `range` e `interval`
-
-        ### Autenticação:
-
-        Bearer token ou query param `token`. Obtenha em brapi.dev/dashboard.
-
-        ### Exemplos de Requisição:
+        Peça várias de uma vez em `coin=BTC,ETH,SOL`. Para série histórica, passe
+        `range` e `interval`.
 
         ```bash
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto?coin=BTC&currency=BRL"
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto?coin=BTC,ETH,SOL&currency=USD"
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto?coin=BTC&currency=BRL&range=1mo&interval=1d"
+        curl -H "Authorization: Bearer SEU_TOKEN" \\
+          "https://brapi.dev/api/v2/crypto?coin=BTC,ETH&currency=BRL"
         ```
 
-        ### Moedas de Conversão:
-
-        BRL (Real), USD (Dólar), EUR (Euro), GBP (Libra) e outras
-
-        ### Campos da Resposta:
-
-        - `coin` — Símbolo da criptomoeda
-        - `coinName` — Nome completo
-        - `currency` — Moeda de cotação
-        - `regularMarketPrice` — Preço atual
-        - `regularMarketChange` — Variação em valor absoluto
-        - `regularMarketChangePercent` — Variação percentual (%)
-        - `regularMarketDayHigh` / `regularMarketDayLow` — Máxima/Mínima do dia
-        - `regularMarketVolume` — Volume negociado
-
-        **Plano Mínimo:** Startup **Autenticação:** Necessária
+        Cripto negocia 24 horas por dia. A variação de 24 horas é uma janela móvel, não
+        o fechamento de um pregão.
 
         Args:
           coin: Sigla(s) das criptomoedas separadas por vírgula
@@ -150,35 +126,15 @@ class CryptoResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> CryptoListAvailableResponse:
         """
-        Retorna a lista de criptomoedas disponíveis para consulta no endpoint
-        `/api/v2/crypto`.
+        As criptomoedas que `/api/v2/crypto` aceita, com centenas de símbolos.
 
-        ### Criptomoedas Populares:
-
-        - **BTC** — Bitcoin
-        - **ETH** — Ethereum
-        - **BNB** — Binance Coin
-        - **SOL** — Solana
-        - **ADA** — Cardano
-        - **XRP** — Ripple
-        - **DOGE** — Dogecoin
-        - **DOT** — Polkadot
-        - **MATIC** — Polygon
-        - **LTC** — Litecoin
-        - E centenas de outras...
-
-        ### Uso:
-
-        Use os símbolos retornados como valor do parâmetro `coin` no endpoint principal.
-
-        ### Exemplos de Requisição:
+        Use `search` para filtrar. O valor do campo `coin` de cada item é o que você
+        passa no parâmetro `coin` do endpoint principal.
 
         ```bash
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto/available"
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto/available?search=BTC"
+        curl -H "Authorization: Bearer SEU_TOKEN" \\
+          "https://brapi.dev/api/v2/crypto/available?search=BTC"
         ```
-
-        **Plano Mínimo:** Startup **Autenticação:** Necessária
 
         Args:
           search: Filtrar criptomoedas por símbolo
@@ -243,45 +199,21 @@ class AsyncCryptoResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> CryptoRetrieveResponse:
         """
-        Retorna cotações atualizadas de uma ou mais criptomoedas, com conversão para
-        diferentes moedas fiduciárias.
+        Cotação de uma ou mais criptomoedas, convertida para a moeda que você escolher.
 
-        ### Funcionalidades:
+        Cada moeda traz preço, variação de 24 horas, volume e market cap. O padrão é
+        `currency=BRL`, e você pode pedir `USD`, `EUR` e outras.
 
-        - **Cotação Atual:** Preço, variação 24h, volume, market cap
-        - **Múltiplas Moedas:** Consulte várias criptos em uma requisição (separadas por
-          vírgula)
-        - **Conversão de Moeda:** BRL (padrão), USD, EUR e outras
-        - **Dados Históricos:** OHLCV via parâmetros `range` e `interval`
-
-        ### Autenticação:
-
-        Bearer token ou query param `token`. Obtenha em brapi.dev/dashboard.
-
-        ### Exemplos de Requisição:
+        Peça várias de uma vez em `coin=BTC,ETH,SOL`. Para série histórica, passe
+        `range` e `interval`.
 
         ```bash
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto?coin=BTC&currency=BRL"
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto?coin=BTC,ETH,SOL&currency=USD"
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto?coin=BTC&currency=BRL&range=1mo&interval=1d"
+        curl -H "Authorization: Bearer SEU_TOKEN" \\
+          "https://brapi.dev/api/v2/crypto?coin=BTC,ETH&currency=BRL"
         ```
 
-        ### Moedas de Conversão:
-
-        BRL (Real), USD (Dólar), EUR (Euro), GBP (Libra) e outras
-
-        ### Campos da Resposta:
-
-        - `coin` — Símbolo da criptomoeda
-        - `coinName` — Nome completo
-        - `currency` — Moeda de cotação
-        - `regularMarketPrice` — Preço atual
-        - `regularMarketChange` — Variação em valor absoluto
-        - `regularMarketChangePercent` — Variação percentual (%)
-        - `regularMarketDayHigh` / `regularMarketDayLow` — Máxima/Mínima do dia
-        - `regularMarketVolume` — Volume negociado
-
-        **Plano Mínimo:** Startup **Autenticação:** Necessária
+        Cripto negocia 24 horas por dia. A variação de 24 horas é uma janela móvel, não
+        o fechamento de um pregão.
 
         Args:
           coin: Sigla(s) das criptomoedas separadas por vírgula
@@ -332,35 +264,15 @@ class AsyncCryptoResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> CryptoListAvailableResponse:
         """
-        Retorna a lista de criptomoedas disponíveis para consulta no endpoint
-        `/api/v2/crypto`.
+        As criptomoedas que `/api/v2/crypto` aceita, com centenas de símbolos.
 
-        ### Criptomoedas Populares:
-
-        - **BTC** — Bitcoin
-        - **ETH** — Ethereum
-        - **BNB** — Binance Coin
-        - **SOL** — Solana
-        - **ADA** — Cardano
-        - **XRP** — Ripple
-        - **DOGE** — Dogecoin
-        - **DOT** — Polkadot
-        - **MATIC** — Polygon
-        - **LTC** — Litecoin
-        - E centenas de outras...
-
-        ### Uso:
-
-        Use os símbolos retornados como valor do parâmetro `coin` no endpoint principal.
-
-        ### Exemplos de Requisição:
+        Use `search` para filtrar. O valor do campo `coin` de cada item é o que você
+        passa no parâmetro `coin` do endpoint principal.
 
         ```bash
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto/available"
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/crypto/available?search=BTC"
+        curl -H "Authorization: Bearer SEU_TOKEN" \\
+          "https://brapi.dev/api/v2/crypto/available?search=BTC"
         ```
-
-        **Plano Mínimo:** Startup **Autenticação:** Necessária
 
         Args:
           search: Filtrar criptomoedas por símbolo
