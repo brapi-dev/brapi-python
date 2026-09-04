@@ -29,6 +29,9 @@ class ResultDividendsDataCashDividend(BaseModel):
     asset_issued: str = FieldInfo(alias="assetIssued")
     """Código ISIN do ativo emissor"""
 
+    ex_date: Optional[str] = FieldInfo(alias="exDate", default=None)
+    """Data ex (primeiro dia sem direito ao provento)"""
+
     isin_code: str = FieldInfo(alias="isinCode")
     """Código ISIN"""
 
@@ -60,6 +63,9 @@ class ResultDividendsDataStockDividend(BaseModel):
 
     complete_factor: str = FieldInfo(alias="completeFactor")
     """Fator completo (ex: 2 para 1)"""
+
+    ex_date: Optional[str] = FieldInfo(alias="exDate", default=None)
+    """Data ex do evento corporativo"""
 
     factor: float
     """Fator do desdobramento/grupamento"""
