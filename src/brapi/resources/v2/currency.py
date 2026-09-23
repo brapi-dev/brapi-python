@@ -58,18 +58,23 @@ class CurrencyResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> CurrencyRetrieveResponse:
         """
-        Cotação de pares de moedas, no formato `ORIGEM-DESTINO`, como `USD-BRL`.
+        Cotação atual de pares de moedas, com preço de compra, preço de venda, máxima,
+        mínima e variação do dia. Os pares cobertos pelo Banco Central usam a PTAX.
 
-        Cada par traz preço de compra (`bid`), de venda (`ask`), máxima, mínima e
-        variação do dia.
+        Use para converter valores, mostrar o dólar do dia e atualizar planilhas.
 
-        Peça vários pares na mesma chamada em `currency=USD-BRL,EUR-BRL,GBP-BRL`.
+        Informe os pares em `currency` no formato `ORIGEM-DESTINO`, como
+        `USD-BRL,EUR-BRL`. Os números vêm como texto.
 
-        A diferença entre `bid` e `ask` é o spread. Casas de câmbio e bancos cobram
-        spread bem maior que esse, então não use o número como preço de balcão.
+        A diferença entre `bidPrice` e `askPrice` é o spread de referência. Bancos e
+        casas de câmbio cobram um spread maior.
+
+        Veja os pares em [listar pares](https://brapi.dev/docs/moedas/available) e a
+        série diária em [histórico de câmbio](https://brapi.dev/docs/moedas/historico).
+        Planos Startup e Pro.
 
         Args:
-          currency: Par(es) de moedas separados por vírgula (ex: USD-BRL,EUR-BRL)
+          currency: Pares no formato ORIGEM-DESTINO, separados por vírgula. Ex.: USD-BRL,EUR-BRL.
 
           extra_headers: Send extra headers
 
@@ -103,15 +108,16 @@ class CurrencyResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> CurrencyListAvailableResponse:
         """
-        Os pares que `/api/v2/currency` aceita, no formato `ORIGEM-DESTINO`.
+        Lista os pares de moedas que a
+        [cotação de câmbio](https://brapi.dev/docs/moedas) aceita, no formato
+        `ORIGEM-DESTINO`, com o nome de cada par.
 
-        A cobertura inclui USD, EUR, GBP, JPY, CHF, CAD, AUD, DKK, NOK e SEK contra o
-        real, mais os cruzamentos entre as moedas PTAX, como `EUR-USD` e `GBP-USD`.
+        Use para montar seletores de moeda e validar pares antes da chamada.
 
-        Filtre com `search`.
+        Filtre com `search`. Planos Startup e Pro.
 
         Args:
-          search: Filtrar pares de moedas por nome ou descrição
+          search: Texto buscado no par e no nome das moedas.
 
           extra_headers: Send extra headers
 
@@ -170,18 +176,23 @@ class AsyncCurrencyResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> CurrencyRetrieveResponse:
         """
-        Cotação de pares de moedas, no formato `ORIGEM-DESTINO`, como `USD-BRL`.
+        Cotação atual de pares de moedas, com preço de compra, preço de venda, máxima,
+        mínima e variação do dia. Os pares cobertos pelo Banco Central usam a PTAX.
 
-        Cada par traz preço de compra (`bid`), de venda (`ask`), máxima, mínima e
-        variação do dia.
+        Use para converter valores, mostrar o dólar do dia e atualizar planilhas.
 
-        Peça vários pares na mesma chamada em `currency=USD-BRL,EUR-BRL,GBP-BRL`.
+        Informe os pares em `currency` no formato `ORIGEM-DESTINO`, como
+        `USD-BRL,EUR-BRL`. Os números vêm como texto.
 
-        A diferença entre `bid` e `ask` é o spread. Casas de câmbio e bancos cobram
-        spread bem maior que esse, então não use o número como preço de balcão.
+        A diferença entre `bidPrice` e `askPrice` é o spread de referência. Bancos e
+        casas de câmbio cobram um spread maior.
+
+        Veja os pares em [listar pares](https://brapi.dev/docs/moedas/available) e a
+        série diária em [histórico de câmbio](https://brapi.dev/docs/moedas/historico).
+        Planos Startup e Pro.
 
         Args:
-          currency: Par(es) de moedas separados por vírgula (ex: USD-BRL,EUR-BRL)
+          currency: Pares no formato ORIGEM-DESTINO, separados por vírgula. Ex.: USD-BRL,EUR-BRL.
 
           extra_headers: Send extra headers
 
@@ -217,15 +228,16 @@ class AsyncCurrencyResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> CurrencyListAvailableResponse:
         """
-        Os pares que `/api/v2/currency` aceita, no formato `ORIGEM-DESTINO`.
+        Lista os pares de moedas que a
+        [cotação de câmbio](https://brapi.dev/docs/moedas) aceita, no formato
+        `ORIGEM-DESTINO`, com o nome de cada par.
 
-        A cobertura inclui USD, EUR, GBP, JPY, CHF, CAD, AUD, DKK, NOK e SEK contra o
-        real, mais os cruzamentos entre as moedas PTAX, como `EUR-USD` e `GBP-USD`.
+        Use para montar seletores de moeda e validar pares antes da chamada.
 
-        Filtre com `search`.
+        Filtre com `search`. Planos Startup e Pro.
 
         Args:
-          search: Filtrar pares de moedas por nome ou descrição
+          search: Texto buscado no par e no nome das moedas.
 
           extra_headers: Send extra headers
 

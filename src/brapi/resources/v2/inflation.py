@@ -60,30 +60,29 @@ class InflationResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> InflationRetrieveResponse:
         """
-        Série do IPCA, o índice oficial de inflação do Brasil, publicada pelo Banco
-        Central.
+        Série mensal do IPCA acumulado em 12 meses, o índice oficial de inflação do
+        Brasil. Cada ponto é o acumulado dos 12 meses até aquela data.
 
-        Os dados são mensais e começam em janeiro de 2000. Cada ponto é a variação
-        percentual do mês, não o acumulado do ano.
+        Endpoint descontinuado. Use as
+        [séries macroeconômicas](https://brapi.dev/docs/macro) com `symbols=ipca12m`
+        para o acumulado ou `symbols=ipca` para a variação do mês.
 
-        Filtre o período com `start` e `end` no formato `DD/MM/YYYY`. Ordene por data ou
-        por valor.
+        Sem filtros, devolve os últimos 12 meses. Filtre com `start` e `end` no formato
+        `DD/MM/YYYY`. O IPCA de um mês sai no mês seguinte.
 
-        O IPCA sai por volta do dia 10 do mês seguinte. O mês corrente nunca está na
-        série.
-
-        Plano Startup.
+        Planos Startup e Pro.
 
         Args:
-          end: Data de fim (DD/MM/YYYY)
+          end: Data final no formato DD/MM/YYYY. Padrão: hoje.
 
-          historical: Incluir dados históricos (true/false)
+          historical: true devolve a série desde 01/01/2000. Sem datas e sem este parâmetro, devolve
+              os últimos 12 meses.
 
-          sort_by: Campo para ordenação (date ou value)
+          sort_by: Campo de ordenação: date ou value. Padrão: date.
 
-          sort_order: Ordem de classificação (asc ou desc)
+          sort_order: Ordem: asc ou desc. Padrão: desc.
 
-          start: Data de início (DD/MM/YYYY)
+          start: Data inicial no formato DD/MM/YYYY.
 
           extra_headers: Send extra headers
 
@@ -125,15 +124,15 @@ class InflationResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> InflationListAvailableResponse:
-        """
-        Os países que `/api/v2/inflation` aceita.
+        """Lista os países que o endpoint de inflação aceita.
 
-        Hoje só `brazil`, com o IPCA publicado pelo Banco Central.
+        Hoje só `brazil`.
 
-        Plano Startup.
+        Endpoint descontinuado. Use as
+        [séries macroeconômicas](https://brapi.dev/docs/macro). Planos Startup e Pro.
 
         Args:
-          format: Formato da resposta. JSON é o formato suportado.
+          format: Formato da resposta. Só aceita json.
 
           extra_headers: Send extra headers
 
@@ -192,30 +191,29 @@ class AsyncInflationResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> InflationRetrieveResponse:
         """
-        Série do IPCA, o índice oficial de inflação do Brasil, publicada pelo Banco
-        Central.
+        Série mensal do IPCA acumulado em 12 meses, o índice oficial de inflação do
+        Brasil. Cada ponto é o acumulado dos 12 meses até aquela data.
 
-        Os dados são mensais e começam em janeiro de 2000. Cada ponto é a variação
-        percentual do mês, não o acumulado do ano.
+        Endpoint descontinuado. Use as
+        [séries macroeconômicas](https://brapi.dev/docs/macro) com `symbols=ipca12m`
+        para o acumulado ou `symbols=ipca` para a variação do mês.
 
-        Filtre o período com `start` e `end` no formato `DD/MM/YYYY`. Ordene por data ou
-        por valor.
+        Sem filtros, devolve os últimos 12 meses. Filtre com `start` e `end` no formato
+        `DD/MM/YYYY`. O IPCA de um mês sai no mês seguinte.
 
-        O IPCA sai por volta do dia 10 do mês seguinte. O mês corrente nunca está na
-        série.
-
-        Plano Startup.
+        Planos Startup e Pro.
 
         Args:
-          end: Data de fim (DD/MM/YYYY)
+          end: Data final no formato DD/MM/YYYY. Padrão: hoje.
 
-          historical: Incluir dados históricos (true/false)
+          historical: true devolve a série desde 01/01/2000. Sem datas e sem este parâmetro, devolve
+              os últimos 12 meses.
 
-          sort_by: Campo para ordenação (date ou value)
+          sort_by: Campo de ordenação: date ou value. Padrão: date.
 
-          sort_order: Ordem de classificação (asc ou desc)
+          sort_order: Ordem: asc ou desc. Padrão: desc.
 
-          start: Data de início (DD/MM/YYYY)
+          start: Data inicial no formato DD/MM/YYYY.
 
           extra_headers: Send extra headers
 
@@ -257,15 +255,15 @@ class AsyncInflationResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> InflationListAvailableResponse:
-        """
-        Os países que `/api/v2/inflation` aceita.
+        """Lista os países que o endpoint de inflação aceita.
 
-        Hoje só `brazil`, com o IPCA publicado pelo Banco Central.
+        Hoje só `brazil`.
 
-        Plano Startup.
+        Endpoint descontinuado. Use as
+        [séries macroeconômicas](https://brapi.dev/docs/macro). Planos Startup e Pro.
 
         Args:
-          format: Formato da resposta. JSON é o formato suportado.
+          format: Formato da resposta. Só aceita json.
 
           extra_headers: Send extra headers
 

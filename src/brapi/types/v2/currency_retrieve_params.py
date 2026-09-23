@@ -9,4 +9,4 @@ __all__ = ["CurrencyRetrieveParams"]
 
 class CurrencyRetrieveParams(TypedDict, total=False):
     currency: str
-    """Par(es) de moedas separados por vírgula (ex: USD-BRL,EUR-BRL)"""
+    """Pares no formato ORIGEM-DESTINO, separados por vírgula. Ex.: USD-BRL,EUR-BRL."""

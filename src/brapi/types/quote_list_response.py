@@ -17,40 +17,37 @@ class Index(BaseModel):
 
 class Stock(BaseModel):
     change: Optional[float] = None
-    """Variação percentual"""
+    """Variação no dia, em porcentagem."""
 
     close: Optional[float] = None
-    """Preço de fechamento"""
+    """Último preço."""
 
     logo: Optional[str] = None
-    """URL do logo"""
+    """URL do logo."""
 
     market_cap: Optional[float] = None
-    """Capitalização de mercado"""
+    """Valor de mercado, em reais."""
 
     name: str
-    """Nome da empresa"""
+    """Nome da empresa."""
 
     sector: Optional[str] = None
-    """Setor"""
+    """Setor."""
 
     stock: str
-    """Ticker do ativo"""
+    """Ticker do ativo."""
 
     subsector: Optional[str] = None
-    """Subsetor B3"""
+    """Subsetor."""
 
     sub_type: Optional[str] = FieldInfo(alias="subType", default=None)
-    """
-    Classificação aditiva do ativo: stock, unit, fii, etf, fi-infra, fi-agro, fip,
-    fidc ou bdr
-    """
+    """Subtipo do ativo: stock, unit, fii, etf, fi-infra, fi-agro, fip, fidc ou bdr."""
 
     type: Optional[str] = None
-    """Tipo do ativo"""
+    """Tipo do ativo."""
 
     volume: Optional[float] = None
-    """Volume negociado"""
+    """Volume negociado."""
 
 
 class QuoteListResponse(BaseModel):

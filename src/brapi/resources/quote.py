@@ -70,90 +70,72 @@ class QuoteResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> QuoteRetrieveResponse:
-        """
-        Devolve cotação, histórico, dividendos e fundamentos de um ou mais ativos em uma
-        única resposta. É o endpoint original da brapi e continua funcionando sem data
-        de remoção.
+        """Cotação de um ou mais ativos brasileiros.
 
-        Para integrações novas, prefira `/api/v2/stocks/*`. Lá cada chamada traz um tipo
-        de dado e a resposta chega menor. Veja o guia em
-        [brapi.dev/docs/acoes/migracao-v2](https://brapi.dev/docs/acoes/migracao-v2).
+        A mesma resposta pode trazer histórico
+        de preços, proventos e dados das demonstrações financeiras.
 
-        ### O que a resposta traz
+        Use para integrações que já usam este formato. Para integrações novas, use os
+        endpoints `/api/v2/stocks/*`, que trazem um tipo de dado por chamada. Veja o
+        [guia de migração](https://brapi.dev/docs/acoes/migracao-v2).
 
-        Sempre: `symbol`, `shortName`, `currency`, `regularMarketPrice`,
-        `regularMarketChange`, `regularMarketChangePercent`, `regularMarketVolume`,
-        `regularMarketDayHigh`, `regularMarketDayLow`, `fiftyTwoWeekHigh`,
-        `fiftyTwoWeekLow` e `marketCap`.
+        Este é o endpoint original da brapi. Ele continua ativo e não tem data de
+        remoção.
 
-        Com `range` e `interval`: `historicalDataPrice` com a série OHLCV. Com
-        `includeRaw=true` e intervalo diário: os campos `rawOpen`, `rawHigh`, `rawLow` e
-        `rawClose` quando existirem no banco. Intervalos intradiários não retornam
-        campos `raw*`. Com `dividends=true`: `dividendsData` com dividendos, JCP e
-        bonificações. Com `modules`: um objeto por módulo pedido.
+        A resposta sempre traz a cotação: preço, variação, volume, máxima e mínima do
+        dia, faixa de 52 semanas e `marketCap`. Estes parâmetros adicionam outros dados:
 
-        ### Parâmetros de histórico
+        - `range` e `interval`, ou `startDate` e `endDate`: `historicalDataPrice`, a
+          série de preços.
+        - `includeRaw=true`: os preços originais sem ajuste `rawOpen`, `rawHigh`,
+          `rawLow` e `rawClose`, só em intervalos diários. Exige o plano Pro.
+        - `dividends=true`: `dividendsData`, com dividendos, JCP e eventos em ações.
+        - `modules`: um objeto para cada módulo pedido.
 
-        `interval` aceita `1d`, `5d`, `1wk`, `1mo` e `3mo`. `range` aceita `1d`, `5d`,
-        `1mo`, `3mo`, `6mo`, `1y`, `2y`, `5y`, `10y`, `ytd` e `max`. O quanto de
-        histórico você enxerga depende do plano.
+        Módulos aceitos em `modules`, separados por vírgula:
 
-        ### Módulos
+        - `summaryProfile`: cadastro da empresa.
+        - `defaultKeyStatistics`: múltiplos dos últimos 12 meses, como P/L, P/VP e
+          dividend yield.
+        - `financialData`: receita, EBITDA, margens e dívida dos últimos 12 meses.
+        - `balanceSheetHistory`: balanço patrimonial anual.
+        - `incomeStatementHistory`: DRE anual.
+        - `cashflowHistory`: fluxo de caixa anual.
+        - `valueAddedHistory`: DVA anual.
 
-        `modules` aceita uma lista separada por vírgula:
+        Cada módulo de demonstração tem uma versão trimestral com o sufixo `Quarterly`,
+        como `balanceSheetHistoryQuarterly`. `defaultKeyStatistics` e `financialData`
+        também aceitam os sufixos `History` e `HistoryQuarterly`. Os dados trimestrais
+        seguem as mesmas regras dos endpoints v2 de
+        [DRE](https://brapi.dev/docs/acoes/dre),
+        [fluxo de caixa](https://brapi.dev/docs/acoes/fluxo-de-caixa) e
+        [DVA](https://brapi.dev/docs/acoes/valor-adicionado).
 
-        - `summaryProfile` - cadastro da empresa: CNPJ, setor, descrição, site,
-          funcionários
-        - `defaultKeyStatistics` - múltiplos nos últimos 12 meses: P/L, P/VP, ROE,
-          dividend yield
-        - `financialData` - receita, EBITDA, margens e dívida nos últimos 12 meses
-        - `balanceSheetHistory` - balanço patrimonial anual
-        - `incomeStatementHistory` - DRE anual
-        - `cashflowHistory` - fluxo de caixa anual
-        - `valueAddedHistory` - DVA anual
+        O plano define os valores aceitos em `range`, `interval` e `modules`. Um valor
+        fora do plano retorna erro.
 
-        Cada módulo de histórico tem a versão trimestral com o sufixo `Quarterly`. Para
-        DRE, DFC e DVA, os trimestres seguem a base consolidada ou individual do
-        relatório anual do mesmo ano-calendário. Sem relatório anual, usamos a base com
-        o trimestre mais recente; a consolidada tem preferência em empate. Não
-        completamos lacunas com trimestres de outra base. Fluxos trimestrais sem os
-        períodos necessários retornam `null`. Saldos de caixa representam o início e o
-        fim do trimestre, não sua variação. Os módulos `defaultKeyStatistics` e
-        `financialData` também aceitam os sufixos `History` e `HistoryQuarterly`.
-
-        ```bash
-        curl -H "Authorization: Bearer SEU_TOKEN" \\
-          "https://brapi.dev/api/quote/PETR4?range=6mo&interval=1d&dividends=true&modules=defaultKeyStatistics"
-        ```
-
-        ### Autenticação
-
-        PETR4, MGLU3, VALE3 e ITUB4 respondem sem token, com todos os recursos. Se você
-        misturar um desses com outro ticker na mesma requisição, a chamada inteira passa
-        a exigir token. Envie o token no header `Authorization` sempre que a sua
-        ferramenta permitir.
-
-        Os fundamentos vêm dos documentos que as companhias entregam à CVM.
+        PETR4, MGLU3, VALE3 e ITUB4 respondem sem token. Se a chamada juntar um deles
+        com outro ticker, ela exige token.
 
         Args:
-          tickers: Ticker(s) de ativos separados por vírgula (ex: PETR4 ou PETR4,VALE3,ITUB4)
+          tickers: Tickers separados por vírgula. Ex.: PETR4,VALE3.
 
-          token: Token de autenticação (alternativa ao header Authorization)
+          token: Token de acesso. Use no lugar do header `Authorization`.
 
-          dividends: Incluir histórico de dividendos e JCP
+          dividends: Inclui `dividendsData` com dividendos, JCP e eventos em ações.
 
-          end_date: Data final para dados históricos (formato YYYY-MM-DD)
+          end_date: Data final da série de preços no formato YYYY-MM-DD.
 
-          include_raw: Incluir preços OHLC originais armazenados no banco da brapi para intervalos
-              diários. Use includeRaw=true. Disponível no plano Pro.
+          include_raw: Inclui os preços originais sem ajuste (`rawOpen`, `rawHigh`, `rawLow`,
+              `rawClose`) em intervalos diários. Exige o plano Pro.
 
-          interval: Intervalo/granularidade dos dados históricos
+          interval: Intervalo entre os pontos da série de preços.
 
-          modules: Módulos de dados adicionais separados por vírgula
+          modules: Módulos extras separados por vírgula.
 
-          range: Período para dados históricos de preço
+          range: Janela relativa da série de preços.
 
-          start_date: Data inicial para dados históricos (formato YYYY-MM-DD)
+          start_date: Data inicial da série de preços no formato YYYY-MM-DD.
 
           extra_headers: Send extra headers
 
@@ -209,51 +191,47 @@ class QuoteResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> QuoteListResponse:
-        """Lista paginada de ativos da B3 com a cotação de cada um.
+        """
+        Lista de ações, FIIs, BDRs e ETFs com preço de fechamento, variação, volume,
+        market cap, setor e logo de cada um. A resposta também traz os índices
+        disponíveis.
 
-        Serve para montar
-        screener, tabela de mercado ou autocomplete de busca.
+        Use para screeners, tabelas de mercado e busca de ativos com cotação.
 
-        Busque por nome ou ticker com `search`, aceitando tanto "Petrobras" quanto
-        "PETR4". Filtre por `type` (`stock`, `fund`, `bdr`), por `subType` (units, FIIs,
-        ETFs, FI-Infra, FI-Agro, FIPs, FIDCs, BDRs) e por `sector`.
+        `search` busca por parte do ticker ou do nome da empresa. Filtre por `type`,
+        `subType`, `sector` e `subsector`. A ordem padrão é por volume, decrescente.
 
-        Ordene com `sortBy` usando `volume`, `close`, `market_cap_basic` ou `name`, mais
-        `sortOrder`. Pagine com `page` e `limit`. O padrão devolve os primeiros 100
-        ativos.
+        Sem `limit`, a resposta traz até 2.000 ativos e não traz os campos de paginação.
+        Com `limit`, ela traz `currentPage`, `totalPages`, `itemsPerPage`, `totalCount`
+        e `hasNextPage`.
 
-        A resposta também traz `availableSectors` e `availableStockTypes`, então você
-        monta os filtros da sua interface sem manter uma lista fixa no código.
+        `availableSectors`, `availableSubsectors`, `availableStockTypes` e
+        `availableSubTypeTypes` listam os valores aceitos nos filtros.
 
-        ```bash
-        curl -H "Authorization: Bearer SEU_TOKEN" \\
-          "https://brapi.dev/api/quote/list?type=stock&sortBy=volume&sortOrder=desc&limit=10"
-        ```
-
-        Exige token, disponível em qualquer plano. Para buscar e validar símbolos sem
-        carregar cotação, `/api/v2/tickers` é mais leve.
+        Este endpoint não exige token. Para buscar e validar tickers, a
+        [lista de tickers](https://brapi.dev/docs/tickers) traz uma resposta menor.
 
         Args:
-          token: Token de autenticação (alternativa ao header Authorization)
+          token: Token de acesso. Use no lugar do header `Authorization`.
 
-          limit: Número máximo de resultados
+          limit: Itens por página. Máximo: 2000. Sem este parâmetro, a resposta traz até 2000
+              itens e não traz paginação.
 
-          page: Número da página (paginação)
+          page: Número da página. Começa em 1.
 
-          search: Termo de busca para filtrar ativos
+          search: Parte do ticker ou do nome da empresa.
 
-          sector: Filtrar por setor
+          sector: Setor.
 
-          sort_by: Campo para ordenação
+          sort_by: Campo de ordenação. Padrão: volume.
 
-          sort_order: Ordem de classificação
+          sort_order: Ordem. Padrão: desc.
 
-          subsector: Filtrar pelo subsetor B3
+          subsector: Subsetor.
 
-          sub_type: Filtrar por classificação aditiva: stock, unit, fii, etf, fi-infra, fi-agro,
-              fip, fidc ou bdr
+          sub_type: Subtipo do ativo: stock, unit, fii, etf, fi-infra, fi-agro, fip, fidc ou bdr.
 
-          type: Filtrar por tipo de ativo
+          type: Tipo do ativo.
 
           extra_headers: Send extra headers
 
@@ -336,90 +314,72 @@ class AsyncQuoteResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> QuoteRetrieveResponse:
-        """
-        Devolve cotação, histórico, dividendos e fundamentos de um ou mais ativos em uma
-        única resposta. É o endpoint original da brapi e continua funcionando sem data
-        de remoção.
+        """Cotação de um ou mais ativos brasileiros.
 
-        Para integrações novas, prefira `/api/v2/stocks/*`. Lá cada chamada traz um tipo
-        de dado e a resposta chega menor. Veja o guia em
-        [brapi.dev/docs/acoes/migracao-v2](https://brapi.dev/docs/acoes/migracao-v2).
+        A mesma resposta pode trazer histórico
+        de preços, proventos e dados das demonstrações financeiras.
 
-        ### O que a resposta traz
+        Use para integrações que já usam este formato. Para integrações novas, use os
+        endpoints `/api/v2/stocks/*`, que trazem um tipo de dado por chamada. Veja o
+        [guia de migração](https://brapi.dev/docs/acoes/migracao-v2).
 
-        Sempre: `symbol`, `shortName`, `currency`, `regularMarketPrice`,
-        `regularMarketChange`, `regularMarketChangePercent`, `regularMarketVolume`,
-        `regularMarketDayHigh`, `regularMarketDayLow`, `fiftyTwoWeekHigh`,
-        `fiftyTwoWeekLow` e `marketCap`.
+        Este é o endpoint original da brapi. Ele continua ativo e não tem data de
+        remoção.
 
-        Com `range` e `interval`: `historicalDataPrice` com a série OHLCV. Com
-        `includeRaw=true` e intervalo diário: os campos `rawOpen`, `rawHigh`, `rawLow` e
-        `rawClose` quando existirem no banco. Intervalos intradiários não retornam
-        campos `raw*`. Com `dividends=true`: `dividendsData` com dividendos, JCP e
-        bonificações. Com `modules`: um objeto por módulo pedido.
+        A resposta sempre traz a cotação: preço, variação, volume, máxima e mínima do
+        dia, faixa de 52 semanas e `marketCap`. Estes parâmetros adicionam outros dados:
 
-        ### Parâmetros de histórico
+        - `range` e `interval`, ou `startDate` e `endDate`: `historicalDataPrice`, a
+          série de preços.
+        - `includeRaw=true`: os preços originais sem ajuste `rawOpen`, `rawHigh`,
+          `rawLow` e `rawClose`, só em intervalos diários. Exige o plano Pro.
+        - `dividends=true`: `dividendsData`, com dividendos, JCP e eventos em ações.
+        - `modules`: um objeto para cada módulo pedido.
 
-        `interval` aceita `1d`, `5d`, `1wk`, `1mo` e `3mo`. `range` aceita `1d`, `5d`,
-        `1mo`, `3mo`, `6mo`, `1y`, `2y`, `5y`, `10y`, `ytd` e `max`. O quanto de
-        histórico você enxerga depende do plano.
+        Módulos aceitos em `modules`, separados por vírgula:
 
-        ### Módulos
+        - `summaryProfile`: cadastro da empresa.
+        - `defaultKeyStatistics`: múltiplos dos últimos 12 meses, como P/L, P/VP e
+          dividend yield.
+        - `financialData`: receita, EBITDA, margens e dívida dos últimos 12 meses.
+        - `balanceSheetHistory`: balanço patrimonial anual.
+        - `incomeStatementHistory`: DRE anual.
+        - `cashflowHistory`: fluxo de caixa anual.
+        - `valueAddedHistory`: DVA anual.
 
-        `modules` aceita uma lista separada por vírgula:
+        Cada módulo de demonstração tem uma versão trimestral com o sufixo `Quarterly`,
+        como `balanceSheetHistoryQuarterly`. `defaultKeyStatistics` e `financialData`
+        também aceitam os sufixos `History` e `HistoryQuarterly`. Os dados trimestrais
+        seguem as mesmas regras dos endpoints v2 de
+        [DRE](https://brapi.dev/docs/acoes/dre),
+        [fluxo de caixa](https://brapi.dev/docs/acoes/fluxo-de-caixa) e
+        [DVA](https://brapi.dev/docs/acoes/valor-adicionado).
 
-        - `summaryProfile` - cadastro da empresa: CNPJ, setor, descrição, site,
-          funcionários
-        - `defaultKeyStatistics` - múltiplos nos últimos 12 meses: P/L, P/VP, ROE,
-          dividend yield
-        - `financialData` - receita, EBITDA, margens e dívida nos últimos 12 meses
-        - `balanceSheetHistory` - balanço patrimonial anual
-        - `incomeStatementHistory` - DRE anual
-        - `cashflowHistory` - fluxo de caixa anual
-        - `valueAddedHistory` - DVA anual
+        O plano define os valores aceitos em `range`, `interval` e `modules`. Um valor
+        fora do plano retorna erro.
 
-        Cada módulo de histórico tem a versão trimestral com o sufixo `Quarterly`. Para
-        DRE, DFC e DVA, os trimestres seguem a base consolidada ou individual do
-        relatório anual do mesmo ano-calendário. Sem relatório anual, usamos a base com
-        o trimestre mais recente; a consolidada tem preferência em empate. Não
-        completamos lacunas com trimestres de outra base. Fluxos trimestrais sem os
-        períodos necessários retornam `null`. Saldos de caixa representam o início e o
-        fim do trimestre, não sua variação. Os módulos `defaultKeyStatistics` e
-        `financialData` também aceitam os sufixos `History` e `HistoryQuarterly`.
-
-        ```bash
-        curl -H "Authorization: Bearer SEU_TOKEN" \\
-          "https://brapi.dev/api/quote/PETR4?range=6mo&interval=1d&dividends=true&modules=defaultKeyStatistics"
-        ```
-
-        ### Autenticação
-
-        PETR4, MGLU3, VALE3 e ITUB4 respondem sem token, com todos os recursos. Se você
-        misturar um desses com outro ticker na mesma requisição, a chamada inteira passa
-        a exigir token. Envie o token no header `Authorization` sempre que a sua
-        ferramenta permitir.
-
-        Os fundamentos vêm dos documentos que as companhias entregam à CVM.
+        PETR4, MGLU3, VALE3 e ITUB4 respondem sem token. Se a chamada juntar um deles
+        com outro ticker, ela exige token.
 
         Args:
-          tickers: Ticker(s) de ativos separados por vírgula (ex: PETR4 ou PETR4,VALE3,ITUB4)
+          tickers: Tickers separados por vírgula. Ex.: PETR4,VALE3.
 
-          token: Token de autenticação (alternativa ao header Authorization)
+          token: Token de acesso. Use no lugar do header `Authorization`.
 
-          dividends: Incluir histórico de dividendos e JCP
+          dividends: Inclui `dividendsData` com dividendos, JCP e eventos em ações.
 
-          end_date: Data final para dados históricos (formato YYYY-MM-DD)
+          end_date: Data final da série de preços no formato YYYY-MM-DD.
 
-          include_raw: Incluir preços OHLC originais armazenados no banco da brapi para intervalos
-              diários. Use includeRaw=true. Disponível no plano Pro.
+          include_raw: Inclui os preços originais sem ajuste (`rawOpen`, `rawHigh`, `rawLow`,
+              `rawClose`) em intervalos diários. Exige o plano Pro.
 
-          interval: Intervalo/granularidade dos dados históricos
+          interval: Intervalo entre os pontos da série de preços.
 
-          modules: Módulos de dados adicionais separados por vírgula
+          modules: Módulos extras separados por vírgula.
 
-          range: Período para dados históricos de preço
+          range: Janela relativa da série de preços.
 
-          start_date: Data inicial para dados históricos (formato YYYY-MM-DD)
+          start_date: Data inicial da série de preços no formato YYYY-MM-DD.
 
           extra_headers: Send extra headers
 
@@ -475,51 +435,47 @@ class AsyncQuoteResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> QuoteListResponse:
-        """Lista paginada de ativos da B3 com a cotação de cada um.
+        """
+        Lista de ações, FIIs, BDRs e ETFs com preço de fechamento, variação, volume,
+        market cap, setor e logo de cada um. A resposta também traz os índices
+        disponíveis.
 
-        Serve para montar
-        screener, tabela de mercado ou autocomplete de busca.
+        Use para screeners, tabelas de mercado e busca de ativos com cotação.
 
-        Busque por nome ou ticker com `search`, aceitando tanto "Petrobras" quanto
-        "PETR4". Filtre por `type` (`stock`, `fund`, `bdr`), por `subType` (units, FIIs,
-        ETFs, FI-Infra, FI-Agro, FIPs, FIDCs, BDRs) e por `sector`.
+        `search` busca por parte do ticker ou do nome da empresa. Filtre por `type`,
+        `subType`, `sector` e `subsector`. A ordem padrão é por volume, decrescente.
 
-        Ordene com `sortBy` usando `volume`, `close`, `market_cap_basic` ou `name`, mais
-        `sortOrder`. Pagine com `page` e `limit`. O padrão devolve os primeiros 100
-        ativos.
+        Sem `limit`, a resposta traz até 2.000 ativos e não traz os campos de paginação.
+        Com `limit`, ela traz `currentPage`, `totalPages`, `itemsPerPage`, `totalCount`
+        e `hasNextPage`.
 
-        A resposta também traz `availableSectors` e `availableStockTypes`, então você
-        monta os filtros da sua interface sem manter uma lista fixa no código.
+        `availableSectors`, `availableSubsectors`, `availableStockTypes` e
+        `availableSubTypeTypes` listam os valores aceitos nos filtros.
 
-        ```bash
-        curl -H "Authorization: Bearer SEU_TOKEN" \\
-          "https://brapi.dev/api/quote/list?type=stock&sortBy=volume&sortOrder=desc&limit=10"
-        ```
-
-        Exige token, disponível em qualquer plano. Para buscar e validar símbolos sem
-        carregar cotação, `/api/v2/tickers` é mais leve.
+        Este endpoint não exige token. Para buscar e validar tickers, a
+        [lista de tickers](https://brapi.dev/docs/tickers) traz uma resposta menor.
 
         Args:
-          token: Token de autenticação (alternativa ao header Authorization)
+          token: Token de acesso. Use no lugar do header `Authorization`.
 
-          limit: Número máximo de resultados
+          limit: Itens por página. Máximo: 2000. Sem este parâmetro, a resposta traz até 2000
+              itens e não traz paginação.
 
-          page: Número da página (paginação)
+          page: Número da página. Começa em 1.
 
-          search: Termo de busca para filtrar ativos
+          search: Parte do ticker ou do nome da empresa.
 
-          sector: Filtrar por setor
+          sector: Setor.
 
-          sort_by: Campo para ordenação
+          sort_by: Campo de ordenação. Padrão: volume.
 
-          sort_order: Ordem de classificação
+          sort_order: Ordem. Padrão: desc.
 
-          subsector: Filtrar pelo subsetor B3
+          subsector: Subsetor.
 
-          sub_type: Filtrar por classificação aditiva: stock, unit, fii, etf, fi-infra, fi-agro,
-              fip, fidc ou bdr
+          sub_type: Subtipo do ativo: stock, unit, fii, etf, fi-infra, fi-agro, fip, fidc ou bdr.
 
-          type: Filtrar por tipo de ativo
+          type: Tipo do ativo.
 
           extra_headers: Send extra headers
 

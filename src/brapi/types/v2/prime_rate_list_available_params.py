@@ -9,4 +9,4 @@ __all__ = ["PrimeRateListAvailableParams"]
 
 class PrimeRateListAvailableParams(TypedDict, total=False):
     format: Literal["json"]
-    """Formato da resposta. JSON é o formato suportado."""
+    """Formato da resposta. Só aceita json."""

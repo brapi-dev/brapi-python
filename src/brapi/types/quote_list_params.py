@@ -11,39 +11,40 @@ __all__ = ["QuoteListParams"]
 
 class QuoteListParams(TypedDict, total=False):
     token: str
-    """Token de autenticação (alternativa ao header Authorization)"""
+    """Token de acesso. Use no lugar do header `Authorization`."""
 
     limit: str
-    """Número máximo de resultados"""
+    """Itens por página.
+
+    Máximo: 2000. Sem este parâmetro, a resposta traz até 2000 itens e não traz
+    paginação.
+    """
 
     page: str
-    """Número da página (paginação)"""
+    """Número da página. Começa em 1."""
 
     search: str
-    """Termo de busca para filtrar ativos"""
+    """Parte do ticker ou do nome da empresa."""
 
     sector: str
-    """Filtrar por setor"""
+    """Setor."""
 
     sort_by: Annotated[
         Literal["name", "close", "change", "change_abs", "volume", "market_cap_basic"], PropertyInfo(alias="sortBy")
     ]
-    """Campo para ordenação"""
+    """Campo de ordenação. Padrão: volume."""
 
     sort_order: Annotated[Literal["asc", "desc"], PropertyInfo(alias="sortOrder")]
-    """Ordem de classificação"""
+    """Ordem. Padrão: desc."""
 
     subsector: str
-    """Filtrar pelo subsetor B3"""
+    """Subsetor."""
 
     sub_type: Annotated[
         Literal["stock", "unit", "fii", "etf", "fi-infra", "fi-agro", "fip", "fidc", "bdr"],
         PropertyInfo(alias="subType"),
     ]
-    """
-    Filtrar por classificação aditiva: stock, unit, fii, etf, fi-infra, fi-agro,
-    fip, fidc ou bdr
-    """
+    """Subtipo do ativo: stock, unit, fii, etf, fi-infra, fi-agro, fip, fidc ou bdr."""
 
     type: Literal["stock", "fund", "bdr"]
-    """Filtrar por tipo de ativo"""
+    """Tipo do ativo."""
