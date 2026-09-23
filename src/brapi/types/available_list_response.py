@@ -9,7 +9,7 @@ __all__ = ["AvailableListResponse"]
 
 class AvailableListResponse(BaseModel):
     indexes: List[str]
-    """Lista de índices disponíveis"""
+    """Tickers de índices."""
 
     stocks: List[str]
-    """Lista de códigos de ações disponíveis"""
+    """Tickers de ativos."""

@@ -60,30 +60,28 @@ class PrimeRateResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> PrimeRateRetrieveResponse:
         """
-        Série da taxa SELIC, a taxa básica de juros da economia brasileira, definida
-        pelo COPOM.
+        Série diária da meta da taxa Selic, definida pelo Copom, em % ao ano.
 
-        Os dados são diários e começam em janeiro de 2000. O valor é a meta anualizada,
-        em porcentagem ao ano.
+        Endpoint descontinuado. Use as
+        [séries macroeconômicas](https://brapi.dev/docs/macro) com `symbols=selic`.
 
-        Filtre o período com `start` e `end` no formato `DD/MM/YYYY`. Ordene por data ou
-        por valor.
+        Sem filtros, devolve os últimos 12 meses. Filtre com `start` e `end` no formato
+        `DD/MM/YYYY`. A meta só muda nas reuniões do Copom, então a série repete o mesmo
+        valor entre uma reunião e outra.
 
-        A meta muda só nas reuniões do COPOM, a cada 45 dias. Entre uma reunião e outra,
-        a série repete o mesmo valor todo dia útil.
-
-        Plano Startup.
+        Planos Startup e Pro.
 
         Args:
-          end: Data de fim (DD/MM/YYYY)
+          end: Data final no formato DD/MM/YYYY. Padrão: hoje.
 
-          historical: Incluir dados históricos (true/false)
+          historical: true devolve a série desde 01/01/2000. Sem datas e sem este parâmetro, devolve
+              os últimos 12 meses.
 
-          sort_by: Campo para ordenação (date ou value)
+          sort_by: Campo de ordenação: date ou value. Padrão: date.
 
-          sort_order: Ordem de classificação (asc ou desc)
+          sort_order: Ordem: asc ou desc. Padrão: desc.
 
-          start: Data de início (DD/MM/YYYY)
+          start: Data inicial no formato DD/MM/YYYY.
 
           extra_headers: Send extra headers
 
@@ -125,15 +123,15 @@ class PrimeRateResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> PrimeRateListAvailableResponse:
-        """
-        Os países que `/api/v2/prime-rate` aceita.
+        """Lista os países que o endpoint da Selic aceita.
 
-        Hoje só `brazil`, com a SELIC do Banco Central.
+        Hoje só `brazil`.
 
-        Plano Startup.
+        Endpoint descontinuado. Use as
+        [séries macroeconômicas](https://brapi.dev/docs/macro). Planos Startup e Pro.
 
         Args:
-          format: Formato da resposta. JSON é o formato suportado.
+          format: Formato da resposta. Só aceita json.
 
           extra_headers: Send extra headers
 
@@ -194,30 +192,28 @@ class AsyncPrimeRateResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> PrimeRateRetrieveResponse:
         """
-        Série da taxa SELIC, a taxa básica de juros da economia brasileira, definida
-        pelo COPOM.
+        Série diária da meta da taxa Selic, definida pelo Copom, em % ao ano.
 
-        Os dados são diários e começam em janeiro de 2000. O valor é a meta anualizada,
-        em porcentagem ao ano.
+        Endpoint descontinuado. Use as
+        [séries macroeconômicas](https://brapi.dev/docs/macro) com `symbols=selic`.
 
-        Filtre o período com `start` e `end` no formato `DD/MM/YYYY`. Ordene por data ou
-        por valor.
+        Sem filtros, devolve os últimos 12 meses. Filtre com `start` e `end` no formato
+        `DD/MM/YYYY`. A meta só muda nas reuniões do Copom, então a série repete o mesmo
+        valor entre uma reunião e outra.
 
-        A meta muda só nas reuniões do COPOM, a cada 45 dias. Entre uma reunião e outra,
-        a série repete o mesmo valor todo dia útil.
-
-        Plano Startup.
+        Planos Startup e Pro.
 
         Args:
-          end: Data de fim (DD/MM/YYYY)
+          end: Data final no formato DD/MM/YYYY. Padrão: hoje.
 
-          historical: Incluir dados históricos (true/false)
+          historical: true devolve a série desde 01/01/2000. Sem datas e sem este parâmetro, devolve
+              os últimos 12 meses.
 
-          sort_by: Campo para ordenação (date ou value)
+          sort_by: Campo de ordenação: date ou value. Padrão: date.
 
-          sort_order: Ordem de classificação (asc ou desc)
+          sort_order: Ordem: asc ou desc. Padrão: desc.
 
-          start: Data de início (DD/MM/YYYY)
+          start: Data inicial no formato DD/MM/YYYY.
 
           extra_headers: Send extra headers
 
@@ -259,15 +255,15 @@ class AsyncPrimeRateResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> PrimeRateListAvailableResponse:
-        """
-        Os países que `/api/v2/prime-rate` aceita.
+        """Lista os países que o endpoint da Selic aceita.
 
-        Hoje só `brazil`, com a SELIC do Banco Central.
+        Hoje só `brazil`.
 
-        Plano Startup.
+        Endpoint descontinuado. Use as
+        [séries macroeconômicas](https://brapi.dev/docs/macro). Planos Startup e Pro.
 
         Args:
-          format: Formato da resposta. JSON é o formato suportado.
+          format: Formato da resposta. Só aceita json.
 
           extra_headers: Send extra headers
 

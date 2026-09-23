@@ -16,14 +16,14 @@ class PrimeRate(BaseModel):
     epoch_date: float = FieldInfo(alias="epochDate")
 
     value: str
-    """Taxa SELIC meta anualizada (% a.a.)"""
+    """Meta da Selic, em % ao ano."""
 
 
 class PrimeRateRetrieveResponse(BaseModel):
     prime_rate: List[PrimeRate] = FieldInfo(alias="prime-rate")
 
     requested_at: datetime = FieldInfo(alias="requestedAt")
-    """Data e hora da requisição em formato ISO 8601"""
+    """Data e hora da requisição em ISO 8601."""
 
     took: int
-    """Tempo de processamento em milissegundos"""
+    """Tempo de processamento, em milissegundos."""

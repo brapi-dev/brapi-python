@@ -9,13 +9,13 @@ __all__ = ["CryptoRetrieveParams"]
 
 class CryptoRetrieveParams(TypedDict, total=False):
     coin: str
-    """Sigla(s) das criptomoedas separadas por vírgula"""
+    """Siglas das criptomoedas, separadas por vírgula. Ex.: BTC,ETH."""
 
     currency: str
-    """Moeda para cotação (padrão: BRL)"""
+    """Moeda da cotação, como BRL, USD ou EUR. Padrão: BRL."""
 
     interval: str
-    """Intervalo dos dados históricos"""
+    """Intervalo entre os pontos do histórico, como 1h ou 1d. Padrão: 1d."""
 
     range: str
-    """Período para dados históricos"""
+    """Período do histórico, como 5d, 1mo ou 1y. Padrão: 1mo quando há histórico."""

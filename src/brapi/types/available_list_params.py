@@ -9,4 +9,4 @@ __all__ = ["AvailableListParams"]
 
 class AvailableListParams(TypedDict, total=False):
     search: str
-    """Filtrar ações e índices por nome ou código"""
+    """Parte do ticker. Filtra ativos e índices."""

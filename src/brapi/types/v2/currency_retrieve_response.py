@@ -38,7 +38,7 @@ class CurrencyRetrieveResponse(BaseModel):
     currency: List[Currency]
 
     requested_at: datetime = FieldInfo(alias="requestedAt")
-    """Data e hora da requisição em formato ISO 8601"""
+    """Data e hora da requisição em ISO 8601."""
 
     took: int
-    """Tempo de processamento em milissegundos"""
+    """Tempo de processamento, em milissegundos."""

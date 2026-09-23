@@ -57,22 +57,19 @@ class AvailableResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> AvailableListResponse:
         """
-        Lista todos os ativos que a API aceita: ações, FIIs, BDRs e ETFs da B3, mais os
-        índices com cotação disponível.
+        Lista simples de tickers aceitos pela API: ativos brasileiros, como ações, FIIs,
+        BDRs e ETFs, em `stocks`, e índices em `indexes`.
 
-        Filtre por código ou nome com `search`.
+        Use para validar um ticker ou preencher uma lista de opções.
 
-        ```bash
-        curl "https://brapi.dev/api/available?search=PETR"
-        ```
+        `search` filtra por parte do ticker. Tickers antigos não entram na lista. A
+        lista é atualizada a cada 15 minutos.
 
-        Endpoint público, sem token. A resposta fica em cache por 15 minutos e é
-        atualizada conforme novos ativos entram na bolsa.
-
-        Para busca com filtros por setor e tipo, `/api/v2/tickers` é mais completo.
+        Não exige token. Para filtros por setor e tipo, use a
+        [lista de tickers](https://brapi.dev/docs/tickers).
 
         Args:
-          search: Filtrar ações e índices por nome ou código
+          search: Parte do ticker. Filtra ativos e índices.
 
           extra_headers: Send extra headers
 
@@ -131,22 +128,19 @@ class AsyncAvailableResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> AvailableListResponse:
         """
-        Lista todos os ativos que a API aceita: ações, FIIs, BDRs e ETFs da B3, mais os
-        índices com cotação disponível.
+        Lista simples de tickers aceitos pela API: ativos brasileiros, como ações, FIIs,
+        BDRs e ETFs, em `stocks`, e índices em `indexes`.
 
-        Filtre por código ou nome com `search`.
+        Use para validar um ticker ou preencher uma lista de opções.
 
-        ```bash
-        curl "https://brapi.dev/api/available?search=PETR"
-        ```
+        `search` filtra por parte do ticker. Tickers antigos não entram na lista. A
+        lista é atualizada a cada 15 minutos.
 
-        Endpoint público, sem token. A resposta fica em cache por 15 minutos e é
-        atualizada conforme novos ativos entram na bolsa.
-
-        Para busca com filtros por setor e tipo, `/api/v2/tickers` é mais completo.
+        Não exige token. Para filtros por setor e tipo, use a
+        [lista de tickers](https://brapi.dev/docs/tickers).
 
         Args:
-          search: Filtrar ações e índices por nome ou código
+          search: Parte do ticker. Filtra ativos e índices.
 
           extra_headers: Send extra headers
 

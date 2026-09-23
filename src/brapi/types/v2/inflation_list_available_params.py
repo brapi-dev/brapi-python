@@ -9,4 +9,4 @@ __all__ = ["InflationListAvailableParams"]
 
 class InflationListAvailableParams(TypedDict, total=False):
     format: Literal["json"]
-    """Formato da resposta. JSON é o formato suportado."""
+    """Formato da resposta. Só aceita json."""

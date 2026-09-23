@@ -10,7 +10,7 @@ __all__ = ["FinancialDataEntry"]
 
 
 class FinancialDataEntry(BaseModel):
-    """Dados financeiros e indicadores TTM"""
+    """Dados financeiros dos últimos 12 meses."""
 
     current_price: Optional[float] = FieldInfo(alias="currentPrice", default=None)
     """Preço atual"""
@@ -23,17 +23,15 @@ class FinancialDataEntry(BaseModel):
 
     earnings_growth: Optional[float] = FieldInfo(alias="earningsGrowth", default=None)
     """
-    Crescimento do lucro do controlador (TTM) - variação dos últimos 4 trimestres em
-    relação aos 4 trimestres imediatamente anteriores, usando Lucro Líquido
-    Atribuível aos Controladores. Para crescimento anual (DRE de exercício vs.
-    exercício anterior), use earningsGrowthAnnual.
+    Crescimento do lucro atribuível aos controladores nos últimos 4 trimestres,
+    contra os 4 trimestres anteriores. Para a variação anual, use
+    `earningsGrowthAnnual`.
     """
 
     earnings_growth_annual: Optional[float] = FieldInfo(alias="earningsGrowthAnnual", default=None)
     """
-    Crescimento anual do lucro do controlador - variação do Lucro Líquido Atribuível
-    aos Controladores do último exercício social completo em relação ao exercício
-    anterior.
+    Crescimento do lucro atribuível aos controladores no último exercício completo,
+    contra o exercício anterior.
     """
 
     ebitda: Optional[float] = None
@@ -74,15 +72,14 @@ class FinancialDataEntry(BaseModel):
 
     revenue_growth: Optional[float] = FieldInfo(alias="revenueGrowth", default=None)
     """
-    Crescimento da receita (TTM) - variação da receita dos últimos 4 trimestres em
-    relação aos 4 trimestres imediatamente anteriores. Para crescimento anual (DRE
-    de exercício vs. exercício anterior), use revenueGrowthAnnual.
+    Crescimento da receita nos últimos 4 trimestres, contra os 4 trimestres
+    anteriores. Para a variação anual, use `revenueGrowthAnnual`.
     """
 
     revenue_growth_annual: Optional[float] = FieldInfo(alias="revenueGrowthAnnual", default=None)
     """
-    Crescimento anual da receita - variação da Receita Líquida do último exercício
-    social completo em relação ao exercício anterior.
+    Crescimento da receita líquida no último exercício completo, contra o exercício
+    anterior.
     """
 
     revenue_per_share: Optional[float] = FieldInfo(alias="revenuePerShare", default=None)
