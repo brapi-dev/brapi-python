@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.9.0](https://github.com/brapi-dev/brapi-python/compare/v1.8.0...v1.9.0) (2026-09-29)
+
+
+### Features
+
+* **sdk:** generate the TypeScript and Python SDKs with stlc ([625a82e](https://github.com/brapi-dev/brapi-python/commit/625a82e5cd8716215453319f38bfe746be78d50f))
+
+
+### Bug Fixes
+
+* **ci:** publish to PyPI with trusted publishing ([c995db3](https://github.com/brapi-dev/brapi-python/commit/c995db3acb1ff767ac66ce8d1247f99e3986b46f))
+* **ci:** publish to PyPI with trusted publishing ([11178c3](https://github.com/brapi-dev/brapi-python/commit/11178c38965fb1c2d05645ad1cd26cae10c614c5))
+
 ## [1.8.0](https://github.com/brapi-dev/brapi-python/compare/v1.7.0...v1.8.0) (2026-09-29)
 
 
