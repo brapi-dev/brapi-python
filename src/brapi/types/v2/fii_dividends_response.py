@@ -31,6 +31,13 @@ class Dividend(BaseModel):
 
     symbol: str
 
+    verified: bool
+    """
+    `true` quando o provento foi conferido em um documento publicado pela empresa ou
+    pelo fundo. `false` quando vem de dados históricos que ainda não têm esse
+    documento.
+    """
+
 
 class FiiDividendsResponse(BaseModel):
     dividends: List[Dividend]
