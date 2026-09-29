@@ -27,6 +27,11 @@ jobs:
           RYE_VERSION: '0.44.0'
           RYE_INSTALL_OPTION: '--yes'
 
-      - name: Publish to PyPI
+      # `rye publish` cannot use trusted publishing (OIDC), so build with rye
+      # and upload with the PyPA action, which exchanges the OIDC token.
+      - name: Build
         run: |
-          bash ./bin/publish-pypi
+          rye build --clean
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
