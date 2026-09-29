@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/brapi-dev/brapi-python/compare/v1.7.0...v1.8.0) (2026-09-29)
+
+
+### Features
+
+* full API coverage and auth fix ([83e1eab](https://github.com/brapi-dev/brapi-python/commit/83e1eabe30c4ac65ebd7818de7a5911b229aa3e2))
+
 ## 1.7.0 (2026-09-23)
 
 Full Changelog: [v1.6.0...v1.7.0](https://github.com/brapi-dev/brapi-python/compare/v1.6.0...v1.7.0)
