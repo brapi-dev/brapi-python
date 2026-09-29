@@ -9,4 +9,4 @@ __all__ = ["CryptoListAvailableParams"]
 
 class CryptoListAvailableParams(TypedDict, total=False):
     search: str
-    """Filtrar criptomoedas por símbolo"""
+    """Texto buscado na sigla da criptomoeda."""

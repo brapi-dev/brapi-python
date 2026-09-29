@@ -9,7 +9,10 @@ import pytest
 
 from brapi import Brapi, AsyncBrapi
 from tests.utils import assert_matches_type
-from brapi.types.v2 import PrimeRateRetrieveResponse, PrimeRateListAvailableResponse
+from brapi.types.v2 import (
+    PrimeRateRetrieveResponse,
+    PrimeRateListAvailableResponse,
+)
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -61,6 +64,14 @@ class TestPrimeRate:
     @parametrize
     def test_method_list_available(self, client: Brapi) -> None:
         prime_rate = client.v2.prime_rate.list_available()
+        assert_matches_type(PrimeRateListAvailableResponse, prime_rate, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_method_list_available_with_all_params(self, client: Brapi) -> None:
+        prime_rate = client.v2.prime_rate.list_available(
+            format="json",
+        )
         assert_matches_type(PrimeRateListAvailableResponse, prime_rate, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
@@ -135,6 +146,14 @@ class TestAsyncPrimeRate:
     @parametrize
     async def test_method_list_available(self, async_client: AsyncBrapi) -> None:
         prime_rate = await async_client.v2.prime_rate.list_available()
+        assert_matches_type(PrimeRateListAvailableResponse, prime_rate, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_list_available_with_all_params(self, async_client: AsyncBrapi) -> None:
+        prime_rate = await async_client.v2.prime_rate.list_available(
+            format="json",
+        )
         assert_matches_type(PrimeRateListAvailableResponse, prime_rate, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")

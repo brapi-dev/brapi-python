@@ -16,14 +16,14 @@ class Inflation(BaseModel):
     epoch_date: float = FieldInfo(alias="epochDate")
 
     value: str
-    """Variação percentual do IPCA no mês"""
+    """IPCA acumulado em 12 meses, em %."""
 
 
 class InflationRetrieveResponse(BaseModel):
     inflation: List[Inflation]
 
     requested_at: datetime = FieldInfo(alias="requestedAt")
-    """Data e hora da requisição em formato ISO 8601"""
+    """Data e hora da requisição em ISO 8601."""
 
     took: int
-    """Tempo de processamento em milissegundos"""
+    """Tempo de processamento, em milissegundos."""

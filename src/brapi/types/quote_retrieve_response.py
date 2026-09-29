@@ -24,103 +24,133 @@ __all__ = [
 
 class ResultDividendsDataCashDividend(BaseModel):
     approved_on: Optional[str] = FieldInfo(alias="approvedOn", default=None)
-    """Data de aprovação"""
+    """Data de aprovação."""
 
     asset_issued: str = FieldInfo(alias="assetIssued")
-    """Código ISIN do ativo emissor"""
+    """Código ISIN do ativo que dá direito ao provento."""
+
+    ex_date: Optional[str] = FieldInfo(alias="exDate", default=None)
+    """Data ex, o primeiro dia sem direito ao provento. Pode ser nulo."""
 
     isin_code: str = FieldInfo(alias="isinCode")
-    """Código ISIN"""
+    """Código ISIN."""
 
     label: str
-    """Tipo (DIVIDENDO, JCP)"""
+    """Tipo do provento: DIVIDENDO ou JCP."""
 
     last_date_prior: Optional[str] = FieldInfo(alias="lastDatePrior", default=None)
-    """Data-com (último dia antes da data ex)"""
+    """Data-com, o último dia para comprar o ativo e ter direito ao provento."""
 
     payment_date: Optional[str] = FieldInfo(alias="paymentDate", default=None)
-    """Data de pagamento"""
+    """Data de pagamento."""
 
     rate: float
-    """Valor por ação"""
+    """Valor por ação, em reais."""
 
     related_to: str = FieldInfo(alias="relatedTo")
-    """Período de referência"""
+    """Período a que o provento se refere. Ex.: 1º Trimestre/2024."""
 
     remarks: str
-    """Observações"""
+    """Observações."""
+
+    raw_rate: Optional[float] = FieldInfo(alias="rawRate", default=None)
+    """Valor por ação na escala dos preços sem ajuste. Vem com `includeRaw=true`."""
 
 
 class ResultDividendsDataStockDividend(BaseModel):
     approved_on: Optional[str] = FieldInfo(alias="approvedOn", default=None)
-    """Data de aprovação"""
+    """Data de aprovação."""
 
     asset_issued: str = FieldInfo(alias="assetIssued")
-    """Código ISIN do ativo emissor"""
+    """Código ISIN do ativo que dá direito ao provento."""
 
     complete_factor: str = FieldInfo(alias="completeFactor")
-    """Fator completo (ex: 2 para 1)"""
+    """Fator em texto. Ex.: 2 para 1."""
+
+    ex_date: Optional[str] = FieldInfo(alias="exDate", default=None)
+    """Data ex, o primeiro dia sem direito ao evento. Pode ser nulo."""
 
     factor: float
-    """Fator do desdobramento/grupamento"""
+    """Fator do evento. Ex.: 2 em um desdobramento de 2 para 1."""
 
     isin_code: str = FieldInfo(alias="isinCode")
-    """Código ISIN"""
+    """Código ISIN."""
 
     label: str
-    """Tipo (DESDOBRAMENTO, GRUPAMENTO)"""
+    """Tipo do evento: DESDOBRAMENTO, GRUPAMENTO ou BONIFICAÇÃO."""
 
     last_date_prior: Optional[str] = FieldInfo(alias="lastDatePrior", default=None)
-    """Data de corte"""
+    """Data-com, o último dia para comprar o ativo e ter direito ao evento."""
 
     remarks: str
-    """Observações"""
+    """Observações."""
 
 
 class ResultDividendsData(BaseModel):
-    """Dados de dividendos (quando dividends=true)"""
+    """Proventos. Vem com `dividends=true`."""
 
     cash_dividends: List[ResultDividendsDataCashDividend] = FieldInfo(alias="cashDividends")
-    """Histórico de dividendos e JCP em dinheiro"""
+    """Dividendos e JCP pagos em dinheiro."""
 
     stock_dividends: List[ResultDividendsDataStockDividend] = FieldInfo(alias="stockDividends")
-    """Histórico de bonificações e desdobramentos"""
+    """Eventos em ações: desdobramentos, grupamentos e bonificações."""
 
     subscriptions: List[Optional[object]]
-    """Histórico de subscrições"""
+    """Direitos de subscrição."""
 
 
 class ResultHistoricalDataPrice(BaseModel):
     adjusted_close: float = FieldInfo(alias="adjustedClose")
-    """
-    Preço de fechamento ajustado para proventos (dividendos, JCP, bonificações,
-    etc.) e desdobramentos/grupamentos.
+    """Fechamento ajustado por proventos, desdobramentos e grupamentos.
+
+    Use para calcular retorno.
     """
 
     close: float
-    """Preço de fechamento do ativo no intervalo."""
+    """Preço de fechamento no intervalo."""
 
     date: int
-    """
-    Data do pregão ou do ponto de dados, representada como um timestamp UNIX (número
-    de segundos desde 1970-01-01 UTC).
-    """
+    """Data do ponto em Unix timestamp, em segundos."""
 
     high: float
-    """Preço máximo atingido pelo ativo no intervalo."""
+    """Preço máximo no intervalo."""
 
     low: float
-    """Preço mínimo atingido pelo ativo no intervalo."""
+    """Preço mínimo no intervalo."""
 
     open: float
-    """Preço de abertura do ativo no intervalo (dia, semana, mês, etc.)."""
+    """Preço de abertura no intervalo."""
 
     volume: int
-    """Volume financeiro negociado no intervalo."""
+    """Volume negociado no intervalo."""
+
+    raw_close: Optional[float] = FieldInfo(alias="rawClose", default=None)
+    """Preço de fechamento original, sem ajuste.
+
+    Vem com `includeRaw=true` em intervalos diários. Pode ser nulo.
+    """
+
+    raw_high: Optional[float] = FieldInfo(alias="rawHigh", default=None)
+    """Preço máximo original, sem ajuste.
+
+    Vem com `includeRaw=true` em intervalos diários. Pode ser nulo.
+    """
+
+    raw_low: Optional[float] = FieldInfo(alias="rawLow", default=None)
+    """Preço mínimo original, sem ajuste.
+
+    Vem com `includeRaw=true` em intervalos diários. Pode ser nulo.
+    """
+
+    raw_open: Optional[float] = FieldInfo(alias="rawOpen", default=None)
+    """Preço de abertura original, sem ajuste.
+
+    Vem com `includeRaw=true` em intervalos diários. Pode ser nulo.
+    """
 
 
 class ResultSummaryProfile(BaseModel):
-    """Perfil da empresa (quando modules inclui summaryProfile)"""
+    """Cadastro da empresa. Vem com o módulo `summaryProfile`."""
 
     address1: Optional[str] = None
     """Endereço linha 1"""
@@ -191,135 +221,135 @@ class ResultSummaryProfile(BaseModel):
 
 class Result(BaseModel):
     average_daily_volume10_day: Optional[float] = FieldInfo(alias="averageDailyVolume10Day", default=None)
-    """Média do volume diário nos últimos 10 dias"""
+    """Volume médio diário dos últimos 10 dias."""
 
     average_daily_volume3_month: Optional[float] = FieldInfo(alias="averageDailyVolume3Month", default=None)
-    """Média do volume diário nos últimos 3 meses"""
+    """Volume médio diário dos últimos 3 meses."""
 
     currency: str
-    """Moeda na qual os valores são expressos (geralmente BRL)"""
+    """Moeda dos valores. Em geral, BRL."""
 
     earnings_per_share: Optional[float] = FieldInfo(alias="earningsPerShare", default=None)
-    """Lucro Por Ação (LPA) TTM"""
+    """Lucro por ação (LPA) dos últimos 12 meses."""
 
     fifty_two_week_high: Optional[float] = FieldInfo(alias="fiftyTwoWeekHigh", default=None)
-    """Preço máximo nas últimas 52 semanas"""
+    """Preço máximo das últimas 52 semanas."""
 
     fifty_two_week_high_change: Optional[float] = FieldInfo(alias="fiftyTwoWeekHighChange", default=None)
-    """Variação entre preço atual e máximo de 52 semanas"""
+    """Diferença entre o preço atual e o máximo de 52 semanas."""
 
     fifty_two_week_high_change_percent: Optional[float] = FieldInfo(alias="fiftyTwoWeekHighChangePercent", default=None)
-    """Variação percentual entre preço atual e máximo de 52 semanas"""
+    """Diferença entre o preço atual e o máximo de 52 semanas, em porcentagem."""
 
     fifty_two_week_low: Optional[float] = FieldInfo(alias="fiftyTwoWeekLow", default=None)
-    """Preço mínimo nas últimas 52 semanas"""
+    """Preço mínimo das últimas 52 semanas."""
 
     fifty_two_week_low_change: Optional[float] = FieldInfo(alias="fiftyTwoWeekLowChange", default=None)
-    """Variação entre preço atual e mínimo de 52 semanas"""
+    """Diferença entre o preço atual e o mínimo de 52 semanas."""
 
     fifty_two_week_range: Optional[str] = FieldInfo(alias="fiftyTwoWeekRange", default=None)
-    """Intervalo de preço das últimas 52 semanas"""
+    """Faixa de preço das últimas 52 semanas no formato mínimo - máximo."""
 
     logourl: Optional[str] = None
-    """URL do logo do ativo"""
+    """URL do logo do ativo."""
 
     long_name: Optional[str] = FieldInfo(alias="longName", default=None)
-    """Nome completo da empresa"""
+    """Nome completo da empresa."""
 
     market_cap: Optional[float] = FieldInfo(alias="marketCap", default=None)
-    """Capitalização de mercado total"""
+    """Valor de mercado, em reais."""
 
     price_earnings: Optional[float] = FieldInfo(alias="priceEarnings", default=None)
-    """Indicador Preço/Lucro (P/L)"""
+    """Preço sobre lucro (P/L)."""
 
     regular_market_change: Optional[float] = FieldInfo(alias="regularMarketChange", default=None)
-    """Variação absoluta do preço no dia em relação ao fechamento anterior"""
+    """Variação do preço no dia em relação ao fechamento anterior, em reais."""
 
     regular_market_change_percent: Optional[float] = FieldInfo(alias="regularMarketChangePercent", default=None)
-    """Variação percentual do preço no dia"""
+    """Variação do preço no dia, em porcentagem."""
 
     regular_market_day_high: Optional[float] = FieldInfo(alias="regularMarketDayHigh", default=None)
-    """Preço máximo atingido no dia"""
+    """Preço máximo do dia."""
 
     regular_market_day_low: Optional[float] = FieldInfo(alias="regularMarketDayLow", default=None)
-    """Preço mínimo atingido no dia"""
+    """Preço mínimo do dia."""
 
     regular_market_day_range: Optional[str] = FieldInfo(alias="regularMarketDayRange", default=None)
-    """Intervalo de preço do dia (Mínimo - Máximo)"""
+    """Faixa de preço do dia no formato mínimo - máximo."""
 
     regular_market_open: Optional[float] = FieldInfo(alias="regularMarketOpen", default=None)
-    """Preço de abertura no dia"""
+    """Preço de abertura do dia."""
 
     regular_market_previous_close: Optional[float] = FieldInfo(alias="regularMarketPreviousClose", default=None)
-    """Preço de fechamento do pregão anterior"""
+    """Fechamento do pregão anterior."""
 
     regular_market_price: Optional[float] = FieldInfo(alias="regularMarketPrice", default=None)
-    """Preço atual ou do último negócio registrado"""
+    """Preço do último negócio."""
 
     regular_market_time: Optional[str] = FieldInfo(alias="regularMarketTime", default=None)
-    """Data/hora da última atualização da cotação (ISO 8601)"""
+    """Horário da cotação em ISO 8601."""
 
     regular_market_volume: Optional[float] = FieldInfo(alias="regularMarketVolume", default=None)
-    """Volume financeiro negociado no dia"""
+    """Volume negociado no dia."""
 
     short_name: Optional[str] = FieldInfo(alias="shortName", default=None)
-    """Nome curto ou abreviado da empresa"""
+    """Nome curto do ativo."""
 
     symbol: str
-    """Ticker (símbolo) do ativo (ex: PETR4, ^BVSP)"""
+    """Ticker do ativo. Ex.: PETR4, ^BVSP."""
 
     two_hundred_day_average: Optional[float] = FieldInfo(alias="twoHundredDayAverage", default=None)
-    """Média móvel de 200 dias"""
+    """Média móvel de 200 dias."""
 
     two_hundred_day_average_change: Optional[float] = FieldInfo(alias="twoHundredDayAverageChange", default=None)
-    """Variação entre preço atual e média de 200 dias"""
+    """Diferença entre o preço atual e a média de 200 dias."""
 
     two_hundred_day_average_change_percent: Optional[float] = FieldInfo(
         alias="twoHundredDayAverageChangePercent", default=None
     )
-    """Variação percentual entre preço atual e média de 200 dias"""
+    """Diferença entre o preço atual e a média de 200 dias, em porcentagem."""
 
     used_interval: Optional[str] = FieldInfo(alias="usedInterval", default=None)
-    """Intervalo efetivamente utilizado para dados históricos"""
+    """Intervalo usado na série de preços."""
 
     used_range: Optional[str] = FieldInfo(alias="usedRange", default=None)
-    """Período efetivamente utilizado para dados históricos"""
+    """Janela usada na série de preços."""
 
     balance_sheet_history: Optional[List[BalanceSheetEntry]] = FieldInfo(alias="balanceSheetHistory", default=None)
-    """Histórico anual do Balanço Patrimonial"""
+    """Balanço patrimonial anual."""
 
     balance_sheet_history_quarterly: Optional[List[BalanceSheetEntry]] = FieldInfo(
         alias="balanceSheetHistoryQuarterly", default=None
     )
-    """Histórico trimestral do Balanço Patrimonial"""
+    """Balanço patrimonial trimestral."""
 
     dividends_data: Optional[ResultDividendsData] = FieldInfo(alias="dividendsData", default=None)
-    """Dados de dividendos (quando dividends=true)"""
+    """Proventos. Vem com `dividends=true`."""
 
     financial_data: Optional[FinancialDataEntry] = FieldInfo(alias="financialData", default=None)
-    """Dados financeiros e indicadores TTM"""
+    """Dados financeiros dos últimos 12 meses."""
 
     financial_data_history: Optional[List[FinancialDataEntry]] = FieldInfo(alias="financialDataHistory", default=None)
-    """Histórico anual de dados financeiros"""
+    """Dados financeiros anuais."""
 
     financial_data_history_quarterly: Optional[List[FinancialDataEntry]] = FieldInfo(
         alias="financialDataHistoryQuarterly", default=None
     )
-    """Histórico trimestral de dados financeiros"""
+    """Dados financeiros trimestrais."""
 
     historical_data_price: Optional[List[ResultHistoricalDataPrice]] = FieldInfo(
         alias="historicalDataPrice", default=None
     )
-    """Série histórica de preços (quando range/interval fornecidos)"""
+    """Série de preços. Vem quando a requisição define a janela."""
 
     summary_profile: Optional[ResultSummaryProfile] = FieldInfo(alias="summaryProfile", default=None)
-    """Perfil da empresa (quando modules inclui summaryProfile)"""
+    """Cadastro da empresa. Vem com o módulo `summaryProfile`."""
 
     valid_intervals: Optional[List[str]] = FieldInfo(alias="validIntervals", default=None)
-    """Valores válidos para o parâmetro interval"""
+    """Valores aceitos em `interval`."""
 
     valid_ranges: Optional[List[str]] = FieldInfo(alias="validRanges", default=None)
-    """Valores válidos para o parâmetro range"""
+    """Valores aceitos em `range`."""
 
 
 class GuidanceDetails(BaseModel):
@@ -338,15 +368,15 @@ class Guidance(BaseModel):
 
 class QuoteRetrieveResponse(BaseModel):
     requested_at: datetime = FieldInfo(alias="requestedAt")
-    """Data e hora da requisição em formato ISO 8601"""
+    """Data e hora da requisição em ISO 8601."""
 
     results: List[Result]
 
     took: int
-    """Tempo de processamento em milissegundos"""
+    """Tempo de processamento, em milissegundos."""
 
     guidance: Optional[List[Guidance]] = None
-    """
-    Dicas contextuais quando a requisição funciona mas existe um endpoint mais
-    adequado para o caso de uso.
+    """Dicas que apontam um endpoint mais adequado para o pedido.
+
+    A requisição funciona mesmo assim.
     """

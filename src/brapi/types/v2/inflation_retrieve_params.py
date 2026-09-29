@@ -11,16 +11,19 @@ __all__ = ["InflationRetrieveParams"]
 
 class InflationRetrieveParams(TypedDict, total=False):
     end: str
-    """Data de fim (DD/MM/YYYY)"""
+    """Data final no formato DD/MM/YYYY. Padrão: hoje."""
 
     historical: str
-    """Incluir dados históricos (true/false)"""
+    """true devolve a série desde 01/01/2000.
+
+    Sem datas e sem este parâmetro, devolve os últimos 12 meses.
+    """
 
     sort_by: Annotated[str, PropertyInfo(alias="sortBy")]
-    """Campo para ordenação (date ou value)"""
+    """Campo de ordenação: date ou value. Padrão: date."""
 
     sort_order: Annotated[str, PropertyInfo(alias="sortOrder")]
-    """Ordem de classificação (asc ou desc)"""
+    """Ordem: asc ou desc. Padrão: desc."""
 
     start: str
-    """Data de início (DD/MM/YYYY)"""
+    """Data inicial no formato DD/MM/YYYY."""

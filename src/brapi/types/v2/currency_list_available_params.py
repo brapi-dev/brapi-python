@@ -9,4 +9,4 @@ __all__ = ["CurrencyListAvailableParams"]
 
 class CurrencyListAvailableParams(TypedDict, total=False):
     search: str
-    """Filtrar pares de moedas por nome ou descrição"""
+    """Texto buscado no par e no nome das moedas."""

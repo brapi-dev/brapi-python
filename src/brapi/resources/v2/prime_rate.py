@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+from typing_extensions import Literal
+
 import httpx
 
 from ..._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
 from ..._utils import maybe_transform, async_maybe_transform
 from ..._compat import cached_property
-from ...types.v2 import prime_rate_retrieve_params
+from ...types.v2 import prime_rate_retrieve_params, prime_rate_list_available_params
 from ..._resource import SyncAPIResource, AsyncAPIResource
 from ..._response import (
     to_raw_response_wrapper,
@@ -58,71 +60,28 @@ class PrimeRateResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> PrimeRateRetrieveResponse:
         """
-        Retorna dados históricos da **Taxa SELIC (Sistema Especial de Liquidação e de
-        Custódia)**, a taxa básica de juros da economia brasileira, definida pelo COPOM
-        (Comitê de Política Monetária) do Banco Central.
+        Série diária da meta da taxa Selic, definida pelo Copom, em % ao ano.
 
-        ### Funcionalidades
+        Endpoint descontinuado. Use as
+        [séries macroeconômicas](https://brapi.dev/docs/macro) com `symbols=selic`.
 
-        - **Dados Diários:** Taxa SELIC diária (meta anualizada, % a.a.)
-        - **Histórico Completo:** Dados desde janeiro/2000 até a data atual
-        - **Filtros de Período:** Use `start` e `end` (formato DD/MM/YYYY)
-        - **Ordenação:** Por data ou valor, crescente ou decrescente
+        Sem filtros, devolve os últimos 12 meses. Filtre com `start` e `end` no formato
+        `DD/MM/YYYY`. A meta só muda nas reuniões do Copom, então a série repete o mesmo
+        valor entre uma reunião e outra.
 
-        ### Autenticação
-
-        Bearer token ou query param `token`. Requer plano Startup.
-
-        ### Exemplos de Uso
-
-        ```bash
-        # Padrão (últimos 12 meses)
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/prime-rate"
-
-        # Histórico completo
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/prime-rate?historical=true"
-
-        # Período específico
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/prime-rate?start=01/01/2023&end=31/12/2023"
-
-        # Ordenado por valor (decrescente)
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/prime-rate?historical=true&sortBy=value&sortOrder=desc"
-        ```
-
-        ### Parâmetros de Ordenação
-
-        - `sortBy`: `date` (padrão) ou `value`
-        - `sortOrder`: `desc` (padrão) ou `asc`
-
-        ### Campos da Resposta
-
-        - `date` — Data no formato DD/MM/YYYY
-        - `value` — Taxa SELIC meta anualizada (% a.a.)
-        - `epochDate` — Data em timestamp Unix (milissegundos)
-
-        ### Sobre a SELIC
-
-        A SELIC é a taxa básica de juros da economia brasileira e influencia todas as
-        demais taxas de juros do país (empréstimos, financiamentos, aplicações
-        financeiras). Ela é definida pelo COPOM a cada 45 dias e serve como referência
-        para o CDI.
-
-        ### Fonte dos Dados
-
-        Banco Central do Brasil (BCB) — meta SELIC publicada como série temporal oficial
-
-        **Plano Mínimo:** Startup | **Autenticação:** Necessária
+        Planos Startup e Pro.
 
         Args:
-          end: Data de fim (DD/MM/YYYY)
+          end: Data final no formato DD/MM/YYYY. Padrão: hoje.
 
-          historical: Incluir dados históricos (true/false)
+          historical: true devolve a série desde 01/01/2000. Sem datas e sem este parâmetro, devolve
+              os últimos 12 meses.
 
-          sort_by: Campo para ordenação (date ou value)
+          sort_by: Campo de ordenação: date ou value. Padrão: date.
 
-          sort_order: Ordem de classificação (asc ou desc)
+          sort_order: Ordem: asc ou desc. Padrão: desc.
 
-          start: Data de início (DD/MM/YYYY)
+          start: Data inicial no formato DD/MM/YYYY.
 
           extra_headers: Send extra headers
 
@@ -156,6 +115,7 @@ class PrimeRateResource(SyncAPIResource):
     def list_available(
         self,
         *,
+        format: Literal["json"] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -163,27 +123,34 @@ class PrimeRateResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> PrimeRateListAvailableResponse:
-        """
-        Retorna a lista de países disponíveis para consulta de dados de taxa de juros.
+        """Lista os países que o endpoint da Selic aceita.
 
-        ### Países Disponíveis
+        Hoje só `brazil`.
 
-        - **brazil** — Taxa SELIC (Banco Central)
+        Endpoint descontinuado. Use as
+        [séries macroeconômicas](https://brapi.dev/docs/macro). Planos Startup e Pro.
 
-        Use o valor retornado como referência para futuras expansões do endpoint.
+        Args:
+          format: Formato da resposta. Só aceita json.
 
-        ### Exemplo de Uso
+          extra_headers: Send extra headers
 
-        ```bash
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/prime-rate/available"
-        ```
+          extra_query: Add additional query parameters to the request
 
-        **Plano Mínimo:** Startup | **Autenticação:** Necessária
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
         """
         return self._get(
             "/api/v2/prime-rate/available",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {"format": format}, prime_rate_list_available_params.PrimeRateListAvailableParams
+                ),
             ),
             cast_to=PrimeRateListAvailableResponse,
         )
@@ -225,71 +192,28 @@ class AsyncPrimeRateResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> PrimeRateRetrieveResponse:
         """
-        Retorna dados históricos da **Taxa SELIC (Sistema Especial de Liquidação e de
-        Custódia)**, a taxa básica de juros da economia brasileira, definida pelo COPOM
-        (Comitê de Política Monetária) do Banco Central.
+        Série diária da meta da taxa Selic, definida pelo Copom, em % ao ano.
 
-        ### Funcionalidades
+        Endpoint descontinuado. Use as
+        [séries macroeconômicas](https://brapi.dev/docs/macro) com `symbols=selic`.
 
-        - **Dados Diários:** Taxa SELIC diária (meta anualizada, % a.a.)
-        - **Histórico Completo:** Dados desde janeiro/2000 até a data atual
-        - **Filtros de Período:** Use `start` e `end` (formato DD/MM/YYYY)
-        - **Ordenação:** Por data ou valor, crescente ou decrescente
+        Sem filtros, devolve os últimos 12 meses. Filtre com `start` e `end` no formato
+        `DD/MM/YYYY`. A meta só muda nas reuniões do Copom, então a série repete o mesmo
+        valor entre uma reunião e outra.
 
-        ### Autenticação
-
-        Bearer token ou query param `token`. Requer plano Startup.
-
-        ### Exemplos de Uso
-
-        ```bash
-        # Padrão (últimos 12 meses)
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/prime-rate"
-
-        # Histórico completo
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/prime-rate?historical=true"
-
-        # Período específico
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/prime-rate?start=01/01/2023&end=31/12/2023"
-
-        # Ordenado por valor (decrescente)
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/prime-rate?historical=true&sortBy=value&sortOrder=desc"
-        ```
-
-        ### Parâmetros de Ordenação
-
-        - `sortBy`: `date` (padrão) ou `value`
-        - `sortOrder`: `desc` (padrão) ou `asc`
-
-        ### Campos da Resposta
-
-        - `date` — Data no formato DD/MM/YYYY
-        - `value` — Taxa SELIC meta anualizada (% a.a.)
-        - `epochDate` — Data em timestamp Unix (milissegundos)
-
-        ### Sobre a SELIC
-
-        A SELIC é a taxa básica de juros da economia brasileira e influencia todas as
-        demais taxas de juros do país (empréstimos, financiamentos, aplicações
-        financeiras). Ela é definida pelo COPOM a cada 45 dias e serve como referência
-        para o CDI.
-
-        ### Fonte dos Dados
-
-        Banco Central do Brasil (BCB) — meta SELIC publicada como série temporal oficial
-
-        **Plano Mínimo:** Startup | **Autenticação:** Necessária
+        Planos Startup e Pro.
 
         Args:
-          end: Data de fim (DD/MM/YYYY)
+          end: Data final no formato DD/MM/YYYY. Padrão: hoje.
 
-          historical: Incluir dados históricos (true/false)
+          historical: true devolve a série desde 01/01/2000. Sem datas e sem este parâmetro, devolve
+              os últimos 12 meses.
 
-          sort_by: Campo para ordenação (date ou value)
+          sort_by: Campo de ordenação: date ou value. Padrão: date.
 
-          sort_order: Ordem de classificação (asc ou desc)
+          sort_order: Ordem: asc ou desc. Padrão: desc.
 
-          start: Data de início (DD/MM/YYYY)
+          start: Data inicial no formato DD/MM/YYYY.
 
           extra_headers: Send extra headers
 
@@ -323,6 +247,7 @@ class AsyncPrimeRateResource(AsyncAPIResource):
     async def list_available(
         self,
         *,
+        format: Literal["json"] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -330,27 +255,34 @@ class AsyncPrimeRateResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> PrimeRateListAvailableResponse:
-        """
-        Retorna a lista de países disponíveis para consulta de dados de taxa de juros.
+        """Lista os países que o endpoint da Selic aceita.
 
-        ### Países Disponíveis
+        Hoje só `brazil`.
 
-        - **brazil** — Taxa SELIC (Banco Central)
+        Endpoint descontinuado. Use as
+        [séries macroeconômicas](https://brapi.dev/docs/macro). Planos Startup e Pro.
 
-        Use o valor retornado como referência para futuras expansões do endpoint.
+        Args:
+          format: Formato da resposta. Só aceita json.
 
-        ### Exemplo de Uso
+          extra_headers: Send extra headers
 
-        ```bash
-        curl -H "Authorization: Bearer SEU_TOKEN" "https://brapi.dev/api/v2/prime-rate/available"
-        ```
+          extra_query: Add additional query parameters to the request
 
-        **Plano Mínimo:** Startup | **Autenticação:** Necessária
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
         """
         return await self._get(
             "/api/v2/prime-rate/available",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {"format": format}, prime_rate_list_available_params.PrimeRateListAvailableParams
+                ),
             ),
             cast_to=PrimeRateListAvailableResponse,
         )

@@ -16,4 +16,4 @@ class InflationListAvailableResponse(BaseModel):
     message: str
 
     requested_at: datetime = FieldInfo(alias="requestedAt")
-    """Data e hora da requisição em formato ISO 8601"""
+    """Data e hora da requisição em ISO 8601."""
