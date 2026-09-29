@@ -20,13 +20,11 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestInflation:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve(self, client: Brapi) -> None:
         inflation = client.v2.inflation.retrieve()
         assert_matches_type(InflationRetrieveResponse, inflation, path=["response"])
 
-    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve_with_all_params(self, client: Brapi) -> None:
         inflation = client.v2.inflation.retrieve(
@@ -38,7 +36,6 @@ class TestInflation:
         )
         assert_matches_type(InflationRetrieveResponse, inflation, path=["response"])
 
-    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_retrieve(self, client: Brapi) -> None:
         response = client.v2.inflation.with_raw_response.retrieve()
@@ -48,7 +45,6 @@ class TestInflation:
         inflation = response.parse()
         assert_matches_type(InflationRetrieveResponse, inflation, path=["response"])
 
-    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_retrieve(self, client: Brapi) -> None:
         with client.v2.inflation.with_streaming_response.retrieve() as response:
@@ -60,13 +56,11 @@ class TestInflation:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list_available(self, client: Brapi) -> None:
         inflation = client.v2.inflation.list_available()
         assert_matches_type(InflationListAvailableResponse, inflation, path=["response"])
 
-    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list_available_with_all_params(self, client: Brapi) -> None:
         inflation = client.v2.inflation.list_available(
@@ -74,7 +68,6 @@ class TestInflation:
         )
         assert_matches_type(InflationListAvailableResponse, inflation, path=["response"])
 
-    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_list_available(self, client: Brapi) -> None:
         response = client.v2.inflation.with_raw_response.list_available()
@@ -84,7 +77,6 @@ class TestInflation:
         inflation = response.parse()
         assert_matches_type(InflationListAvailableResponse, inflation, path=["response"])
 
-    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_list_available(self, client: Brapi) -> None:
         with client.v2.inflation.with_streaming_response.list_available() as response:
@@ -102,13 +94,11 @@ class TestAsyncInflation:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve(self, async_client: AsyncBrapi) -> None:
         inflation = await async_client.v2.inflation.retrieve()
         assert_matches_type(InflationRetrieveResponse, inflation, path=["response"])
 
-    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve_with_all_params(self, async_client: AsyncBrapi) -> None:
         inflation = await async_client.v2.inflation.retrieve(
@@ -120,7 +110,6 @@ class TestAsyncInflation:
         )
         assert_matches_type(InflationRetrieveResponse, inflation, path=["response"])
 
-    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_retrieve(self, async_client: AsyncBrapi) -> None:
         response = await async_client.v2.inflation.with_raw_response.retrieve()
@@ -130,7 +119,6 @@ class TestAsyncInflation:
         inflation = await response.parse()
         assert_matches_type(InflationRetrieveResponse, inflation, path=["response"])
 
-    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_retrieve(self, async_client: AsyncBrapi) -> None:
         async with async_client.v2.inflation.with_streaming_response.retrieve() as response:
@@ -142,13 +130,11 @@ class TestAsyncInflation:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list_available(self, async_client: AsyncBrapi) -> None:
         inflation = await async_client.v2.inflation.list_available()
         assert_matches_type(InflationListAvailableResponse, inflation, path=["response"])
 
-    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list_available_with_all_params(self, async_client: AsyncBrapi) -> None:
         inflation = await async_client.v2.inflation.list_available(
@@ -156,7 +142,6 @@ class TestAsyncInflation:
         )
         assert_matches_type(InflationListAvailableResponse, inflation, path=["response"])
 
-    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_list_available(self, async_client: AsyncBrapi) -> None:
         response = await async_client.v2.inflation.with_raw_response.list_available()
@@ -166,7 +151,6 @@ class TestAsyncInflation:
         inflation = await response.parse()
         assert_matches_type(InflationListAvailableResponse, inflation, path=["response"])
 
-    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_list_available(self, async_client: AsyncBrapi) -> None:
         async with async_client.v2.inflation.with_streaming_response.list_available() as response:

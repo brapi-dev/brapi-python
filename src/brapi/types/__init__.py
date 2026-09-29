@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from .dividends_data import DividendsData as DividendsData
 from .quote_list_params import QuoteListParams as QuoteListParams
 from .balance_sheet_entry import BalanceSheetEntry as BalanceSheetEntry
 from .quote_list_response import QuoteListResponse as QuoteListResponse

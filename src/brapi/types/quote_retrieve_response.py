@@ -6,97 +6,18 @@ from datetime import datetime
 from pydantic import Field as FieldInfo
 
 from .._models import BaseModel
+from .dividends_data import DividendsData
 from .balance_sheet_entry import BalanceSheetEntry
 from .financial_data_entry import FinancialDataEntry
 
 __all__ = [
     "QuoteRetrieveResponse",
     "Result",
-    "ResultDividendsData",
-    "ResultDividendsDataCashDividend",
-    "ResultDividendsDataStockDividend",
     "ResultHistoricalDataPrice",
     "ResultSummaryProfile",
     "Guidance",
     "GuidanceDetails",
 ]
-
-
-class ResultDividendsDataCashDividend(BaseModel):
-    approved_on: Optional[str] = FieldInfo(alias="approvedOn", default=None)
-    """Data de aprovação."""
-
-    asset_issued: str = FieldInfo(alias="assetIssued")
-    """Código ISIN do ativo que dá direito ao provento."""
-
-    ex_date: Optional[str] = FieldInfo(alias="exDate", default=None)
-    """Data ex, o primeiro dia sem direito ao provento. Pode ser nulo."""
-
-    isin_code: str = FieldInfo(alias="isinCode")
-    """Código ISIN."""
-
-    label: str
-    """Tipo do provento: DIVIDENDO ou JCP."""
-
-    last_date_prior: Optional[str] = FieldInfo(alias="lastDatePrior", default=None)
-    """Data-com, o último dia para comprar o ativo e ter direito ao provento."""
-
-    payment_date: Optional[str] = FieldInfo(alias="paymentDate", default=None)
-    """Data de pagamento."""
-
-    rate: float
-    """Valor por ação, em reais."""
-
-    related_to: str = FieldInfo(alias="relatedTo")
-    """Período a que o provento se refere. Ex.: 1º Trimestre/2024."""
-
-    remarks: str
-    """Observações."""
-
-    raw_rate: Optional[float] = FieldInfo(alias="rawRate", default=None)
-    """Valor por ação na escala dos preços sem ajuste. Vem com `includeRaw=true`."""
-
-
-class ResultDividendsDataStockDividend(BaseModel):
-    approved_on: Optional[str] = FieldInfo(alias="approvedOn", default=None)
-    """Data de aprovação."""
-
-    asset_issued: str = FieldInfo(alias="assetIssued")
-    """Código ISIN do ativo que dá direito ao provento."""
-
-    complete_factor: str = FieldInfo(alias="completeFactor")
-    """Fator em texto. Ex.: 2 para 1."""
-
-    ex_date: Optional[str] = FieldInfo(alias="exDate", default=None)
-    """Data ex, o primeiro dia sem direito ao evento. Pode ser nulo."""
-
-    factor: float
-    """Fator do evento. Ex.: 2 em um desdobramento de 2 para 1."""
-
-    isin_code: str = FieldInfo(alias="isinCode")
-    """Código ISIN."""
-
-    label: str
-    """Tipo do evento: DESDOBRAMENTO, GRUPAMENTO ou BONIFICAÇÃO."""
-
-    last_date_prior: Optional[str] = FieldInfo(alias="lastDatePrior", default=None)
-    """Data-com, o último dia para comprar o ativo e ter direito ao evento."""
-
-    remarks: str
-    """Observações."""
-
-
-class ResultDividendsData(BaseModel):
-    """Proventos. Vem com `dividends=true`."""
-
-    cash_dividends: List[ResultDividendsDataCashDividend] = FieldInfo(alias="cashDividends")
-    """Dividendos e JCP pagos em dinheiro."""
-
-    stock_dividends: List[ResultDividendsDataStockDividend] = FieldInfo(alias="stockDividends")
-    """Eventos em ações: desdobramentos, grupamentos e bonificações."""
-
-    subscriptions: List[Optional[object]]
-    """Direitos de subscrição."""
 
 
 class ResultHistoricalDataPrice(BaseModel):
@@ -323,7 +244,7 @@ class Result(BaseModel):
     )
     """Balanço patrimonial trimestral."""
 
-    dividends_data: Optional[ResultDividendsData] = FieldInfo(alias="dividendsData", default=None)
+    dividends_data: Optional[DividendsData] = FieldInfo(alias="dividendsData", default=None)
     """Proventos. Vem com `dividends=true`."""
 
     financial_data: Optional[FinancialDataEntry] = FieldInfo(alias="financialData", default=None)
