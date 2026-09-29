@@ -47,6 +47,13 @@ class CashDividend(BaseModel):
     remarks: str
     """Observações."""
 
+    verified: bool
+    """
+    `true` quando o provento foi conferido em um documento publicado pela empresa ou
+    pelo fundo. `false` quando vem de dados históricos que ainda não têm esse
+    documento.
+    """
+
     raw_rate: Optional[float] = FieldInfo(alias="rawRate", default=None)
     """Valor por ação na escala dos preços sem ajuste. Vem com `includeRaw=true`."""
 
