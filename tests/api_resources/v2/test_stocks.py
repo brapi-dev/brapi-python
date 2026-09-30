@@ -20,6 +20,7 @@ from brapi.types.v2 import (
     StockBalanceSheetResponse,
     StockFinancialDataResponse,
     StockIncomeStatementResponse,
+    StockInsiderTransactionsResponse,
 )
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
@@ -277,6 +278,53 @@ class TestStocks:
 
             stock = response.parse()
             assert_matches_type(StockIncomeStatementResponse, stock, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    def test_method_insider_transactions(self, client: Brapi) -> None:
+        stock = client.v2.stocks.insider_transactions(
+            symbols="PETR4,VALE3",
+        )
+        assert_matches_type(StockInsiderTransactionsResponse, stock, path=["response"])
+
+    @parametrize
+    def test_method_insider_transactions_with_all_params(self, client: Brapi) -> None:
+        stock = client.v2.stocks.insider_transactions(
+            symbols="PETR4,VALE3",
+            all_versions="true",
+            company_relation="company",
+            direction="credit",
+            end_date="2026-08-31",
+            limit=1,
+            movement_type="Compra à vista",
+            page=1,
+            role_group="controller",
+            start_date="2026-01-01",
+        )
+        assert_matches_type(StockInsiderTransactionsResponse, stock, path=["response"])
+
+    @parametrize
+    def test_raw_response_insider_transactions(self, client: Brapi) -> None:
+        response = client.v2.stocks.with_raw_response.insider_transactions(
+            symbols="PETR4,VALE3",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        stock = response.parse()
+        assert_matches_type(StockInsiderTransactionsResponse, stock, path=["response"])
+
+    @parametrize
+    def test_streaming_response_insider_transactions(self, client: Brapi) -> None:
+        with client.v2.stocks.with_streaming_response.insider_transactions(
+            symbols="PETR4,VALE3",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            stock = response.parse()
+            assert_matches_type(StockInsiderTransactionsResponse, stock, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -680,6 +728,53 @@ class TestAsyncStocks:
 
             stock = await response.parse()
             assert_matches_type(StockIncomeStatementResponse, stock, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    async def test_method_insider_transactions(self, async_client: AsyncBrapi) -> None:
+        stock = await async_client.v2.stocks.insider_transactions(
+            symbols="PETR4,VALE3",
+        )
+        assert_matches_type(StockInsiderTransactionsResponse, stock, path=["response"])
+
+    @parametrize
+    async def test_method_insider_transactions_with_all_params(self, async_client: AsyncBrapi) -> None:
+        stock = await async_client.v2.stocks.insider_transactions(
+            symbols="PETR4,VALE3",
+            all_versions="true",
+            company_relation="company",
+            direction="credit",
+            end_date="2026-08-31",
+            limit=1,
+            movement_type="Compra à vista",
+            page=1,
+            role_group="controller",
+            start_date="2026-01-01",
+        )
+        assert_matches_type(StockInsiderTransactionsResponse, stock, path=["response"])
+
+    @parametrize
+    async def test_raw_response_insider_transactions(self, async_client: AsyncBrapi) -> None:
+        response = await async_client.v2.stocks.with_raw_response.insider_transactions(
+            symbols="PETR4,VALE3",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        stock = await response.parse()
+        assert_matches_type(StockInsiderTransactionsResponse, stock, path=["response"])
+
+    @parametrize
+    async def test_streaming_response_insider_transactions(self, async_client: AsyncBrapi) -> None:
+        async with async_client.v2.stocks.with_streaming_response.insider_transactions(
+            symbols="PETR4,VALE3",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            stock = await response.parse()
+            assert_matches_type(StockInsiderTransactionsResponse, stock, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
