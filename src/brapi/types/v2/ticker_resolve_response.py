@@ -16,7 +16,7 @@ class Result(BaseModel):
     """`true` quando o ticker enviado foi trocado pelo ticker atual."""
 
     effective_date: Optional[str] = FieldInfo(alias="effectiveDate", default=None)
-    """Data efetiva do renome. Nulo quando não há renome."""
+    """Data de início da negociação do novo ticker. Nulo quando não há mudança."""
 
     requested_symbol: str = FieldInfo(alias="requestedSymbol")
     """Ticker enviado na requisição."""
@@ -29,6 +29,12 @@ class Result(BaseModel):
 
     symbol: str
     """Ticker atual. Use este nas próximas consultas."""
+
+    conversion_ratio: Optional[float] = FieldInfo(alias="conversionRatio", default=None)
+    """Quantidade de ações novas por ação antiga.
+
+    Presente quando houve conversão de ações.
+    """
 
 
 class TickerResolveResponse(BaseModel):

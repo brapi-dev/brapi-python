@@ -251,6 +251,9 @@ class Result(BaseModel):
     `/api/v2/stocks/dividends`, não exige esse parâmetro.
     """
 
+    dividends_symbol: Optional[str] = FieldInfo(alias="dividendsSymbol", default=None)
+    """Ticker do histórico de proventos quando ele difere do ticker da cotação."""
+
     financial_data: Optional[FinancialDataEntry] = FieldInfo(alias="financialData", default=None)
     """Dados financeiros dos últimos 12 meses."""
 
@@ -266,6 +269,12 @@ class Result(BaseModel):
         alias="historicalDataPrice", default=None
     )
     """Série de preços. Vem quando a requisição define a janela."""
+
+    historical_symbol: Optional[str] = FieldInfo(alias="historicalSymbol", default=None)
+    """Ticker do histórico de preços quando ele difere do ticker da cotação."""
+
+    requested_symbol: Optional[str] = FieldInfo(alias="requestedSymbol", default=None)
+    """Ticker enviado quando a cotação pertence a outro ticker."""
 
     summary_profile: Optional[ResultSummaryProfile] = FieldInfo(alias="summaryProfile", default=None)
     """Cadastro da empresa. Vem com o módulo `summaryProfile`."""
