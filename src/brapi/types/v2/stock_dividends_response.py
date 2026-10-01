@@ -16,7 +16,11 @@ class Result(BaseModel):
     """`true` quando o ticker enviado foi trocado pelo ticker atual."""
 
     data: DividendsData
-    """Proventos. Vem com `dividends=true`."""
+    """Proventos.
+
+    Na rota `/api/quote/{tickers}`, vem com `dividends=true`. Na rota
+    `/api/v2/stocks/dividends`, não exige esse parâmetro.
+    """
 
     requested_symbol: str = FieldInfo(alias="requestedSymbol")
     """Ticker enviado na requisição."""
