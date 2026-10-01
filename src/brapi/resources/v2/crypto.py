@@ -80,6 +80,9 @@ class CryptoResource(SyncAPIResource):
         campo `currencyRateFromUSD` informa o câmbio atual, não o câmbio de cada ponto
         histórico. `marketCap` vem sempre como 0.
 
+        Uma sigla indisponível retorna 400, inclusive em chamadas com várias siglas. Uma
+        cotação ausente ou inválida retorna 503.
+
         Veja as siglas em
         [listar criptomoedas](https://brapi.dev/docs/criptomoedas/available). Planos
         Startup e Pro. Os períodos e intervalos aceitos dependem do plano.
@@ -222,6 +225,9 @@ class AsyncCryptoResource(AsyncAPIResource):
         SEK. Sem câmbio histórico disponível, os preços do ponto vêm como `null`. O
         campo `currencyRateFromUSD` informa o câmbio atual, não o câmbio de cada ponto
         histórico. `marketCap` vem sempre como 0.
+
+        Uma sigla indisponível retorna 400, inclusive em chamadas com várias siglas. Uma
+        cotação ausente ou inválida retorna 503.
 
         Veja as siglas em
         [listar criptomoedas](https://brapi.dev/docs/criptomoedas/available). Planos
