@@ -88,7 +88,10 @@ class StockDividend(BaseModel):
 
 
 class DividendsData(BaseModel):
-    """Proventos. Vem com `dividends=true`."""
+    """Proventos.
+
+    Na rota `/api/quote/{tickers}`, vem com `dividends=true`. Na rota `/api/v2/stocks/dividends`, não exige esse parâmetro.
+    """
 
     cash_dividends: List[CashDividend] = FieldInfo(alias="cashDividends")
     """Dividendos e JCP pagos em dinheiro."""
