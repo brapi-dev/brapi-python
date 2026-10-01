@@ -385,7 +385,10 @@ class StocksResource(SyncAPIResource):
         O plano define os valores aceitos em `range` e `interval` e o tamanho máximo da
         janela por data. Um pedido acima do limite do plano retorna erro 400.
 
-        Use `adjustedClose` para calcular retorno. Ele considera proventos,
+        Em intervalos diários, `open`, `high`, `low` e `close` já são ajustados. `close`
+        coincide com `adjustedClose`. Use os campos `raw*` para os preços originais.
+
+        Use `adjustedClose` para calcular retorno diário. Ele considera proventos,
         desdobramentos e grupamentos.
 
         `includeRaw=true` exige o plano Pro. Em intervalos diários, ele adiciona
@@ -574,6 +577,9 @@ class StocksResource(SyncAPIResource):
 
         Envie vários tickers em `symbols`, separados por vírgula. O número máximo de
         tickers por chamada depende do plano.
+
+        Quando alguns tickers não existem, eles ficam fora de `results`. Se nenhum
+        ticker tem cotação, a resposta retorna 404.
 
         Um ticker antigo é trocado pelo ticker atual. Nesse caso, `changed` é `true` e
         `requestedSymbol` guarda o ticker enviado.
@@ -1084,7 +1090,10 @@ class AsyncStocksResource(AsyncAPIResource):
         O plano define os valores aceitos em `range` e `interval` e o tamanho máximo da
         janela por data. Um pedido acima do limite do plano retorna erro 400.
 
-        Use `adjustedClose` para calcular retorno. Ele considera proventos,
+        Em intervalos diários, `open`, `high`, `low` e `close` já são ajustados. `close`
+        coincide com `adjustedClose`. Use os campos `raw*` para os preços originais.
+
+        Use `adjustedClose` para calcular retorno diário. Ele considera proventos,
         desdobramentos e grupamentos.
 
         `includeRaw=true` exige o plano Pro. Em intervalos diários, ele adiciona
@@ -1273,6 +1282,9 @@ class AsyncStocksResource(AsyncAPIResource):
 
         Envie vários tickers em `symbols`, separados por vírgula. O número máximo de
         tickers por chamada depende do plano.
+
+        Quando alguns tickers não existem, eles ficam fora de `results`. Se nenhum
+        ticker tem cotação, a resposta retorna 404.
 
         Um ticker antigo é trocado pelo ticker atual. Nesse caso, `changed` é `true` e
         `requestedSymbol` guarda o ticker enviado.
