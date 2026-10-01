@@ -82,6 +82,10 @@ class QuoteResource(SyncAPIResource):
         Este é o endpoint original da brapi. Ele continua ativo e não tem data de
         remoção.
 
+        AXIA5 e AXIA6 retornam a cotação de uma ação AXIA3. Seus preços históricos e
+        proventos continuam separados por classe. Os campos `historicalSymbol` e
+        `dividendsSymbol` identificam o ticker desses históricos.
+
         A resposta sempre traz a cotação: preço, variação, volume, máxima e mínima do
         dia, faixa de 52 semanas e `marketCap`. Estes parâmetros adicionam outros dados:
 
@@ -325,6 +329,10 @@ class AsyncQuoteResource(AsyncAPIResource):
 
         Este é o endpoint original da brapi. Ele continua ativo e não tem data de
         remoção.
+
+        AXIA5 e AXIA6 retornam a cotação de uma ação AXIA3. Seus preços históricos e
+        proventos continuam separados por classe. Os campos `historicalSymbol` e
+        `dividendsSymbol` identificam o ticker desses históricos.
 
         A resposta sempre traz a cotação: preço, variação, volume, máxima e mínima do
         dia, faixa de 52 semanas e `marketCap`. Estes parâmetros adicionam outros dados:
