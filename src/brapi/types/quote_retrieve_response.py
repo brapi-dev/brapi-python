@@ -245,7 +245,11 @@ class Result(BaseModel):
     """Balanço patrimonial trimestral."""
 
     dividends_data: Optional[DividendsData] = FieldInfo(alias="dividendsData", default=None)
-    """Proventos. Vem com `dividends=true`."""
+    """Proventos.
+
+    Na rota `/api/quote/{tickers}`, vem com `dividends=true`. Na rota
+    `/api/v2/stocks/dividends`, não exige esse parâmetro.
+    """
 
     financial_data: Optional[FinancialDataEntry] = FieldInfo(alias="financialData", default=None)
     """Dados financeiros dos últimos 12 meses."""
