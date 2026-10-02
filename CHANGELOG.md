@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/brapi-dev/brapi-python/compare/v1.9.1...v1.10.0) (2026-10-02)
+
+
+### Features
+
+* **api:** publish insider transactions in API, pricing, chat, and MCP ([5054a85](https://github.com/brapi-dev/brapi-python/commit/5054a85b0955b3e89f698d4e67b6b98e45d770ba))
+
 ## [1.9.1](https://github.com/brapi-dev/brapi-python/compare/v1.9.0...v1.9.1) (2026-10-01)
 
 
