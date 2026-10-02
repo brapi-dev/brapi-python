@@ -20,6 +20,7 @@ from ...types.v2 import (
     stock_balance_sheet_params,
     stock_financial_data_params,
     stock_income_statement_params,
+    stock_insider_transactions_params,
 )
 from ..._resource import SyncAPIResource, AsyncAPIResource
 from ..._response import (
@@ -39,6 +40,7 @@ from ...types.v2.stock_value_added_response import StockValueAddedResponse
 from ...types.v2.stock_balance_sheet_response import StockBalanceSheetResponse
 from ...types.v2.stock_financial_data_response import StockFinancialDataResponse
 from ...types.v2.stock_income_statement_response import StockIncomeStatementResponse
+from ...types.v2.stock_insider_transactions_response import StockInsiderTransactionsResponse
 
 __all__ = ["StocksResource", "AsyncStocksResource"]
 
@@ -519,6 +521,103 @@ class StocksResource(SyncAPIResource):
                 ),
             ),
             cast_to=StockIncomeStatementResponse,
+        )
+
+    def insider_transactions(
+        self,
+        *,
+        symbols: str,
+        all_versions: Literal["true", "false"] | Omit = omit,
+        company_relation: Literal["company", "parent", "subsidiary", "all"] | Omit = omit,
+        direction: Literal["credit", "debit"] | Omit = omit,
+        end_date: str | Omit = omit,
+        limit: int | Omit = omit,
+        movement_type: str | Omit = omit,
+        page: int | Omit = omit,
+        role_group: Literal["controller", "board", "director", "fiscalCouncil", "statutoryBody"] | Omit = omit,
+        start_date: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> StockInsiderTransactionsResponse:
+        """
+        Movimentações de valores mobiliários por administradores, controladores e
+        pessoas vinculadas, por empresa e período. Os relatórios são mensais. A
+        atualização ocorre semanalmente.
+
+        O ticker identifica a empresa do relatório. PETR3 e PETR4 retornam os mesmos
+        dados. Os registros agrupam pessoas por cargo, sem identificar cada pessoa ou o
+        ticker negociado.
+
+        `direction` indica entrada ou saída da posição, inclusive transferências. Use
+        `movementType` para identificar compras e vendas.
+
+        A resposta traz as movimentações mais recentes primeiro e a última versão de
+        cada relatório. Use `allVersions=true` para incluir versões anteriores. Não some
+        essas versões, pois elas podem repetir movimentações. Saldos iniciais não entram
+        na lista.
+
+        Plano Pro. PETR4, MGLU3, VALE3 e ITUB4 permitem testes gratuitos, sem token.
+
+        Args:
+          symbols: Tickers separados por vírgula. Máximo de 20. Cada ticker identifica a empresa
+              que apresenta o relatório.
+
+          all_versions: Inclui versões anteriores dos relatórios. Padrão: false. Versões anteriores
+              podem repetir movimentações.
+
+          company_relation: Empresa que emite o valor mobiliário: a própria empresa, sua controladora ou sua
+              controlada.
+
+          direction: Entrada ou saída da posição. Inclui transferências e outras movimentações.
+
+          end_date: Data final da movimentação. Padrão: hoje.
+
+          limit: Máximo de movimentações por empresa e página.
+
+          movement_type: Tipo de movimentação, com o texto exato do relatório.
+
+          page: Página de cada empresa.
+
+          role_group: Grupo de cargos. Cada grupo inclui pessoas vinculadas.
+
+          start_date: Data inicial da movimentação. Padrão: 365 dias antes de endDate.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return self._get(
+            "/api/v2/stocks/insider-transactions",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {
+                        "symbols": symbols,
+                        "all_versions": all_versions,
+                        "company_relation": company_relation,
+                        "direction": direction,
+                        "end_date": end_date,
+                        "limit": limit,
+                        "movement_type": movement_type,
+                        "page": page,
+                        "role_group": role_group,
+                        "start_date": start_date,
+                    },
+                    stock_insider_transactions_params.StockInsiderTransactionsParams,
+                ),
+            ),
+            cast_to=StockInsiderTransactionsResponse,
         )
 
     def profile(
@@ -1237,6 +1336,103 @@ class AsyncStocksResource(AsyncAPIResource):
             cast_to=StockIncomeStatementResponse,
         )
 
+    async def insider_transactions(
+        self,
+        *,
+        symbols: str,
+        all_versions: Literal["true", "false"] | Omit = omit,
+        company_relation: Literal["company", "parent", "subsidiary", "all"] | Omit = omit,
+        direction: Literal["credit", "debit"] | Omit = omit,
+        end_date: str | Omit = omit,
+        limit: int | Omit = omit,
+        movement_type: str | Omit = omit,
+        page: int | Omit = omit,
+        role_group: Literal["controller", "board", "director", "fiscalCouncil", "statutoryBody"] | Omit = omit,
+        start_date: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> StockInsiderTransactionsResponse:
+        """
+        Movimentações de valores mobiliários por administradores, controladores e
+        pessoas vinculadas, por empresa e período. Os relatórios são mensais. A
+        atualização ocorre semanalmente.
+
+        O ticker identifica a empresa do relatório. PETR3 e PETR4 retornam os mesmos
+        dados. Os registros agrupam pessoas por cargo, sem identificar cada pessoa ou o
+        ticker negociado.
+
+        `direction` indica entrada ou saída da posição, inclusive transferências. Use
+        `movementType` para identificar compras e vendas.
+
+        A resposta traz as movimentações mais recentes primeiro e a última versão de
+        cada relatório. Use `allVersions=true` para incluir versões anteriores. Não some
+        essas versões, pois elas podem repetir movimentações. Saldos iniciais não entram
+        na lista.
+
+        Plano Pro. PETR4, MGLU3, VALE3 e ITUB4 permitem testes gratuitos, sem token.
+
+        Args:
+          symbols: Tickers separados por vírgula. Máximo de 20. Cada ticker identifica a empresa
+              que apresenta o relatório.
+
+          all_versions: Inclui versões anteriores dos relatórios. Padrão: false. Versões anteriores
+              podem repetir movimentações.
+
+          company_relation: Empresa que emite o valor mobiliário: a própria empresa, sua controladora ou sua
+              controlada.
+
+          direction: Entrada ou saída da posição. Inclui transferências e outras movimentações.
+
+          end_date: Data final da movimentação. Padrão: hoje.
+
+          limit: Máximo de movimentações por empresa e página.
+
+          movement_type: Tipo de movimentação, com o texto exato do relatório.
+
+          page: Página de cada empresa.
+
+          role_group: Grupo de cargos. Cada grupo inclui pessoas vinculadas.
+
+          start_date: Data inicial da movimentação. Padrão: 365 dias antes de endDate.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return await self._get(
+            "/api/v2/stocks/insider-transactions",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {
+                        "symbols": symbols,
+                        "all_versions": all_versions,
+                        "company_relation": company_relation,
+                        "direction": direction,
+                        "end_date": end_date,
+                        "limit": limit,
+                        "movement_type": movement_type,
+                        "page": page,
+                        "role_group": role_group,
+                        "start_date": start_date,
+                    },
+                    stock_insider_transactions_params.StockInsiderTransactionsParams,
+                ),
+            ),
+            cast_to=StockInsiderTransactionsResponse,
+        )
+
     async def profile(
         self,
         *,
@@ -1497,6 +1693,9 @@ class StocksResourceWithRawResponse:
         self.income_statement = to_raw_response_wrapper(
             stocks.income_statement,
         )
+        self.insider_transactions = to_raw_response_wrapper(
+            stocks.insider_transactions,
+        )
         self.profile = to_raw_response_wrapper(
             stocks.profile,
         )
@@ -1532,6 +1731,9 @@ class AsyncStocksResourceWithRawResponse:
         )
         self.income_statement = async_to_raw_response_wrapper(
             stocks.income_statement,
+        )
+        self.insider_transactions = async_to_raw_response_wrapper(
+            stocks.insider_transactions,
         )
         self.profile = async_to_raw_response_wrapper(
             stocks.profile,
@@ -1569,6 +1771,9 @@ class StocksResourceWithStreamingResponse:
         self.income_statement = to_streamed_response_wrapper(
             stocks.income_statement,
         )
+        self.insider_transactions = to_streamed_response_wrapper(
+            stocks.insider_transactions,
+        )
         self.profile = to_streamed_response_wrapper(
             stocks.profile,
         )
@@ -1604,6 +1809,9 @@ class AsyncStocksResourceWithStreamingResponse:
         )
         self.income_statement = async_to_streamed_response_wrapper(
             stocks.income_statement,
+        )
+        self.insider_transactions = async_to_streamed_response_wrapper(
+            stocks.insider_transactions,
         )
         self.profile = async_to_streamed_response_wrapper(
             stocks.profile,
