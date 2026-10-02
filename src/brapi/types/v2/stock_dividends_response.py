@@ -13,7 +13,7 @@ __all__ = ["StockDividendsResponse", "Result"]
 
 class Result(BaseModel):
     changed: bool
-    """`true` quando o ticker enviado foi trocado pelo ticker atual."""
+    """`true` quando `symbol` difere de `requestedSymbol`."""
 
     data: DividendsData
     """Proventos.
@@ -26,7 +26,7 @@ class Result(BaseModel):
     """Ticker enviado na requisição."""
 
     symbol: str
-    """Ticker atual, depois de resolver renomes."""
+    """Ticker usado para os dados retornados."""
 
 
 class StockDividendsResponse(BaseModel):
