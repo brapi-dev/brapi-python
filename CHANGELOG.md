@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.9.1](https://github.com/brapi-dev/brapi-python/compare/v1.9.0...v1.9.1) (2026-10-01)
+
+
+### Bug Fixes
+
+* **api:** reject unavailable crypto quotes and clarify response docs ([3cfb7ec](https://github.com/brapi-dev/brapi-python/commit/3cfb7ec27a4b89d2c5bd462adc9392919d12c38e))
+* **api:** resolve AXIA share conversions without merging history ([67fb212](https://github.com/brapi-dev/brapi-python/commit/67fb2127fda03ef726faf138fe8a89514246353f))
+* **api:** use historical exchange rates for crypto prices ([3bfee28](https://github.com/brapi-dev/brapi-python/commit/3bfee28abcf02e374fc640432c6116283c457c18))
+
 ## [1.9.0](https://github.com/brapi-dev/brapi-python/compare/v1.8.0...v1.9.0) (2026-09-29)
 
 
