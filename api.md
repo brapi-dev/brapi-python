@@ -113,6 +113,7 @@ from brapi.types.v2 import (
     StockFinancialDataResponse,
     StockHistoricalResponse,
     StockIncomeStatementResponse,
+    StockInsiderTransactionsResponse,
     StockProfileResponse,
     StockQuoteResponse,
     StockStatisticsResponse,
@@ -128,6 +129,7 @@ Methods:
 - <code title="get /api/v2/stocks/financial-data">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">financial_data</a>(\*\*<a href="src/brapi/types/v2/stock_financial_data_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_financial_data_response.py">StockFinancialDataResponse</a></code>
 - <code title="get /api/v2/stocks/historical">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">historical</a>(\*\*<a href="src/brapi/types/v2/stock_historical_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_historical_response.py">StockHistoricalResponse</a></code>
 - <code title="get /api/v2/stocks/income-statement">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">income_statement</a>(\*\*<a href="src/brapi/types/v2/stock_income_statement_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_income_statement_response.py">StockIncomeStatementResponse</a></code>
+- <code title="get /api/v2/stocks/insider-transactions">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">insider_transactions</a>(\*\*<a href="src/brapi/types/v2/stock_insider_transactions_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_insider_transactions_response.py">StockInsiderTransactionsResponse</a></code>
 - <code title="get /api/v2/stocks/profile">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">profile</a>(\*\*<a href="src/brapi/types/v2/stock_profile_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_profile_response.py">StockProfileResponse</a></code>
 - <code title="get /api/v2/stocks/quote">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">quote</a>(\*\*<a href="src/brapi/types/v2/stock_quote_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_quote_response.py">StockQuoteResponse</a></code>
 - <code title="get /api/v2/stocks/statistics">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">statistics</a>(\*\*<a href="src/brapi/types/v2/stock_statistics_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_statistics_response.py">StockStatisticsResponse</a></code>
