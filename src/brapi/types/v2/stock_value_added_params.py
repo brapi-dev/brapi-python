@@ -13,7 +13,8 @@ class StockValueAddedParams(TypedDict, total=False):
     symbols: Required[str]
     """Tickers separados por vírgula.
 
-    Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo ticker atual.
+    Ex.: PETR4,VALE3. `requestedSymbol` identifica o ticker enviado e `symbol`
+    identifica os dados retornados.
     """
 
     end_date: Annotated[str, PropertyInfo(alias="endDate")]
