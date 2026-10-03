@@ -93,8 +93,8 @@ class StocksResource(SyncAPIResource):
         setor vêm como `null`.
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           end_date: Data final no formato YYYY-MM-DD. Filtra pela data de encerramento do período.
 
@@ -164,8 +164,8 @@ class StocksResource(SyncAPIResource):
         período sem os dados necessários para o cálculo retorna `null`.
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           end_date: Data final no formato YYYY-MM-DD. Filtra pela data de encerramento do período.
 
@@ -228,6 +228,12 @@ class StocksResource(SyncAPIResource):
         Em conversões de ações, os proventos de cada classe permanecem separados. Uma
         consulta por AXIA6 retorna os proventos de AXIA6 e ELET6.
 
+        Os proventos de LCAM3 e BRFS3 permanecem separados de RENT3 e MBRF3. PRGA3 usa
+        BRFS3. MRFG3 usa MBRF3.
+
+        Os proventos disponíveis podem ser consultados mesmo quando o ticker não tem
+        cotação atual.
+
         `lastDatePrior` é a data-com, o último dia para comprar a ação e ter direito ao
         provento. `exDate` é a data ex, o primeiro dia sem esse direito. `exDate` pode
         ser nulo.
@@ -242,8 +248,8 @@ class StocksResource(SyncAPIResource):
         [dividendos de FIIs](https://brapi.dev/docs/fiis/dividendos).
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           end_date: Data final no formato YYYY-MM-DD. Filtra proventos em dinheiro por `paymentDate`
               e eventos em ações por `lastDatePrior`.
@@ -318,8 +324,8 @@ class StocksResource(SyncAPIResource):
         [fluxo de caixa](https://brapi.dev/docs/acoes/fluxo-de-caixa).
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           end_date: Data final no formato YYYY-MM-DD. Filtra pela data de encerramento do período.
 
@@ -387,6 +393,12 @@ class StocksResource(SyncAPIResource):
         Em conversões de ações, use o ticker original para consultar o histórico daquela
         classe. Por exemplo, AXIA6 mantém seu próprio histórico.
 
+        LCAM3 e BRFS3 também mantêm históricos próprios, separados de RENT3 e MBRF3.
+        PRGA3 usa a série de BRFS3. MRFG3 usa MBRF3.
+
+        O histórico disponível pode ser consultado mesmo quando o ticker não tem cotação
+        atual.
+
         Defina a janela com `range` e `interval`, por exemplo `range=1y&interval=1d`, ou
         com `startDate` e `endDate`. O padrão é `range=1mo` e `interval=1d`.
 
@@ -406,8 +418,8 @@ class StocksResource(SyncAPIResource):
         Esses campos podem ser nulos. Intervalos intradiários não trazem campos `raw*`.
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           end_date: Data final no formato YYYY-MM-DD.
 
@@ -486,8 +498,8 @@ class StocksResource(SyncAPIResource):
         período sem os dados necessários para o cálculo retorna `null`.
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           end_date: Data final no formato YYYY-MM-DD. Filtra pela data de encerramento do período.
 
@@ -642,8 +654,8 @@ class StocksResource(SyncAPIResource):
         Esses dados quase não mudam. Guarde a resposta e consulte de novo poucas vezes.
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           extra_headers: Send extra headers
 
@@ -699,8 +711,8 @@ class StocksResource(SyncAPIResource):
         tickers válidos, use a [lista de tickers](https://brapi.dev/docs/tickers).
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           extra_headers: Send extra headers
 
@@ -750,8 +762,8 @@ class StocksResource(SyncAPIResource):
         mudam quando a empresa publica um novo resultado.
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           end_date: Data final no formato YYYY-MM-DD. Filtra pela data de encerramento do período.
 
@@ -820,8 +832,8 @@ class StocksResource(SyncAPIResource):
         período sem os dados necessários para o cálculo retorna `null`.
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           end_date: Data final no formato YYYY-MM-DD. Filtra pela data de encerramento do período.
 
@@ -906,8 +918,8 @@ class AsyncStocksResource(AsyncAPIResource):
         setor vêm como `null`.
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           end_date: Data final no formato YYYY-MM-DD. Filtra pela data de encerramento do período.
 
@@ -977,8 +989,8 @@ class AsyncStocksResource(AsyncAPIResource):
         período sem os dados necessários para o cálculo retorna `null`.
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           end_date: Data final no formato YYYY-MM-DD. Filtra pela data de encerramento do período.
 
@@ -1041,6 +1053,12 @@ class AsyncStocksResource(AsyncAPIResource):
         Em conversões de ações, os proventos de cada classe permanecem separados. Uma
         consulta por AXIA6 retorna os proventos de AXIA6 e ELET6.
 
+        Os proventos de LCAM3 e BRFS3 permanecem separados de RENT3 e MBRF3. PRGA3 usa
+        BRFS3. MRFG3 usa MBRF3.
+
+        Os proventos disponíveis podem ser consultados mesmo quando o ticker não tem
+        cotação atual.
+
         `lastDatePrior` é a data-com, o último dia para comprar a ação e ter direito ao
         provento. `exDate` é a data ex, o primeiro dia sem esse direito. `exDate` pode
         ser nulo.
@@ -1055,8 +1073,8 @@ class AsyncStocksResource(AsyncAPIResource):
         [dividendos de FIIs](https://brapi.dev/docs/fiis/dividendos).
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           end_date: Data final no formato YYYY-MM-DD. Filtra proventos em dinheiro por `paymentDate`
               e eventos em ações por `lastDatePrior`.
@@ -1131,8 +1149,8 @@ class AsyncStocksResource(AsyncAPIResource):
         [fluxo de caixa](https://brapi.dev/docs/acoes/fluxo-de-caixa).
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           end_date: Data final no formato YYYY-MM-DD. Filtra pela data de encerramento do período.
 
@@ -1200,6 +1218,12 @@ class AsyncStocksResource(AsyncAPIResource):
         Em conversões de ações, use o ticker original para consultar o histórico daquela
         classe. Por exemplo, AXIA6 mantém seu próprio histórico.
 
+        LCAM3 e BRFS3 também mantêm históricos próprios, separados de RENT3 e MBRF3.
+        PRGA3 usa a série de BRFS3. MRFG3 usa MBRF3.
+
+        O histórico disponível pode ser consultado mesmo quando o ticker não tem cotação
+        atual.
+
         Defina a janela com `range` e `interval`, por exemplo `range=1y&interval=1d`, ou
         com `startDate` e `endDate`. O padrão é `range=1mo` e `interval=1d`.
 
@@ -1219,8 +1243,8 @@ class AsyncStocksResource(AsyncAPIResource):
         Esses campos podem ser nulos. Intervalos intradiários não trazem campos `raw*`.
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           end_date: Data final no formato YYYY-MM-DD.
 
@@ -1299,8 +1323,8 @@ class AsyncStocksResource(AsyncAPIResource):
         período sem os dados necessários para o cálculo retorna `null`.
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           end_date: Data final no formato YYYY-MM-DD. Filtra pela data de encerramento do período.
 
@@ -1455,8 +1479,8 @@ class AsyncStocksResource(AsyncAPIResource):
         Esses dados quase não mudam. Guarde a resposta e consulte de novo poucas vezes.
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           extra_headers: Send extra headers
 
@@ -1512,8 +1536,8 @@ class AsyncStocksResource(AsyncAPIResource):
         tickers válidos, use a [lista de tickers](https://brapi.dev/docs/tickers).
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           extra_headers: Send extra headers
 
@@ -1563,8 +1587,8 @@ class AsyncStocksResource(AsyncAPIResource):
         mudam quando a empresa publica um novo resultado.
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           end_date: Data final no formato YYYY-MM-DD. Filtra pela data de encerramento do período.
 
@@ -1633,8 +1657,8 @@ class AsyncStocksResource(AsyncAPIResource):
         período sem os dados necessários para o cálculo retorna `null`.
 
         Args:
-          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. Um ticker antigo é trocado pelo
-              ticker atual.
+          symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
+              ticker enviado e `symbol` identifica os dados retornados.
 
           end_date: Data final no formato YYYY-MM-DD. Filtra pela data de encerramento do período.
 
