@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/brapi-dev/brapi-python/compare/v1.10.0...v1.10.1) (2026-10-03)
+
+
+### Bug Fixes
+
+* **api:** preserve original ticker histories ([4ab9b9e](https://github.com/brapi-dev/brapi-python/commit/4ab9b9e908b0cb0b5943310306b63dc756775ce8))
+
 ## [1.10.0](https://github.com/brapi-dev/brapi-python/compare/v1.9.1...v1.10.0) (2026-10-02)
 
 
