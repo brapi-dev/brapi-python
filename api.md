@@ -116,6 +116,7 @@ from brapi.types.v2 import (
     StockInsiderTransactionsResponse,
     StockProfileResponse,
     StockQuoteResponse,
+    StockScreenerResponse,
     StockStatisticsResponse,
     StockValueAddedResponse,
 )
@@ -132,6 +133,7 @@ Methods:
 - <code title="get /api/v2/stocks/insider-transactions">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">insider_transactions</a>(\*\*<a href="src/brapi/types/v2/stock_insider_transactions_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_insider_transactions_response.py">StockInsiderTransactionsResponse</a></code>
 - <code title="get /api/v2/stocks/profile">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">profile</a>(\*\*<a href="src/brapi/types/v2/stock_profile_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_profile_response.py">StockProfileResponse</a></code>
 - <code title="get /api/v2/stocks/quote">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">quote</a>(\*\*<a href="src/brapi/types/v2/stock_quote_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_quote_response.py">StockQuoteResponse</a></code>
+- <code title="get /api/v2/stocks/screener">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">screener</a>(\*\*<a href="src/brapi/types/v2/stock_screener_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_screener_response.py">StockScreenerResponse</a></code>
 - <code title="get /api/v2/stocks/statistics">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">statistics</a>(\*\*<a href="src/brapi/types/v2/stock_statistics_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_statistics_response.py">StockStatisticsResponse</a></code>
 - <code title="get /api/v2/stocks/value-added">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">value_added</a>(\*\*<a href="src/brapi/types/v2/stock_value_added_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_value_added_response.py">StockValueAddedResponse</a></code>
 
