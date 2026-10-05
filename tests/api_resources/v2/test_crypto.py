@@ -30,8 +30,10 @@ class TestCrypto:
         crypto = client.v2.crypto.retrieve(
             coin="BTC,ETH",
             currency="BRL",
+            end_date="2026-10-04",
             interval="interval",
             range="range",
+            start_date="2020-01-01",
         )
         assert_matches_type(CryptoRetrieveResponse, crypto, path=["response"])
 
@@ -103,8 +105,10 @@ class TestAsyncCrypto:
         crypto = await async_client.v2.crypto.retrieve(
             coin="BTC,ETH",
             currency="BRL",
+            end_date="2026-10-04",
             interval="interval",
             range="range",
+            start_date="2020-01-01",
         )
         assert_matches_type(CryptoRetrieveResponse, crypto, path=["response"])
 
