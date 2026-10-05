@@ -53,7 +53,10 @@ class Analytics(BaseModel):
     """Variação do delta para 1 unidade de variação no ativo subjacente."""
 
     implied_volatility: Optional[float] = FieldInfo(alias="impliedVolatility", default=None)
-    """Volatilidade implícita anual, em decimal."""
+    """Volatilidade implícita anual, em decimal.
+
+    O cálculo usa tempo em dias corridos dividido por 365.
+    """
 
     isin: Optional[str] = None
     """Código ISIN da série de opção."""
@@ -131,7 +134,7 @@ class Analytics(BaseModel):
     """Variação do prêmio com a passagem do tempo, por ano."""
 
     time_to_expiration_years: Optional[float] = FieldInfo(alias="timeToExpirationYears", default=None)
-    """Tempo até o vencimento, em anos."""
+    """Dias corridos até o vencimento divididos por 365, inclusive em anos bissextos."""
 
     underlying_asset: str = FieldInfo(alias="underlyingAsset")
     """Código do ativo do futuro. Ex.: `BGI`."""
