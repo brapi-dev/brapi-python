@@ -13,6 +13,7 @@ from brapi.types.v2 import (
     StockQuoteResponse,
     StockProfileResponse,
     StockCashFlowResponse,
+    StockScreenerResponse,
     StockDividendsResponse,
     StockHistoricalResponse,
     StockStatisticsResponse,
@@ -387,6 +388,112 @@ class TestStocks:
 
             stock = response.parse()
             assert_matches_type(StockQuoteResponse, stock, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    def test_method_screener(self, client: Brapi) -> None:
+        stock = client.v2.stocks.screener()
+        assert_matches_type(StockScreenerResponse, stock, path=["response"])
+
+    @parametrize
+    def test_method_screener_with_all_params(self, client: Brapi) -> None:
+        stock = client.v2.stocks.screener(
+            book_value_per_share_max=0,
+            book_value_per_share_min=0,
+            change_percent_max=0,
+            change_percent_min=0,
+            current_ratio_max=0,
+            current_ratio_min=0,
+            debt_to_equity_max=0,
+            debt_to_equity_min=0,
+            dividend_yield_max=0,
+            dividend_yield_min=0,
+            earnings_growth_annual_max=0,
+            earnings_growth_annual_min=0,
+            earnings_growth_max=0,
+            earnings_growth_min=0,
+            earnings_per_share_max=0,
+            earnings_per_share_min=0,
+            ebitda_margin_max=0,
+            ebitda_margin_min=0,
+            ebitda_max=0,
+            ebitda_min=0,
+            enterprise_to_ebitda_max=0,
+            enterprise_to_ebitda_min=0,
+            enterprise_to_revenue_max=0,
+            enterprise_to_revenue_min=0,
+            enterprise_value_max=0,
+            enterprise_value_min=0,
+            fifty_two_week_change_max=0,
+            fifty_two_week_change_min=0,
+            free_cashflow_max=0,
+            free_cashflow_min=0,
+            gross_margin_max=0,
+            gross_margin_min=0,
+            last_price_max=0,
+            last_price_min=0,
+            limit=20,
+            market_cap_max=0,
+            market_cap_min=0,
+            net_debt_to_ebitda_max=0,
+            net_debt_to_ebitda_min=0,
+            net_margin_max=0,
+            net_margin_min=0,
+            operating_margin_max=0,
+            operating_margin_min=0,
+            page=1,
+            peg_ratio_max=0,
+            peg_ratio_min=0,
+            price_to_book_max=0,
+            price_to_book_min=0,
+            quick_ratio_max=0,
+            quick_ratio_min=0,
+            return_on_assets_max=0,
+            return_on_assets_min=0,
+            return_on_equity_max=0,
+            return_on_equity_min=0,
+            revenue_growth_annual_max=0,
+            revenue_growth_annual_min=0,
+            revenue_growth_max=0,
+            revenue_growth_min=0,
+            search="BANCO",
+            sector="Finance",
+            sort_by="dividendYield",
+            sort_order="desc",
+            subsector="Energia Elétrica",
+            sub_type="unit",
+            total_cash_max=0,
+            total_cash_min=0,
+            total_debt_max=0,
+            total_debt_min=0,
+            total_revenue_max=0,
+            total_revenue_min=0,
+            trailing_pe_max=0,
+            trailing_pe_min=0,
+            type="stock",
+            volume_max=0,
+            volume_min=0,
+        )
+        assert_matches_type(StockScreenerResponse, stock, path=["response"])
+
+    @parametrize
+    def test_raw_response_screener(self, client: Brapi) -> None:
+        response = client.v2.stocks.with_raw_response.screener()
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        stock = response.parse()
+        assert_matches_type(StockScreenerResponse, stock, path=["response"])
+
+    @parametrize
+    def test_streaming_response_screener(self, client: Brapi) -> None:
+        with client.v2.stocks.with_streaming_response.screener() as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            stock = response.parse()
+            assert_matches_type(StockScreenerResponse, stock, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -837,6 +944,112 @@ class TestAsyncStocks:
 
             stock = await response.parse()
             assert_matches_type(StockQuoteResponse, stock, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    async def test_method_screener(self, async_client: AsyncBrapi) -> None:
+        stock = await async_client.v2.stocks.screener()
+        assert_matches_type(StockScreenerResponse, stock, path=["response"])
+
+    @parametrize
+    async def test_method_screener_with_all_params(self, async_client: AsyncBrapi) -> None:
+        stock = await async_client.v2.stocks.screener(
+            book_value_per_share_max=0,
+            book_value_per_share_min=0,
+            change_percent_max=0,
+            change_percent_min=0,
+            current_ratio_max=0,
+            current_ratio_min=0,
+            debt_to_equity_max=0,
+            debt_to_equity_min=0,
+            dividend_yield_max=0,
+            dividend_yield_min=0,
+            earnings_growth_annual_max=0,
+            earnings_growth_annual_min=0,
+            earnings_growth_max=0,
+            earnings_growth_min=0,
+            earnings_per_share_max=0,
+            earnings_per_share_min=0,
+            ebitda_margin_max=0,
+            ebitda_margin_min=0,
+            ebitda_max=0,
+            ebitda_min=0,
+            enterprise_to_ebitda_max=0,
+            enterprise_to_ebitda_min=0,
+            enterprise_to_revenue_max=0,
+            enterprise_to_revenue_min=0,
+            enterprise_value_max=0,
+            enterprise_value_min=0,
+            fifty_two_week_change_max=0,
+            fifty_two_week_change_min=0,
+            free_cashflow_max=0,
+            free_cashflow_min=0,
+            gross_margin_max=0,
+            gross_margin_min=0,
+            last_price_max=0,
+            last_price_min=0,
+            limit=20,
+            market_cap_max=0,
+            market_cap_min=0,
+            net_debt_to_ebitda_max=0,
+            net_debt_to_ebitda_min=0,
+            net_margin_max=0,
+            net_margin_min=0,
+            operating_margin_max=0,
+            operating_margin_min=0,
+            page=1,
+            peg_ratio_max=0,
+            peg_ratio_min=0,
+            price_to_book_max=0,
+            price_to_book_min=0,
+            quick_ratio_max=0,
+            quick_ratio_min=0,
+            return_on_assets_max=0,
+            return_on_assets_min=0,
+            return_on_equity_max=0,
+            return_on_equity_min=0,
+            revenue_growth_annual_max=0,
+            revenue_growth_annual_min=0,
+            revenue_growth_max=0,
+            revenue_growth_min=0,
+            search="BANCO",
+            sector="Finance",
+            sort_by="dividendYield",
+            sort_order="desc",
+            subsector="Energia Elétrica",
+            sub_type="unit",
+            total_cash_max=0,
+            total_cash_min=0,
+            total_debt_max=0,
+            total_debt_min=0,
+            total_revenue_max=0,
+            total_revenue_min=0,
+            trailing_pe_max=0,
+            trailing_pe_min=0,
+            type="stock",
+            volume_max=0,
+            volume_min=0,
+        )
+        assert_matches_type(StockScreenerResponse, stock, path=["response"])
+
+    @parametrize
+    async def test_raw_response_screener(self, async_client: AsyncBrapi) -> None:
+        response = await async_client.v2.stocks.with_raw_response.screener()
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        stock = await response.parse()
+        assert_matches_type(StockScreenerResponse, stock, path=["response"])
+
+    @parametrize
+    async def test_streaming_response_screener(self, async_client: AsyncBrapi) -> None:
+        async with async_client.v2.stocks.with_streaming_response.screener() as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            stock = await response.parse()
+            assert_matches_type(StockScreenerResponse, stock, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
