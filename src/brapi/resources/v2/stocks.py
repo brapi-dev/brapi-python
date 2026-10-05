@@ -12,6 +12,7 @@ from ..._compat import cached_property
 from ...types.v2 import (
     stock_quote_params,
     stock_profile_params,
+    stock_screener_params,
     stock_cash_flow_params,
     stock_dividends_params,
     stock_historical_params,
@@ -32,6 +33,7 @@ from ..._response import (
 from ..._base_client import make_request_options
 from ...types.v2.stock_quote_response import StockQuoteResponse
 from ...types.v2.stock_profile_response import StockProfileResponse
+from ...types.v2.stock_screener_response import StockScreenerResponse
 from ...types.v2.stock_cash_flow_response import StockCashFlowResponse
 from ...types.v2.stock_dividends_response import StockDividendsResponse
 from ...types.v2.stock_historical_response import StockHistoricalResponse
@@ -732,6 +734,461 @@ class StocksResource(SyncAPIResource):
                 query=maybe_transform({"symbols": symbols}, stock_quote_params.StockQuoteParams),
             ),
             cast_to=StockQuoteResponse,
+        )
+
+    def screener(
+        self,
+        *,
+        book_value_per_share_max: float | Omit = omit,
+        book_value_per_share_min: float | Omit = omit,
+        change_percent_max: float | Omit = omit,
+        change_percent_min: float | Omit = omit,
+        current_ratio_max: float | Omit = omit,
+        current_ratio_min: float | Omit = omit,
+        debt_to_equity_max: float | Omit = omit,
+        debt_to_equity_min: float | Omit = omit,
+        dividend_yield_max: float | Omit = omit,
+        dividend_yield_min: float | Omit = omit,
+        earnings_growth_annual_max: float | Omit = omit,
+        earnings_growth_annual_min: float | Omit = omit,
+        earnings_growth_max: float | Omit = omit,
+        earnings_growth_min: float | Omit = omit,
+        earnings_per_share_max: float | Omit = omit,
+        earnings_per_share_min: float | Omit = omit,
+        ebitda_margin_max: float | Omit = omit,
+        ebitda_margin_min: float | Omit = omit,
+        ebitda_max: float | Omit = omit,
+        ebitda_min: float | Omit = omit,
+        enterprise_to_ebitda_max: float | Omit = omit,
+        enterprise_to_ebitda_min: float | Omit = omit,
+        enterprise_to_revenue_max: float | Omit = omit,
+        enterprise_to_revenue_min: float | Omit = omit,
+        enterprise_value_max: float | Omit = omit,
+        enterprise_value_min: float | Omit = omit,
+        fifty_two_week_change_max: float | Omit = omit,
+        fifty_two_week_change_min: float | Omit = omit,
+        free_cashflow_max: float | Omit = omit,
+        free_cashflow_min: float | Omit = omit,
+        gross_margin_max: float | Omit = omit,
+        gross_margin_min: float | Omit = omit,
+        last_price_max: float | Omit = omit,
+        last_price_min: float | Omit = omit,
+        limit: int | Omit = omit,
+        market_cap_max: float | Omit = omit,
+        market_cap_min: float | Omit = omit,
+        net_debt_to_ebitda_max: float | Omit = omit,
+        net_debt_to_ebitda_min: float | Omit = omit,
+        net_margin_max: float | Omit = omit,
+        net_margin_min: float | Omit = omit,
+        operating_margin_max: float | Omit = omit,
+        operating_margin_min: float | Omit = omit,
+        page: int | Omit = omit,
+        peg_ratio_max: float | Omit = omit,
+        peg_ratio_min: float | Omit = omit,
+        price_to_book_max: float | Omit = omit,
+        price_to_book_min: float | Omit = omit,
+        quick_ratio_max: float | Omit = omit,
+        quick_ratio_min: float | Omit = omit,
+        return_on_assets_max: float | Omit = omit,
+        return_on_assets_min: float | Omit = omit,
+        return_on_equity_max: float | Omit = omit,
+        return_on_equity_min: float | Omit = omit,
+        revenue_growth_annual_max: float | Omit = omit,
+        revenue_growth_annual_min: float | Omit = omit,
+        revenue_growth_max: float | Omit = omit,
+        revenue_growth_min: float | Omit = omit,
+        search: str | Omit = omit,
+        sector: str | Omit = omit,
+        sort_by: Literal[
+            "symbol",
+            "name",
+            "lastPrice",
+            "changePercent",
+            "volume",
+            "marketCap",
+            "trailingPE",
+            "priceToBook",
+            "enterpriseToEbitda",
+            "enterpriseToRevenue",
+            "pegRatio",
+            "earningsPerShare",
+            "bookValuePerShare",
+            "netMargin",
+            "enterpriseValue",
+            "fiftyTwoWeekChange",
+            "dividendYield",
+            "returnOnEquity",
+            "returnOnAssets",
+            "grossMargin",
+            "ebitdaMargin",
+            "operatingMargin",
+            "debtToEquity",
+            "netDebtToEbitda",
+            "currentRatio",
+            "quickRatio",
+            "revenueGrowth",
+            "earningsGrowth",
+            "revenueGrowthAnnual",
+            "earningsGrowthAnnual",
+            "totalRevenue",
+            "ebitda",
+            "freeCashflow",
+            "totalDebt",
+            "totalCash",
+        ]
+        | Omit = omit,
+        sort_order: Literal["asc", "desc"] | Omit = omit,
+        subsector: str | Omit = omit,
+        sub_type: Literal["stock", "unit", "fii", "etf", "fi-infra", "fi-agro", "fip", "fidc", "bdr"] | Omit = omit,
+        total_cash_max: float | Omit = omit,
+        total_cash_min: float | Omit = omit,
+        total_debt_max: float | Omit = omit,
+        total_debt_min: float | Omit = omit,
+        total_revenue_max: float | Omit = omit,
+        total_revenue_min: float | Omit = omit,
+        trailing_pe_max: float | Omit = omit,
+        trailing_pe_min: float | Omit = omit,
+        type: Literal["stock", "fund", "bdr"] | Omit = omit,
+        volume_max: float | Omit = omit,
+        volume_min: float | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> StockScreenerResponse:
+        """
+        Filtra e ordena ações da B3 por preço e indicadores fundamentalistas, como P/L,
+        P/VP, dividend yield e ROE. Uma chamada percorre todas as ações.
+
+        Cada indicador aceita `{chave}Min` e `{chave}Max`. Os limites são inclusivos e
+        usam a mesma unidade da resposta. Frações seguem `/api/v2/stocks/statistics` e
+        `/api/v2/stocks/financial-data`: 6% é `0.06`. Um filtro remove os ativos sem o
+        dado. Na ordenação, os nulos ficam no fim.
+
+        Exemplos:
+
+        - P/L entre 0 e 8 e dividend yield de pelo menos 6%:
+          `?trailingPEMin=0&trailingPEMax=8&dividendYieldMin=0.06&sortBy=dividendYield`
+        - ROE de pelo menos 15%, do maior para o menor:
+          `?returnOnEquityMin=0.15&sortBy=returnOnEquity`
+
+        Empresas com prejuízo têm P/L negativo. Para excluí-las, envie `trailingPEMin=0`
+        junto com `trailingPEMax`.
+
+        `quote` e `dividendYield` usam o último preço. P/L, P/VP e os outros indicadores
+        usam o preço da atualização diária dos fundamentos. Em units, P/L e P/VP usam o
+        último preço da unit. `dividendYield` soma os proventos em dinheiro dos últimos
+        12 meses.
+
+        Planos Startup e Pro. Os indicadores do plano Pro não vêm em `metrics` no plano
+        Startup. Um filtro ou uma ordenação com esses indicadores no plano Startup
+        retorna 403.
+
+        | Indicador                    | Chave                  | Unidade                    | Plano         |
+        | ---------------------------- | ---------------------- | -------------------------- | ------------- |
+        | Preço                        | `lastPrice`            | reais                      | Startup e Pro |
+        | Variação no dia              | `changePercent`        | porcentagem (2.81 = 2,81%) | Startup e Pro |
+        | Volume                       | `volume`               | ações                      | Startup e Pro |
+        | Valor de mercado             | `marketCap`            | reais                      | Startup e Pro |
+        | P/L                          | `trailingPE`           | múltiplo                   | Startup e Pro |
+        | P/VP                         | `priceToBook`          | múltiplo                   | Startup e Pro |
+        | EV/EBITDA                    | `enterpriseToEbitda`   | múltiplo                   | Startup e Pro |
+        | EV/Receita                   | `enterpriseToRevenue`  | múltiplo                   | Startup e Pro |
+        | PEG                          | `pegRatio`             | múltiplo                   | Startup e Pro |
+        | LPA                          | `earningsPerShare`     | reais                      | Startup e Pro |
+        | VPA                          | `bookValuePerShare`    | reais                      | Startup e Pro |
+        | Margem líquida               | `netMargin`            | fração (0.06 = 6%)         | Startup e Pro |
+        | Valor da firma               | `enterpriseValue`      | reais                      | Startup e Pro |
+        | Variação 52 semanas          | `fiftyTwoWeekChange`   | fração (0.06 = 6%)         | Startup e Pro |
+        | Dividend yield               | `dividendYield`        | fração (0.06 = 6%)         | Startup e Pro |
+        | ROE                          | `returnOnEquity`       | fração (0.06 = 6%)         | Pro           |
+        | ROA                          | `returnOnAssets`       | fração (0.06 = 6%)         | Pro           |
+        | Margem bruta                 | `grossMargin`          | fração (0.06 = 6%)         | Pro           |
+        | Margem EBITDA                | `ebitdaMargin`         | fração (0.06 = 6%)         | Pro           |
+        | Margem operacional           | `operatingMargin`      | fração (0.06 = 6%)         | Pro           |
+        | Dívida/PL                    | `debtToEquity`         | múltiplo                   | Pro           |
+        | Dívida líquida/EBITDA        | `netDebtToEbitda`      | múltiplo                   | Pro           |
+        | Liquidez corrente            | `currentRatio`         | múltiplo                   | Pro           |
+        | Liquidez seca                | `quickRatio`           | múltiplo                   | Pro           |
+        | Crescimento da receita       | `revenueGrowth`        | fração (0.06 = 6%)         | Pro           |
+        | Crescimento do lucro         | `earningsGrowth`       | fração (0.06 = 6%)         | Pro           |
+        | Crescimento anual da receita | `revenueGrowthAnnual`  | fração (0.06 = 6%)         | Pro           |
+        | Crescimento anual do lucro   | `earningsGrowthAnnual` | fração (0.06 = 6%)         | Pro           |
+        | Receita                      | `totalRevenue`         | reais                      | Pro           |
+        | EBITDA                       | `ebitda`               | reais                      | Pro           |
+        | Fluxo de caixa livre         | `freeCashflow`         | reais                      | Pro           |
+        | Dívida bruta                 | `totalDebt`            | reais                      | Pro           |
+        | Caixa                        | `totalCash`            | reais                      | Pro           |
+
+        Args:
+          book_value_per_share_max: VPA: valor máximo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          book_value_per_share_min: VPA: valor mínimo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          change_percent_max: Variação no dia: valor máximo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+              Plano Startup e Pro.
+
+          change_percent_min: Variação no dia: valor mínimo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+              Plano Startup e Pro.
+
+          current_ratio_max: Liquidez corrente: valor máximo, inclusive. Unidade: múltiplo. Plano Pro.
+
+          current_ratio_min: Liquidez corrente: valor mínimo, inclusive. Unidade: múltiplo. Plano Pro.
+
+          debt_to_equity_max: Dívida/PL: valor máximo, inclusive. Unidade: múltiplo. Plano Pro.
+
+          debt_to_equity_min: Dívida/PL: valor mínimo, inclusive. Unidade: múltiplo. Plano Pro.
+
+          dividend_yield_max: Dividend yield: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Plano
+              Startup e Pro.
+
+          dividend_yield_min: Dividend yield: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Plano
+              Startup e Pro.
+
+          earnings_growth_annual_max: Crescimento anual do lucro: valor máximo, inclusive. Unidade: fração (0.06 =
+              6%). Plano Pro.
+
+          earnings_growth_annual_min: Crescimento anual do lucro: valor mínimo, inclusive. Unidade: fração (0.06 =
+              6%). Plano Pro.
+
+          earnings_growth_max: Crescimento do lucro: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
+              Plano Pro.
+
+          earnings_growth_min: Crescimento do lucro: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
+              Plano Pro.
+
+          earnings_per_share_max: LPA: valor máximo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          earnings_per_share_min: LPA: valor mínimo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          ebitda_margin_max: Margem EBITDA: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Plano Pro.
+
+          ebitda_margin_min: Margem EBITDA: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Plano Pro.
+
+          ebitda_max: EBITDA: valor máximo, inclusive. Unidade: reais. Plano Pro.
+
+          ebitda_min: EBITDA: valor mínimo, inclusive. Unidade: reais. Plano Pro.
+
+          enterprise_to_ebitda_max: EV/EBITDA: valor máximo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          enterprise_to_ebitda_min: EV/EBITDA: valor mínimo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          enterprise_to_revenue_max: EV/Receita: valor máximo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          enterprise_to_revenue_min: EV/Receita: valor mínimo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          enterprise_value_max: Valor da firma: valor máximo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          enterprise_value_min: Valor da firma: valor mínimo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          fifty_two_week_change_max: Variação 52 semanas: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Plano
+              Startup e Pro.
+
+          fifty_two_week_change_min: Variação 52 semanas: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Plano
+              Startup e Pro.
+
+          free_cashflow_max: Fluxo de caixa livre: valor máximo, inclusive. Unidade: reais. Plano Pro.
+
+          free_cashflow_min: Fluxo de caixa livre: valor mínimo, inclusive. Unidade: reais. Plano Pro.
+
+          gross_margin_max: Margem bruta: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Plano Pro.
+
+          gross_margin_min: Margem bruta: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Plano Pro.
+
+          last_price_max: Preço: valor máximo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          last_price_min: Preço: valor mínimo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          limit: Itens por página. Máximo: 200.
+
+          market_cap_max: Valor de mercado: valor máximo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          market_cap_min: Valor de mercado: valor mínimo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          net_debt_to_ebitda_max: Dívida líquida/EBITDA: valor máximo, inclusive. Unidade: múltiplo. Plano Pro.
+
+          net_debt_to_ebitda_min: Dívida líquida/EBITDA: valor mínimo, inclusive. Unidade: múltiplo. Plano Pro.
+
+          net_margin_max: Margem líquida: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Plano
+              Startup e Pro.
+
+          net_margin_min: Margem líquida: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Plano
+              Startup e Pro.
+
+          operating_margin_max: Margem operacional: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Plano
+              Pro.
+
+          operating_margin_min: Margem operacional: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Plano
+              Pro.
+
+          page: Número da página. Começa em 1.
+
+          peg_ratio_max: PEG: valor máximo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          peg_ratio_min: PEG: valor mínimo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          price_to_book_max: P/VP: valor máximo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          price_to_book_min: P/VP: valor mínimo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          quick_ratio_max: Liquidez seca: valor máximo, inclusive. Unidade: múltiplo. Plano Pro.
+
+          quick_ratio_min: Liquidez seca: valor mínimo, inclusive. Unidade: múltiplo. Plano Pro.
+
+          return_on_assets_max: ROA: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Plano Pro.
+
+          return_on_assets_min: ROA: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Plano Pro.
+
+          return_on_equity_max: ROE: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Plano Pro.
+
+          return_on_equity_min: ROE: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Plano Pro.
+
+          revenue_growth_annual_max: Crescimento anual da receita: valor máximo, inclusive. Unidade: fração (0.06 =
+              6%). Plano Pro.
+
+          revenue_growth_annual_min: Crescimento anual da receita: valor mínimo, inclusive. Unidade: fração (0.06 =
+              6%). Plano Pro.
+
+          revenue_growth_max: Crescimento da receita: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
+              Plano Pro.
+
+          revenue_growth_min: Crescimento da receita: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
+              Plano Pro.
+
+          search: Parte do ticker, do nome da empresa ou de um ticker antigo.
+
+          sector: Setor. Aceita parte do nome.
+
+          sort_by: Campo de ordenação: uma chave de métrica, `symbol` ou `name`. Valores nulos
+              ficam no fim.
+
+          sort_order: Ordem. Padrão: `desc`.
+
+          subsector: Subsetor. Nome exato.
+
+          sub_type: Subtipo do ativo: stock, unit, fii, etf, fi-infra, fi-agro, fip, fidc ou bdr.
+
+          total_cash_max: Caixa: valor máximo, inclusive. Unidade: reais. Plano Pro.
+
+          total_cash_min: Caixa: valor mínimo, inclusive. Unidade: reais. Plano Pro.
+
+          total_debt_max: Dívida bruta: valor máximo, inclusive. Unidade: reais. Plano Pro.
+
+          total_debt_min: Dívida bruta: valor mínimo, inclusive. Unidade: reais. Plano Pro.
+
+          total_revenue_max: Receita: valor máximo, inclusive. Unidade: reais. Plano Pro.
+
+          total_revenue_min: Receita: valor mínimo, inclusive. Unidade: reais. Plano Pro.
+
+          trailing_pe_max: P/L: valor máximo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          trailing_pe_min: P/L: valor mínimo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          type: Tipo do ativo. Padrão: `stock`.
+
+          volume_max: Volume: valor máximo, inclusive. Unidade: ações. Plano Startup e Pro.
+
+          volume_min: Volume: valor mínimo, inclusive. Unidade: ações. Plano Startup e Pro.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return self._get(
+            "/api/v2/stocks/screener",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {
+                        "book_value_per_share_max": book_value_per_share_max,
+                        "book_value_per_share_min": book_value_per_share_min,
+                        "change_percent_max": change_percent_max,
+                        "change_percent_min": change_percent_min,
+                        "current_ratio_max": current_ratio_max,
+                        "current_ratio_min": current_ratio_min,
+                        "debt_to_equity_max": debt_to_equity_max,
+                        "debt_to_equity_min": debt_to_equity_min,
+                        "dividend_yield_max": dividend_yield_max,
+                        "dividend_yield_min": dividend_yield_min,
+                        "earnings_growth_annual_max": earnings_growth_annual_max,
+                        "earnings_growth_annual_min": earnings_growth_annual_min,
+                        "earnings_growth_max": earnings_growth_max,
+                        "earnings_growth_min": earnings_growth_min,
+                        "earnings_per_share_max": earnings_per_share_max,
+                        "earnings_per_share_min": earnings_per_share_min,
+                        "ebitda_margin_max": ebitda_margin_max,
+                        "ebitda_margin_min": ebitda_margin_min,
+                        "ebitda_max": ebitda_max,
+                        "ebitda_min": ebitda_min,
+                        "enterprise_to_ebitda_max": enterprise_to_ebitda_max,
+                        "enterprise_to_ebitda_min": enterprise_to_ebitda_min,
+                        "enterprise_to_revenue_max": enterprise_to_revenue_max,
+                        "enterprise_to_revenue_min": enterprise_to_revenue_min,
+                        "enterprise_value_max": enterprise_value_max,
+                        "enterprise_value_min": enterprise_value_min,
+                        "fifty_two_week_change_max": fifty_two_week_change_max,
+                        "fifty_two_week_change_min": fifty_two_week_change_min,
+                        "free_cashflow_max": free_cashflow_max,
+                        "free_cashflow_min": free_cashflow_min,
+                        "gross_margin_max": gross_margin_max,
+                        "gross_margin_min": gross_margin_min,
+                        "last_price_max": last_price_max,
+                        "last_price_min": last_price_min,
+                        "limit": limit,
+                        "market_cap_max": market_cap_max,
+                        "market_cap_min": market_cap_min,
+                        "net_debt_to_ebitda_max": net_debt_to_ebitda_max,
+                        "net_debt_to_ebitda_min": net_debt_to_ebitda_min,
+                        "net_margin_max": net_margin_max,
+                        "net_margin_min": net_margin_min,
+                        "operating_margin_max": operating_margin_max,
+                        "operating_margin_min": operating_margin_min,
+                        "page": page,
+                        "peg_ratio_max": peg_ratio_max,
+                        "peg_ratio_min": peg_ratio_min,
+                        "price_to_book_max": price_to_book_max,
+                        "price_to_book_min": price_to_book_min,
+                        "quick_ratio_max": quick_ratio_max,
+                        "quick_ratio_min": quick_ratio_min,
+                        "return_on_assets_max": return_on_assets_max,
+                        "return_on_assets_min": return_on_assets_min,
+                        "return_on_equity_max": return_on_equity_max,
+                        "return_on_equity_min": return_on_equity_min,
+                        "revenue_growth_annual_max": revenue_growth_annual_max,
+                        "revenue_growth_annual_min": revenue_growth_annual_min,
+                        "revenue_growth_max": revenue_growth_max,
+                        "revenue_growth_min": revenue_growth_min,
+                        "search": search,
+                        "sector": sector,
+                        "sort_by": sort_by,
+                        "sort_order": sort_order,
+                        "subsector": subsector,
+                        "sub_type": sub_type,
+                        "total_cash_max": total_cash_max,
+                        "total_cash_min": total_cash_min,
+                        "total_debt_max": total_debt_max,
+                        "total_debt_min": total_debt_min,
+                        "total_revenue_max": total_revenue_max,
+                        "total_revenue_min": total_revenue_min,
+                        "trailing_pe_max": trailing_pe_max,
+                        "trailing_pe_min": trailing_pe_min,
+                        "type": type,
+                        "volume_max": volume_max,
+                        "volume_min": volume_min,
+                    },
+                    stock_screener_params.StockScreenerParams,
+                ),
+            ),
+            cast_to=StockScreenerResponse,
         )
 
     def statistics(
@@ -1559,6 +2016,461 @@ class AsyncStocksResource(AsyncAPIResource):
             cast_to=StockQuoteResponse,
         )
 
+    async def screener(
+        self,
+        *,
+        book_value_per_share_max: float | Omit = omit,
+        book_value_per_share_min: float | Omit = omit,
+        change_percent_max: float | Omit = omit,
+        change_percent_min: float | Omit = omit,
+        current_ratio_max: float | Omit = omit,
+        current_ratio_min: float | Omit = omit,
+        debt_to_equity_max: float | Omit = omit,
+        debt_to_equity_min: float | Omit = omit,
+        dividend_yield_max: float | Omit = omit,
+        dividend_yield_min: float | Omit = omit,
+        earnings_growth_annual_max: float | Omit = omit,
+        earnings_growth_annual_min: float | Omit = omit,
+        earnings_growth_max: float | Omit = omit,
+        earnings_growth_min: float | Omit = omit,
+        earnings_per_share_max: float | Omit = omit,
+        earnings_per_share_min: float | Omit = omit,
+        ebitda_margin_max: float | Omit = omit,
+        ebitda_margin_min: float | Omit = omit,
+        ebitda_max: float | Omit = omit,
+        ebitda_min: float | Omit = omit,
+        enterprise_to_ebitda_max: float | Omit = omit,
+        enterprise_to_ebitda_min: float | Omit = omit,
+        enterprise_to_revenue_max: float | Omit = omit,
+        enterprise_to_revenue_min: float | Omit = omit,
+        enterprise_value_max: float | Omit = omit,
+        enterprise_value_min: float | Omit = omit,
+        fifty_two_week_change_max: float | Omit = omit,
+        fifty_two_week_change_min: float | Omit = omit,
+        free_cashflow_max: float | Omit = omit,
+        free_cashflow_min: float | Omit = omit,
+        gross_margin_max: float | Omit = omit,
+        gross_margin_min: float | Omit = omit,
+        last_price_max: float | Omit = omit,
+        last_price_min: float | Omit = omit,
+        limit: int | Omit = omit,
+        market_cap_max: float | Omit = omit,
+        market_cap_min: float | Omit = omit,
+        net_debt_to_ebitda_max: float | Omit = omit,
+        net_debt_to_ebitda_min: float | Omit = omit,
+        net_margin_max: float | Omit = omit,
+        net_margin_min: float | Omit = omit,
+        operating_margin_max: float | Omit = omit,
+        operating_margin_min: float | Omit = omit,
+        page: int | Omit = omit,
+        peg_ratio_max: float | Omit = omit,
+        peg_ratio_min: float | Omit = omit,
+        price_to_book_max: float | Omit = omit,
+        price_to_book_min: float | Omit = omit,
+        quick_ratio_max: float | Omit = omit,
+        quick_ratio_min: float | Omit = omit,
+        return_on_assets_max: float | Omit = omit,
+        return_on_assets_min: float | Omit = omit,
+        return_on_equity_max: float | Omit = omit,
+        return_on_equity_min: float | Omit = omit,
+        revenue_growth_annual_max: float | Omit = omit,
+        revenue_growth_annual_min: float | Omit = omit,
+        revenue_growth_max: float | Omit = omit,
+        revenue_growth_min: float | Omit = omit,
+        search: str | Omit = omit,
+        sector: str | Omit = omit,
+        sort_by: Literal[
+            "symbol",
+            "name",
+            "lastPrice",
+            "changePercent",
+            "volume",
+            "marketCap",
+            "trailingPE",
+            "priceToBook",
+            "enterpriseToEbitda",
+            "enterpriseToRevenue",
+            "pegRatio",
+            "earningsPerShare",
+            "bookValuePerShare",
+            "netMargin",
+            "enterpriseValue",
+            "fiftyTwoWeekChange",
+            "dividendYield",
+            "returnOnEquity",
+            "returnOnAssets",
+            "grossMargin",
+            "ebitdaMargin",
+            "operatingMargin",
+            "debtToEquity",
+            "netDebtToEbitda",
+            "currentRatio",
+            "quickRatio",
+            "revenueGrowth",
+            "earningsGrowth",
+            "revenueGrowthAnnual",
+            "earningsGrowthAnnual",
+            "totalRevenue",
+            "ebitda",
+            "freeCashflow",
+            "totalDebt",
+            "totalCash",
+        ]
+        | Omit = omit,
+        sort_order: Literal["asc", "desc"] | Omit = omit,
+        subsector: str | Omit = omit,
+        sub_type: Literal["stock", "unit", "fii", "etf", "fi-infra", "fi-agro", "fip", "fidc", "bdr"] | Omit = omit,
+        total_cash_max: float | Omit = omit,
+        total_cash_min: float | Omit = omit,
+        total_debt_max: float | Omit = omit,
+        total_debt_min: float | Omit = omit,
+        total_revenue_max: float | Omit = omit,
+        total_revenue_min: float | Omit = omit,
+        trailing_pe_max: float | Omit = omit,
+        trailing_pe_min: float | Omit = omit,
+        type: Literal["stock", "fund", "bdr"] | Omit = omit,
+        volume_max: float | Omit = omit,
+        volume_min: float | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> StockScreenerResponse:
+        """
+        Filtra e ordena ações da B3 por preço e indicadores fundamentalistas, como P/L,
+        P/VP, dividend yield e ROE. Uma chamada percorre todas as ações.
+
+        Cada indicador aceita `{chave}Min` e `{chave}Max`. Os limites são inclusivos e
+        usam a mesma unidade da resposta. Frações seguem `/api/v2/stocks/statistics` e
+        `/api/v2/stocks/financial-data`: 6% é `0.06`. Um filtro remove os ativos sem o
+        dado. Na ordenação, os nulos ficam no fim.
+
+        Exemplos:
+
+        - P/L entre 0 e 8 e dividend yield de pelo menos 6%:
+          `?trailingPEMin=0&trailingPEMax=8&dividendYieldMin=0.06&sortBy=dividendYield`
+        - ROE de pelo menos 15%, do maior para o menor:
+          `?returnOnEquityMin=0.15&sortBy=returnOnEquity`
+
+        Empresas com prejuízo têm P/L negativo. Para excluí-las, envie `trailingPEMin=0`
+        junto com `trailingPEMax`.
+
+        `quote` e `dividendYield` usam o último preço. P/L, P/VP e os outros indicadores
+        usam o preço da atualização diária dos fundamentos. Em units, P/L e P/VP usam o
+        último preço da unit. `dividendYield` soma os proventos em dinheiro dos últimos
+        12 meses.
+
+        Planos Startup e Pro. Os indicadores do plano Pro não vêm em `metrics` no plano
+        Startup. Um filtro ou uma ordenação com esses indicadores no plano Startup
+        retorna 403.
+
+        | Indicador                    | Chave                  | Unidade                    | Plano         |
+        | ---------------------------- | ---------------------- | -------------------------- | ------------- |
+        | Preço                        | `lastPrice`            | reais                      | Startup e Pro |
+        | Variação no dia              | `changePercent`        | porcentagem (2.81 = 2,81%) | Startup e Pro |
+        | Volume                       | `volume`               | ações                      | Startup e Pro |
+        | Valor de mercado             | `marketCap`            | reais                      | Startup e Pro |
+        | P/L                          | `trailingPE`           | múltiplo                   | Startup e Pro |
+        | P/VP                         | `priceToBook`          | múltiplo                   | Startup e Pro |
+        | EV/EBITDA                    | `enterpriseToEbitda`   | múltiplo                   | Startup e Pro |
+        | EV/Receita                   | `enterpriseToRevenue`  | múltiplo                   | Startup e Pro |
+        | PEG                          | `pegRatio`             | múltiplo                   | Startup e Pro |
+        | LPA                          | `earningsPerShare`     | reais                      | Startup e Pro |
+        | VPA                          | `bookValuePerShare`    | reais                      | Startup e Pro |
+        | Margem líquida               | `netMargin`            | fração (0.06 = 6%)         | Startup e Pro |
+        | Valor da firma               | `enterpriseValue`      | reais                      | Startup e Pro |
+        | Variação 52 semanas          | `fiftyTwoWeekChange`   | fração (0.06 = 6%)         | Startup e Pro |
+        | Dividend yield               | `dividendYield`        | fração (0.06 = 6%)         | Startup e Pro |
+        | ROE                          | `returnOnEquity`       | fração (0.06 = 6%)         | Pro           |
+        | ROA                          | `returnOnAssets`       | fração (0.06 = 6%)         | Pro           |
+        | Margem bruta                 | `grossMargin`          | fração (0.06 = 6%)         | Pro           |
+        | Margem EBITDA                | `ebitdaMargin`         | fração (0.06 = 6%)         | Pro           |
+        | Margem operacional           | `operatingMargin`      | fração (0.06 = 6%)         | Pro           |
+        | Dívida/PL                    | `debtToEquity`         | múltiplo                   | Pro           |
+        | Dívida líquida/EBITDA        | `netDebtToEbitda`      | múltiplo                   | Pro           |
+        | Liquidez corrente            | `currentRatio`         | múltiplo                   | Pro           |
+        | Liquidez seca                | `quickRatio`           | múltiplo                   | Pro           |
+        | Crescimento da receita       | `revenueGrowth`        | fração (0.06 = 6%)         | Pro           |
+        | Crescimento do lucro         | `earningsGrowth`       | fração (0.06 = 6%)         | Pro           |
+        | Crescimento anual da receita | `revenueGrowthAnnual`  | fração (0.06 = 6%)         | Pro           |
+        | Crescimento anual do lucro   | `earningsGrowthAnnual` | fração (0.06 = 6%)         | Pro           |
+        | Receita                      | `totalRevenue`         | reais                      | Pro           |
+        | EBITDA                       | `ebitda`               | reais                      | Pro           |
+        | Fluxo de caixa livre         | `freeCashflow`         | reais                      | Pro           |
+        | Dívida bruta                 | `totalDebt`            | reais                      | Pro           |
+        | Caixa                        | `totalCash`            | reais                      | Pro           |
+
+        Args:
+          book_value_per_share_max: VPA: valor máximo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          book_value_per_share_min: VPA: valor mínimo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          change_percent_max: Variação no dia: valor máximo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+              Plano Startup e Pro.
+
+          change_percent_min: Variação no dia: valor mínimo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+              Plano Startup e Pro.
+
+          current_ratio_max: Liquidez corrente: valor máximo, inclusive. Unidade: múltiplo. Plano Pro.
+
+          current_ratio_min: Liquidez corrente: valor mínimo, inclusive. Unidade: múltiplo. Plano Pro.
+
+          debt_to_equity_max: Dívida/PL: valor máximo, inclusive. Unidade: múltiplo. Plano Pro.
+
+          debt_to_equity_min: Dívida/PL: valor mínimo, inclusive. Unidade: múltiplo. Plano Pro.
+
+          dividend_yield_max: Dividend yield: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Plano
+              Startup e Pro.
+
+          dividend_yield_min: Dividend yield: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Plano
+              Startup e Pro.
+
+          earnings_growth_annual_max: Crescimento anual do lucro: valor máximo, inclusive. Unidade: fração (0.06 =
+              6%). Plano Pro.
+
+          earnings_growth_annual_min: Crescimento anual do lucro: valor mínimo, inclusive. Unidade: fração (0.06 =
+              6%). Plano Pro.
+
+          earnings_growth_max: Crescimento do lucro: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
+              Plano Pro.
+
+          earnings_growth_min: Crescimento do lucro: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
+              Plano Pro.
+
+          earnings_per_share_max: LPA: valor máximo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          earnings_per_share_min: LPA: valor mínimo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          ebitda_margin_max: Margem EBITDA: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Plano Pro.
+
+          ebitda_margin_min: Margem EBITDA: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Plano Pro.
+
+          ebitda_max: EBITDA: valor máximo, inclusive. Unidade: reais. Plano Pro.
+
+          ebitda_min: EBITDA: valor mínimo, inclusive. Unidade: reais. Plano Pro.
+
+          enterprise_to_ebitda_max: EV/EBITDA: valor máximo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          enterprise_to_ebitda_min: EV/EBITDA: valor mínimo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          enterprise_to_revenue_max: EV/Receita: valor máximo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          enterprise_to_revenue_min: EV/Receita: valor mínimo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          enterprise_value_max: Valor da firma: valor máximo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          enterprise_value_min: Valor da firma: valor mínimo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          fifty_two_week_change_max: Variação 52 semanas: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Plano
+              Startup e Pro.
+
+          fifty_two_week_change_min: Variação 52 semanas: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Plano
+              Startup e Pro.
+
+          free_cashflow_max: Fluxo de caixa livre: valor máximo, inclusive. Unidade: reais. Plano Pro.
+
+          free_cashflow_min: Fluxo de caixa livre: valor mínimo, inclusive. Unidade: reais. Plano Pro.
+
+          gross_margin_max: Margem bruta: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Plano Pro.
+
+          gross_margin_min: Margem bruta: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Plano Pro.
+
+          last_price_max: Preço: valor máximo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          last_price_min: Preço: valor mínimo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          limit: Itens por página. Máximo: 200.
+
+          market_cap_max: Valor de mercado: valor máximo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          market_cap_min: Valor de mercado: valor mínimo, inclusive. Unidade: reais. Plano Startup e Pro.
+
+          net_debt_to_ebitda_max: Dívida líquida/EBITDA: valor máximo, inclusive. Unidade: múltiplo. Plano Pro.
+
+          net_debt_to_ebitda_min: Dívida líquida/EBITDA: valor mínimo, inclusive. Unidade: múltiplo. Plano Pro.
+
+          net_margin_max: Margem líquida: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Plano
+              Startup e Pro.
+
+          net_margin_min: Margem líquida: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Plano
+              Startup e Pro.
+
+          operating_margin_max: Margem operacional: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Plano
+              Pro.
+
+          operating_margin_min: Margem operacional: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Plano
+              Pro.
+
+          page: Número da página. Começa em 1.
+
+          peg_ratio_max: PEG: valor máximo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          peg_ratio_min: PEG: valor mínimo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          price_to_book_max: P/VP: valor máximo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          price_to_book_min: P/VP: valor mínimo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          quick_ratio_max: Liquidez seca: valor máximo, inclusive. Unidade: múltiplo. Plano Pro.
+
+          quick_ratio_min: Liquidez seca: valor mínimo, inclusive. Unidade: múltiplo. Plano Pro.
+
+          return_on_assets_max: ROA: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Plano Pro.
+
+          return_on_assets_min: ROA: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Plano Pro.
+
+          return_on_equity_max: ROE: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Plano Pro.
+
+          return_on_equity_min: ROE: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Plano Pro.
+
+          revenue_growth_annual_max: Crescimento anual da receita: valor máximo, inclusive. Unidade: fração (0.06 =
+              6%). Plano Pro.
+
+          revenue_growth_annual_min: Crescimento anual da receita: valor mínimo, inclusive. Unidade: fração (0.06 =
+              6%). Plano Pro.
+
+          revenue_growth_max: Crescimento da receita: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
+              Plano Pro.
+
+          revenue_growth_min: Crescimento da receita: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
+              Plano Pro.
+
+          search: Parte do ticker, do nome da empresa ou de um ticker antigo.
+
+          sector: Setor. Aceita parte do nome.
+
+          sort_by: Campo de ordenação: uma chave de métrica, `symbol` ou `name`. Valores nulos
+              ficam no fim.
+
+          sort_order: Ordem. Padrão: `desc`.
+
+          subsector: Subsetor. Nome exato.
+
+          sub_type: Subtipo do ativo: stock, unit, fii, etf, fi-infra, fi-agro, fip, fidc ou bdr.
+
+          total_cash_max: Caixa: valor máximo, inclusive. Unidade: reais. Plano Pro.
+
+          total_cash_min: Caixa: valor mínimo, inclusive. Unidade: reais. Plano Pro.
+
+          total_debt_max: Dívida bruta: valor máximo, inclusive. Unidade: reais. Plano Pro.
+
+          total_debt_min: Dívida bruta: valor mínimo, inclusive. Unidade: reais. Plano Pro.
+
+          total_revenue_max: Receita: valor máximo, inclusive. Unidade: reais. Plano Pro.
+
+          total_revenue_min: Receita: valor mínimo, inclusive. Unidade: reais. Plano Pro.
+
+          trailing_pe_max: P/L: valor máximo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          trailing_pe_min: P/L: valor mínimo, inclusive. Unidade: múltiplo. Plano Startup e Pro.
+
+          type: Tipo do ativo. Padrão: `stock`.
+
+          volume_max: Volume: valor máximo, inclusive. Unidade: ações. Plano Startup e Pro.
+
+          volume_min: Volume: valor mínimo, inclusive. Unidade: ações. Plano Startup e Pro.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return await self._get(
+            "/api/v2/stocks/screener",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {
+                        "book_value_per_share_max": book_value_per_share_max,
+                        "book_value_per_share_min": book_value_per_share_min,
+                        "change_percent_max": change_percent_max,
+                        "change_percent_min": change_percent_min,
+                        "current_ratio_max": current_ratio_max,
+                        "current_ratio_min": current_ratio_min,
+                        "debt_to_equity_max": debt_to_equity_max,
+                        "debt_to_equity_min": debt_to_equity_min,
+                        "dividend_yield_max": dividend_yield_max,
+                        "dividend_yield_min": dividend_yield_min,
+                        "earnings_growth_annual_max": earnings_growth_annual_max,
+                        "earnings_growth_annual_min": earnings_growth_annual_min,
+                        "earnings_growth_max": earnings_growth_max,
+                        "earnings_growth_min": earnings_growth_min,
+                        "earnings_per_share_max": earnings_per_share_max,
+                        "earnings_per_share_min": earnings_per_share_min,
+                        "ebitda_margin_max": ebitda_margin_max,
+                        "ebitda_margin_min": ebitda_margin_min,
+                        "ebitda_max": ebitda_max,
+                        "ebitda_min": ebitda_min,
+                        "enterprise_to_ebitda_max": enterprise_to_ebitda_max,
+                        "enterprise_to_ebitda_min": enterprise_to_ebitda_min,
+                        "enterprise_to_revenue_max": enterprise_to_revenue_max,
+                        "enterprise_to_revenue_min": enterprise_to_revenue_min,
+                        "enterprise_value_max": enterprise_value_max,
+                        "enterprise_value_min": enterprise_value_min,
+                        "fifty_two_week_change_max": fifty_two_week_change_max,
+                        "fifty_two_week_change_min": fifty_two_week_change_min,
+                        "free_cashflow_max": free_cashflow_max,
+                        "free_cashflow_min": free_cashflow_min,
+                        "gross_margin_max": gross_margin_max,
+                        "gross_margin_min": gross_margin_min,
+                        "last_price_max": last_price_max,
+                        "last_price_min": last_price_min,
+                        "limit": limit,
+                        "market_cap_max": market_cap_max,
+                        "market_cap_min": market_cap_min,
+                        "net_debt_to_ebitda_max": net_debt_to_ebitda_max,
+                        "net_debt_to_ebitda_min": net_debt_to_ebitda_min,
+                        "net_margin_max": net_margin_max,
+                        "net_margin_min": net_margin_min,
+                        "operating_margin_max": operating_margin_max,
+                        "operating_margin_min": operating_margin_min,
+                        "page": page,
+                        "peg_ratio_max": peg_ratio_max,
+                        "peg_ratio_min": peg_ratio_min,
+                        "price_to_book_max": price_to_book_max,
+                        "price_to_book_min": price_to_book_min,
+                        "quick_ratio_max": quick_ratio_max,
+                        "quick_ratio_min": quick_ratio_min,
+                        "return_on_assets_max": return_on_assets_max,
+                        "return_on_assets_min": return_on_assets_min,
+                        "return_on_equity_max": return_on_equity_max,
+                        "return_on_equity_min": return_on_equity_min,
+                        "revenue_growth_annual_max": revenue_growth_annual_max,
+                        "revenue_growth_annual_min": revenue_growth_annual_min,
+                        "revenue_growth_max": revenue_growth_max,
+                        "revenue_growth_min": revenue_growth_min,
+                        "search": search,
+                        "sector": sector,
+                        "sort_by": sort_by,
+                        "sort_order": sort_order,
+                        "subsector": subsector,
+                        "sub_type": sub_type,
+                        "total_cash_max": total_cash_max,
+                        "total_cash_min": total_cash_min,
+                        "total_debt_max": total_debt_max,
+                        "total_debt_min": total_debt_min,
+                        "total_revenue_max": total_revenue_max,
+                        "total_revenue_min": total_revenue_min,
+                        "trailing_pe_max": trailing_pe_max,
+                        "trailing_pe_min": trailing_pe_min,
+                        "type": type,
+                        "volume_max": volume_max,
+                        "volume_min": volume_min,
+                    },
+                    stock_screener_params.StockScreenerParams,
+                ),
+            ),
+            cast_to=StockScreenerResponse,
+        )
+
     async def statistics(
         self,
         *,
@@ -1726,6 +2638,9 @@ class StocksResourceWithRawResponse:
         self.quote = to_raw_response_wrapper(
             stocks.quote,
         )
+        self.screener = to_raw_response_wrapper(
+            stocks.screener,
+        )
         self.statistics = to_raw_response_wrapper(
             stocks.statistics,
         )
@@ -1764,6 +2679,9 @@ class AsyncStocksResourceWithRawResponse:
         )
         self.quote = async_to_raw_response_wrapper(
             stocks.quote,
+        )
+        self.screener = async_to_raw_response_wrapper(
+            stocks.screener,
         )
         self.statistics = async_to_raw_response_wrapper(
             stocks.statistics,
@@ -1804,6 +2722,9 @@ class StocksResourceWithStreamingResponse:
         self.quote = to_streamed_response_wrapper(
             stocks.quote,
         )
+        self.screener = to_streamed_response_wrapper(
+            stocks.screener,
+        )
         self.statistics = to_streamed_response_wrapper(
             stocks.statistics,
         )
@@ -1842,6 +2763,9 @@ class AsyncStocksResourceWithStreamingResponse:
         )
         self.quote = async_to_streamed_response_wrapper(
             stocks.quote,
+        )
+        self.screener = async_to_streamed_response_wrapper(
+            stocks.screener,
         )
         self.statistics = async_to_streamed_response_wrapper(
             stocks.statistics,
