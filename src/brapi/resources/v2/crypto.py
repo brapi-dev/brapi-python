@@ -51,8 +51,10 @@ class CryptoResource(SyncAPIResource):
         *,
         coin: str | Omit = omit,
         currency: str | Omit = omit,
+        end_date: str | Omit = omit,
         interval: str | Omit = omit,
         range: str | Omit = omit,
+        start_date: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -70,6 +72,16 @@ class CryptoResource(SyncAPIResource):
         `range` ou `interval`, como `range=1mo&interval=1d`. A resposta traz os pontos
         em `historicalDataPrice` e o período aplicado em `usedRange` e `usedInterval`.
         Intervalos curtos limitam o período.
+
+        O histórico diário aceita `startDate` e `endDate` no formato YYYY-MM-DD, com
+        `interval=1d` ou sem intervalo. Use datas sem `range`. Sem data inicial, o
+        período é de 30 dias até a data final. As datas são inclusivas. `usedRange` vem
+        como `custom` em consultas por data. `range=max&interval=1d` retorna todos os
+        dias disponíveis, sem limite de 1.000 pontos. O histórico diário inclui somente
+        dias completos em UTC. A primeira data depende da criptomoeda. Se a cotação
+        atual estiver indisponível, os campos de cotação usam o último dia completo
+        disponível. Nesse caso, a variação e o volume também correspondem a esse dia em
+        UTC. Confira a data em `regularMarketTime`.
 
         Cripto negocia 24 horas por dia. A variação é uma janela móvel de 24 horas. O
         histórico usa o câmbio diário da data de fechamento em UTC. Em dias sem cotação
@@ -92,9 +104,13 @@ class CryptoResource(SyncAPIResource):
 
           currency: Moeda da cotação, como BRL, USD ou EUR. Padrão: BRL.
 
+          end_date: Data final inclusiva do histórico diário no formato YYYY-MM-DD. Padrão: hoje.
+
           interval: Intervalo entre os pontos do histórico, como 1h ou 1d. Padrão: 1d.
 
           range: Período do histórico, como 5d, 1mo ou 1y. Padrão: 1mo quando há histórico.
+
+          start_date: Data inicial do histórico diário no formato YYYY-MM-DD. Use sem range.
 
           extra_headers: Send extra headers
 
@@ -115,8 +131,10 @@ class CryptoResource(SyncAPIResource):
                     {
                         "coin": coin,
                         "currency": currency,
+                        "end_date": end_date,
                         "interval": interval,
                         "range": range,
+                        "start_date": start_date,
                     },
                     crypto_retrieve_params.CryptoRetrieveParams,
                 ),
@@ -197,8 +215,10 @@ class AsyncCryptoResource(AsyncAPIResource):
         *,
         coin: str | Omit = omit,
         currency: str | Omit = omit,
+        end_date: str | Omit = omit,
         interval: str | Omit = omit,
         range: str | Omit = omit,
+        start_date: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -216,6 +236,16 @@ class AsyncCryptoResource(AsyncAPIResource):
         `range` ou `interval`, como `range=1mo&interval=1d`. A resposta traz os pontos
         em `historicalDataPrice` e o período aplicado em `usedRange` e `usedInterval`.
         Intervalos curtos limitam o período.
+
+        O histórico diário aceita `startDate` e `endDate` no formato YYYY-MM-DD, com
+        `interval=1d` ou sem intervalo. Use datas sem `range`. Sem data inicial, o
+        período é de 30 dias até a data final. As datas são inclusivas. `usedRange` vem
+        como `custom` em consultas por data. `range=max&interval=1d` retorna todos os
+        dias disponíveis, sem limite de 1.000 pontos. O histórico diário inclui somente
+        dias completos em UTC. A primeira data depende da criptomoeda. Se a cotação
+        atual estiver indisponível, os campos de cotação usam o último dia completo
+        disponível. Nesse caso, a variação e o volume também correspondem a esse dia em
+        UTC. Confira a data em `regularMarketTime`.
 
         Cripto negocia 24 horas por dia. A variação é uma janela móvel de 24 horas. O
         histórico usa o câmbio diário da data de fechamento em UTC. Em dias sem cotação
@@ -238,9 +268,13 @@ class AsyncCryptoResource(AsyncAPIResource):
 
           currency: Moeda da cotação, como BRL, USD ou EUR. Padrão: BRL.
 
+          end_date: Data final inclusiva do histórico diário no formato YYYY-MM-DD. Padrão: hoje.
+
           interval: Intervalo entre os pontos do histórico, como 1h ou 1d. Padrão: 1d.
 
           range: Período do histórico, como 5d, 1mo ou 1y. Padrão: 1mo quando há histórico.
+
+          start_date: Data inicial do histórico diário no formato YYYY-MM-DD. Use sem range.
 
           extra_headers: Send extra headers
 
@@ -261,8 +295,10 @@ class AsyncCryptoResource(AsyncAPIResource):
                     {
                         "coin": coin,
                         "currency": currency,
+                        "end_date": end_date,
                         "interval": interval,
                         "range": range,
+                        "start_date": start_date,
                     },
                     crypto_retrieve_params.CryptoRetrieveParams,
                 ),
