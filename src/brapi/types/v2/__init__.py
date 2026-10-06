@@ -44,6 +44,7 @@ from .macro_latest_response import MacroLatestResponse as MacroLatestResponse
 from .macro_retrieve_params import MacroRetrieveParams as MacroRetrieveParams
 from .option_chain_response import OptionChainResponse as OptionChainResponse
 from .option_strikes_params import OptionStrikesParams as OptionStrikesParams
+from .stock_screener_params import StockScreenerParams as StockScreenerParams
 from .ticker_renames_params import TickerRenamesParams as TickerRenamesParams
 from .ticker_resolve_params import TickerResolveParams as TickerResolveParams
 from .crypto_retrieve_params import CryptoRetrieveParams as CryptoRetrieveParams
@@ -61,6 +62,7 @@ from .fund_portfolio_response import FundPortfolioResponse as FundPortfolioRespo
 from .macro_retrieve_response import MacroRetrieveResponse as MacroRetrieveResponse
 from .option_strikes_response import OptionStrikesResponse as OptionStrikesResponse
 from .stock_historical_params import StockHistoricalParams as StockHistoricalParams
+from .stock_screener_response import StockScreenerResponse as StockScreenerResponse
 from .stock_statistics_params import StockStatisticsParams as StockStatisticsParams
 from .ticker_renames_response import TickerRenamesResponse as TickerRenamesResponse
 from .ticker_resolve_response import TickerResolveResponse as TickerResolveResponse
