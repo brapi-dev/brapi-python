@@ -24,7 +24,7 @@ class MacroListAvailableResponse(BaseModel):
     results: List[MacroSeriesPublic]
     """Séries encontradas.
 
-    Com `q`, a ordem é por relevância: slug, alias, nome e descrição.
+    Com `q`, a ordem é por relevância: código, nome alternativo, nome e descrição.
     """
 
     took: int

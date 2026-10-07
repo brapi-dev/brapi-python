@@ -9,8 +9,9 @@ __all__ = ["MacroLatestParams"]
 
 class MacroLatestParams(TypedDict, total=False):
     symbols: str
-    """Slugs separados por vírgula, até 20.
+    """Códigos das séries separados por vírgula, até 20.
 
-    Sem valor, devolve todas as séries. Slugs: selic, selicovernight, cdi, tr, ipca,
-    ipca12m, inpc, igpm, igpdi, ibcbr, pibmensal, desemprego, m1, m4, reservas.
+    Sem valor, devolve todas as séries. Códigos: selic, selicovernight, cdi, tr,
+    ipca, ipca12m, inpc, igpm, igpdi, ibcbr, pibmensal, desemprego, m1, m4,
+    reservas.
     """

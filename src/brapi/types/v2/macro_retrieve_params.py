@@ -11,9 +11,9 @@ __all__ = ["MacroRetrieveParams"]
 
 class MacroRetrieveParams(TypedDict, total=False):
     symbols: Required[str]
-    """Slugs separados por vírgula, até 20.
+    """Códigos das séries separados por vírgula, até 20.
 
-    Slugs por categoria: interestRate: `selic`, `selicovernight`, `cdi`, `tr`;
+    Códigos por categoria: interestRate: `selic`, `selicovernight`, `cdi`, `tr`;
     inflation: `ipca`, `ipca12m`, `inpc`, `igpm`, `igpdi`; activity: `ibcbr`,
     `pibmensal`; labor: `desemprego`; monetary: `m1`, `m4`; external: `reservas`.
     """
