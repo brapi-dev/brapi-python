@@ -11,3 +11,4 @@ class MacroSeriesError(BaseModel):
     message: str
 
     slug: str
+    """Código enviado em `symbols`."""

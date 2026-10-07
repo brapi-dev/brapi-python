@@ -17,6 +17,7 @@ class MacroSeriesPublic(BaseModel):
     name: str
 
     slug: str
+    """Código da série. Use este valor em `symbols`."""
 
     start_date: str = FieldInfo(alias="startDate")
 
