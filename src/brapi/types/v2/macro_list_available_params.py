@@ -15,7 +15,7 @@ class MacroListAvailableParams(TypedDict, total=False):
     """
 
     q: str
-    """Texto buscado em slug, alias, nome e descrição.
+    """Texto buscado no código, nome alternativo, nome e descrição.
 
     Ignora maiúsculas e aceita parte da palavra.
     """
