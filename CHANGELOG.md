@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.11.0](https://github.com/brapi-dev/brapi-python/compare/v1.10.0...v1.11.0) (2026-10-07)
+
+
+### Features
+
+* **crypto:** persist daily history for available coins ([eef46f5](https://github.com/brapi-dev/brapi-python/commit/eef46f592f1343a7830263f92fb02d0f898b0205))
+* **web:** market analysis workspace for /quotes and /quote/[ticker], with AI actions ([c454ed1](https://github.com/brapi-dev/brapi-python/commit/c454ed1a91068ad4ef1e49114c26d98d3e8f6af3))
+
+
+### Bug Fixes
+
+* **api:** preserve original ticker histories ([4ab9b9e](https://github.com/brapi-dev/brapi-python/commit/4ab9b9e908b0cb0b5943310306b63dc756775ce8))
+
+
+### Documentation
+
+* **api:** use Portuguese words for series codes and cross pairs ([0eb6529](https://github.com/brapi-dev/brapi-python/commit/0eb6529acffdb4c48a750e980eb10da6e8f52682))
+
 ## [1.10.0](https://github.com/brapi-dev/brapi-python/compare/v1.9.1...v1.10.0) (2026-10-02)
 
 
