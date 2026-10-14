@@ -57,6 +57,7 @@ class ResultData(BaseModel):
     used_interval: str = FieldInfo(alias="usedInterval")
 
     used_range: str = FieldInfo(alias="usedRange")
+    """Janela usada. Vem como `custom` em consultas por data."""
 
 
 class Result(BaseModel):
