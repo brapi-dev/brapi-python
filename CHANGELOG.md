@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.1](https://github.com/brapi-dev/brapi-python/compare/v1.11.0...v1.11.1) (2026-10-13)
+
+
+### Bug Fixes
+
+* **fii:** include announced future payments in /fii/dividends ([1a657f4](https://github.com/brapi-dev/brapi-python/commit/1a657f477571e3b744e4d340cfcfb30172dd2697))
+
 ## [1.11.0](https://github.com/brapi-dev/brapi-python/compare/v1.10.0...v1.11.0) (2026-10-07)
 
 

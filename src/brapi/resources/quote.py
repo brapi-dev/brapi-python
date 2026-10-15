@@ -128,7 +128,8 @@ class QuoteResource(SyncAPIResource):
 
           dividends: Inclui `dividendsData` com dividendos, JCP e eventos em ações.
 
-          end_date: Data final da série de preços no formato YYYY-MM-DD.
+          end_date: Data final da série de preços no formato YYYY-MM-DD. Sem `startDate`, `range`
+              conta para trás a partir desta data.
 
           include_raw: Inclui os preços originais sem ajuste (`rawOpen`, `rawHigh`, `rawLow`,
               `rawClose`) em intervalos diários. Exige o plano Pro.
@@ -376,7 +377,8 @@ class AsyncQuoteResource(AsyncAPIResource):
 
           dividends: Inclui `dividendsData` com dividendos, JCP e eventos em ações.
 
-          end_date: Data final da série de preços no formato YYYY-MM-DD.
+          end_date: Data final da série de preços no formato YYYY-MM-DD. Sem `startDate`, `range`
+              conta para trás a partir desta data.
 
           include_raw: Inclui os preços originais sem ajuste (`rawOpen`, `rawHigh`, `rawLow`,
               `rawClose`) em intervalos diários. Exige o plano Pro.
