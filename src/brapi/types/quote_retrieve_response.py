@@ -234,7 +234,10 @@ class Result(BaseModel):
     """Intervalo usado na série de preços."""
 
     used_range: Optional[str] = FieldInfo(alias="usedRange", default=None)
-    """Janela usada na série de preços."""
+    """Janela usada na série de preços.
+
+    Vem como `custom` quando `startDate` é informado.
+    """
 
     balance_sheet_history: Optional[List[BalanceSheetEntry]] = FieldInfo(alias="balanceSheetHistory", default=None)
     """Balanço patrimonial anual."""

@@ -423,7 +423,8 @@ class StocksResource(SyncAPIResource):
           symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
               ticker enviado e `symbol` identifica os dados retornados.
 
-          end_date: Data final no formato YYYY-MM-DD.
+          end_date: Data final no formato YYYY-MM-DD. Sem `startDate`, `range` conta para trás a
+              partir desta data.
 
           include_raw: Inclui os preços originais sem ajuste (`rawOpen`, `rawHigh`, `rawLow`,
               `rawClose`) em intervalos diários. Exige o plano Pro.
@@ -1703,7 +1704,8 @@ class AsyncStocksResource(AsyncAPIResource):
           symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
               ticker enviado e `symbol` identifica os dados retornados.
 
-          end_date: Data final no formato YYYY-MM-DD.
+          end_date: Data final no formato YYYY-MM-DD. Sem `startDate`, `range` conta para trás a
+              partir desta data.
 
           include_raw: Inclui os preços originais sem ajuste (`rawOpen`, `rawHigh`, `rawLow`,
               `rawClose`) em intervalos diários. Exige o plano Pro.

@@ -18,7 +18,10 @@ class StockHistoricalParams(TypedDict, total=False):
     """
 
     end_date: Annotated[str, PropertyInfo(alias="endDate")]
-    """Data final no formato YYYY-MM-DD."""
+    """Data final no formato YYYY-MM-DD.
+
+    Sem `startDate`, `range` conta para trás a partir desta data.
+    """
 
     include_raw: Annotated[Literal["true", "false"], PropertyInfo(alias="includeRaw")]
     """
