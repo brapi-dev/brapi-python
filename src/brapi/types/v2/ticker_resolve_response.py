@@ -21,10 +21,11 @@ class Result(BaseModel):
     requested_symbol: str = FieldInfo(alias="requestedSymbol")
     """Ticker enviado na requisição."""
 
-    status: Literal["active", "renamed"]
+    status: Literal["active", "renamed", "unknown"]
     """`renamed` quando o ticker enviado mudou.
 
-    `active` quando não há renome conhecido.
+    `active` quando não há renome conhecido e o ticker está na lista da brapi.
+    `unknown` quando o ticker não foi encontrado.
     """
 
     symbol: str
