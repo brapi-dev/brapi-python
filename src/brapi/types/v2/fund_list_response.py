@@ -9,7 +9,35 @@ from pydantic import Field as FieldInfo
 from ..._models import BaseModel
 from .fund_pagination_meta import FundPaginationMeta
 
-__all__ = ["FundListResponse", "Fund"]
+__all__ = ["FundListResponse", "Fund", "FundFees"]
+
+
+class FundFees(BaseModel):
+    """Taxas do regulamento mais recente do fundo que as informa.
+
+    Por enquanto, só para ETFs.
+    """
+
+    admin_fee_percent: Optional[float] = FieldInfo(alias="adminFeePercent", default=None)
+
+    conditions: Optional[str] = None
+    """Condições da taxa, como valor mínimo mensal ou faixas por patrimônio."""
+
+    custody_max_fee_percent: Optional[float] = FieldInfo(alias="custodyMaxFeePercent", default=None)
+
+    effective_date: str = FieldInfo(alias="effectiveDate")
+    """Data de entrega do regulamento com esta taxa."""
+
+    management_fee_percent: Optional[float] = FieldInfo(alias="managementFeePercent", default=None)
+
+    performance_fee: Optional[str] = FieldInfo(alias="performanceFee", default=None)
+
+    total_fee_percent: Optional[float] = FieldInfo(alias="totalFeePercent", default=None)
+    """Taxa total ao ano, em percentual (0.2 = 0,20% a.a.).
+
+    Quando o regulamento informa só as taxas de administração e de gestão, é a soma
+    delas.
+    """
 
 
 class Fund(BaseModel):
@@ -30,6 +58,12 @@ class Fund(BaseModel):
     cvm_class_type: Optional[str] = FieldInfo(alias="cvmClassType", default=None)
 
     equity: Optional[float] = None
+
+    fees: Optional[FundFees] = None
+    """Taxas do regulamento mais recente do fundo que as informa.
+
+    Por enquanto, só para ETFs.
+    """
 
     formatted_cnpj: Optional[str] = FieldInfo(alias="formattedCnpj", default=None)
 
