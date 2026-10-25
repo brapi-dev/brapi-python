@@ -1,6 +1,7 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 from typing import Optional
+from typing_extensions import Literal
 
 from pydantic import Field as FieldInfo
 
@@ -15,6 +16,12 @@ class BalanceSheetEntry(BaseModel):
 
     cash: Optional[float] = None
     """Caixa"""
+
+    consolidation_type: Literal["consolidated", "individual"] = FieldInfo(alias="consolidationType")
+    """
+    Base do período: `consolidated` (consolidado) ou `individual` (só a
+    controladora).
+    """
 
     end_date: str = FieldInfo(alias="endDate")
     """Data de referência"""

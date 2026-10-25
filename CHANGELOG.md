@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.12.0](https://github.com/brapi-dev/brapi-python/compare/v1.11.1...v1.12.0) (2026-10-23)
+
+
+### Features
+
+* add ETF fees from fund regulations ([1fbfb09](https://github.com/brapi-dev/brapi-python/commit/1fbfb09094719a225d4f81730654326a39b7f4fe))
+
+
+### Bug Fixes
+
+* **api:** date no-trade snapshots by session and keep the endDate session ([d07f9c4](https://github.com/brapi-dev/brapi-python/commit/d07f9c43a317c08e7488f52990d2d23251ad1a43))
+* support-reported data, billing and sign-in bugs ([e8b1595](https://github.com/brapi-dev/brapi-python/commit/e8b15951883949cc9f7fca35bba7ec4695cd6d86))
+
 ## [1.11.1](https://github.com/brapi-dev/brapi-python/compare/v1.11.0...v1.11.1) (2026-10-13)
 
 
