@@ -94,6 +94,11 @@ class StocksResource(SyncAPIResource):
         Bancos e seguradoras usam outro plano de contas. Campos que não se aplicam ao
         setor vêm como `null`.
 
+        `consolidationType` informa a base de cada período: `consolidated` para o
+        demonstrativo consolidado ou `individual` para o demonstrativo só da
+        controladora. Empresas sem controladas entregam só o individual. Cada período
+        usa o consolidado quando ele existe.
+
         Args:
           symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
               ticker enviado e `symbol` identifica os dados retornados.
@@ -159,6 +164,10 @@ class StocksResource(SyncAPIResource):
 
         `freeCashFlow` soma o caixa operacional e o caixa de investimento. Ele é `null`
         quando um dos dois falta.
+
+        `consolidationType` informa a base de cada período: `consolidated` para o
+        demonstrativo consolidado ou `individual` para o demonstrativo só da
+        controladora. Empresas sem controladas entregam só o individual.
 
         Os trimestres usam a mesma base, consolidada ou individual, do relatório anual
         do mesmo ano. Sem relatório anual, a base é a que tem o trimestre mais recente.
@@ -494,6 +503,10 @@ class StocksResource(SyncAPIResource):
 
         Cada trimestre traz o valor do trimestre isolado, sem somar os trimestres
         anteriores do ano.
+
+        `consolidationType` informa a base de cada período: `consolidated` para o
+        demonstrativo consolidado ou `individual` para o demonstrativo só da
+        controladora. Empresas sem controladas entregam só o individual.
 
         Os trimestres usam a mesma base, consolidada ou individual, do relatório anual
         do mesmo ano. Sem relatório anual, a base é a que tem o trimestre mais recente.
@@ -1284,6 +1297,10 @@ class StocksResource(SyncAPIResource):
         O padrão é `period=annual`. Use `period=quarterly` para trimestres. `startDate`
         e `endDate` filtram pela data de encerramento do período.
 
+        `consolidationType` informa a base de cada período: `consolidated` para o
+        demonstrativo consolidado ou `individual` para o demonstrativo só da
+        controladora. Empresas sem controladas entregam só o individual.
+
         Os trimestres usam a mesma base, consolidada ou individual, do relatório anual
         do mesmo ano. Sem relatório anual, a base é a que tem o trimestre mais recente.
         Em empate, a consolidada vale. Lacunas não são preenchidas com a outra base. Um
@@ -1375,6 +1392,11 @@ class AsyncStocksResource(AsyncAPIResource):
         Bancos e seguradoras usam outro plano de contas. Campos que não se aplicam ao
         setor vêm como `null`.
 
+        `consolidationType` informa a base de cada período: `consolidated` para o
+        demonstrativo consolidado ou `individual` para o demonstrativo só da
+        controladora. Empresas sem controladas entregam só o individual. Cada período
+        usa o consolidado quando ele existe.
+
         Args:
           symbols: Tickers separados por vírgula. Ex.: PETR4,VALE3. `requestedSymbol` identifica o
               ticker enviado e `symbol` identifica os dados retornados.
@@ -1440,6 +1462,10 @@ class AsyncStocksResource(AsyncAPIResource):
 
         `freeCashFlow` soma o caixa operacional e o caixa de investimento. Ele é `null`
         quando um dos dois falta.
+
+        `consolidationType` informa a base de cada período: `consolidated` para o
+        demonstrativo consolidado ou `individual` para o demonstrativo só da
+        controladora. Empresas sem controladas entregam só o individual.
 
         Os trimestres usam a mesma base, consolidada ou individual, do relatório anual
         do mesmo ano. Sem relatório anual, a base é a que tem o trimestre mais recente.
@@ -1775,6 +1801,10 @@ class AsyncStocksResource(AsyncAPIResource):
 
         Cada trimestre traz o valor do trimestre isolado, sem somar os trimestres
         anteriores do ano.
+
+        `consolidationType` informa a base de cada período: `consolidated` para o
+        demonstrativo consolidado ou `individual` para o demonstrativo só da
+        controladora. Empresas sem controladas entregam só o individual.
 
         Os trimestres usam a mesma base, consolidada ou individual, do relatório anual
         do mesmo ano. Sem relatório anual, a base é a que tem o trimestre mais recente.
@@ -2564,6 +2594,10 @@ class AsyncStocksResource(AsyncAPIResource):
 
         O padrão é `period=annual`. Use `period=quarterly` para trimestres. `startDate`
         e `endDate` filtram pela data de encerramento do período.
+
+        `consolidationType` informa a base de cada período: `consolidated` para o
+        demonstrativo consolidado ou `individual` para o demonstrativo só da
+        controladora. Empresas sem controladas entregam só o individual.
 
         Os trimestres usam a mesma base, consolidada ou individual, do relatório anual
         do mesmo ano. Sem relatório anual, a base é a que tem o trimestre mais recente.
