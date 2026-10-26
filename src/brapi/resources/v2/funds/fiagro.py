@@ -68,8 +68,8 @@ class FiagroResource(SyncAPIResource):
         Carteira de FIAGRO em um mês: resumo, alocações por classe de ativo, passivos e
         investidores.
 
-        Use para ver quanto do fundo está em CRA, direitos creditórios, imóveis rurais
-        ou participações.
+        Use para ver quanto do fundo está em CRA, CRI, cotas de outros fundos, renda
+        fixa, imóveis rurais ou valores a receber, e como se divide o passivo.
 
         Informe `symbols` ou `cnpjs`. Sem `referenceDate`, a resposta traz o mês mais
         recente.
@@ -135,9 +135,15 @@ class FiagroResource(SyncAPIResource):
     ) -> FiagroReportsResponse:
         """
         Relatório mensal de FIAGRO na CVM: patrimônio, valor patrimonial por cota,
-        cotistas, rentabilidade do mês, dividend yield mensal e valores a distribuir.
+        cotistas, rentabilidade do mês, dividend yield mensal, valores a distribuir e
+        despesas com taxas.
 
-        Use para acompanhar a evolução de um FIAGRO mês a mês.
+        Use para acompanhar a evolução de um FIAGRO mês a mês. Use `startDate` e
+        `endDate` para escolher o período.
+
+        Os campos `adminFeeExpensePercent`, `managementFeeExpensePercent` e
+        `distributionFeeExpensePercent` trazem a despesa do mês com cada taxa, em % do
+        patrimônio líquido. Some 12 meses para ter a despesa do ano.
 
         Informe `symbols` ou `cnpjs`. Por padrão, a resposta traz só a versão mais
         recente de cada mês. Use `allVersions=true` para ver as reapresentações.
@@ -243,8 +249,8 @@ class AsyncFiagroResource(AsyncAPIResource):
         Carteira de FIAGRO em um mês: resumo, alocações por classe de ativo, passivos e
         investidores.
 
-        Use para ver quanto do fundo está em CRA, direitos creditórios, imóveis rurais
-        ou participações.
+        Use para ver quanto do fundo está em CRA, CRI, cotas de outros fundos, renda
+        fixa, imóveis rurais ou valores a receber, e como se divide o passivo.
 
         Informe `symbols` ou `cnpjs`. Sem `referenceDate`, a resposta traz o mês mais
         recente.
@@ -310,9 +316,15 @@ class AsyncFiagroResource(AsyncAPIResource):
     ) -> FiagroReportsResponse:
         """
         Relatório mensal de FIAGRO na CVM: patrimônio, valor patrimonial por cota,
-        cotistas, rentabilidade do mês, dividend yield mensal e valores a distribuir.
+        cotistas, rentabilidade do mês, dividend yield mensal, valores a distribuir e
+        despesas com taxas.
 
-        Use para acompanhar a evolução de um FIAGRO mês a mês.
+        Use para acompanhar a evolução de um FIAGRO mês a mês. Use `startDate` e
+        `endDate` para escolher o período.
+
+        Os campos `adminFeeExpensePercent`, `managementFeeExpensePercent` e
+        `distributionFeeExpensePercent` trazem a despesa do mês com cada taxa, em % do
+        patrimônio líquido. Some 12 meses para ter a despesa do ano.
 
         Informe `symbols` ou `cnpjs`. Por padrão, a resposta traz só a versão mais
         recente de cada mês. Use `allVersions=true` para ver as reapresentações.
