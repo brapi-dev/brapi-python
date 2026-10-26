@@ -24,6 +24,12 @@ class ResultAvailableData(BaseModel):
 
     financial_statements: bool = FieldInfo(alias="financialStatements")
 
+    fund_portfolio: bool = FieldInfo(alias="fundPortfolio")
+    """Carteira mensal do fundo nos endpoints de fundos. Hoje vale para FIAGRO."""
+
+    fund_reports: bool = FieldInfo(alias="fundReports")
+    """Relatórios mensais do fundo nos endpoints de fundos. Hoje vale para FIAGRO."""
+
     historical: bool
 
     profile: bool
