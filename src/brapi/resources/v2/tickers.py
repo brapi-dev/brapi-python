@@ -151,7 +151,7 @@ class TickersResource(SyncAPIResource):
     ) -> TickerCoverageResponse:
         """
         Mostra quais dados a brapi tem para cada ticker e quais endpoints usar em
-        seguida: cotação, histórico, dividendos, fundamentos ou dados de FII.
+        seguida: cotação, histórico, dividendos, fundamentos, dados de FII ou de fundos.
 
         Use antes de montar uma integração, para saber quais endpoints servem para cada
         ativo.
@@ -160,6 +160,9 @@ class TickersResource(SyncAPIResource):
         com `status` igual a `renamed`. Um ticker desconhecido não gera erro. Ele vem
         com `status` igual a `unknown` e links de busca. Um ticker de opção vem com
         `wrong_endpoint` e links para os endpoints de opções.
+
+        Para ETFs e outros fundos listados, os links de proventos, taxas e cota apontam
+        para os endpoints de fundos.
 
         Em conversões de ações, os links de histórico e proventos usam o ticker da
         classe original.
@@ -438,7 +441,7 @@ class AsyncTickersResource(AsyncAPIResource):
     ) -> TickerCoverageResponse:
         """
         Mostra quais dados a brapi tem para cada ticker e quais endpoints usar em
-        seguida: cotação, histórico, dividendos, fundamentos ou dados de FII.
+        seguida: cotação, histórico, dividendos, fundamentos, dados de FII ou de fundos.
 
         Use antes de montar uma integração, para saber quais endpoints servem para cada
         ativo.
@@ -447,6 +450,9 @@ class AsyncTickersResource(AsyncAPIResource):
         com `status` igual a `renamed`. Um ticker desconhecido não gera erro. Ele vem
         com `status` igual a `unknown` e links de busca. Um ticker de opção vem com
         `wrong_endpoint` e links para os endpoints de opções.
+
+        Para ETFs e outros fundos listados, os links de proventos, taxas e cota apontam
+        para os endpoints de fundos.
 
         Em conversões de ações, os links de histórico e proventos usam o ticker da
         classe original.
