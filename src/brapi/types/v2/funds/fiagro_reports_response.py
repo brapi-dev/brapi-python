@@ -12,11 +12,17 @@ __all__ = ["FiagroReportsResponse", "Report"]
 
 
 class Report(BaseModel):
+    admin_fee_expense_percent: Optional[float] = FieldInfo(alias="adminFeeExpensePercent", default=None)
+    """Despesa com taxa de administração no mês, em % do patrimônio líquido."""
+
     administrator_name: Optional[str] = FieldInfo(alias="administratorName", default=None)
 
     amortization_rate_monthly: Optional[float] = FieldInfo(alias="amortizationRateMonthly", default=None)
 
     cnpj: str
+
+    distribution_fee_expense_percent: Optional[float] = FieldInfo(alias="distributionFeeExpensePercent", default=None)
+    """Despesa com taxa de distribuição no mês, em % do patrimônio líquido."""
 
     dividend_yield_monthly: Optional[float] = FieldInfo(alias="dividendYieldMonthly", default=None)
 
@@ -25,6 +31,9 @@ class Report(BaseModel):
     isin: Optional[str] = None
 
     liquidity_needs: Optional[float] = FieldInfo(alias="liquidityNeeds", default=None)
+
+    management_fee_expense_percent: Optional[float] = FieldInfo(alias="managementFeeExpensePercent", default=None)
+    """Despesa com taxa de gestão no mês, em % do patrimônio líquido."""
 
     manager_name: Optional[str] = FieldInfo(alias="managerName", default=None)
 
