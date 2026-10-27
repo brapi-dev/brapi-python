@@ -122,6 +122,7 @@ class FundsResource(SyncAPIResource):
         *,
         asset_type: Literal["fii", "fiagro", "fiinfra", "fif", "fidc", "fip", "etf", "other"] | Omit = omit,
         cnpjs: str | Omit = omit,
+        etf_category: Literal["fixed-income", "equity", "crypto", "real-estate"] | Omit = omit,
         limit: int | Omit = omit,
         page: int | Omit = omit,
         search: str | Omit = omit,
@@ -141,9 +142,9 @@ class FundsResource(SyncAPIResource):
         FIDC, FIP e outros. Cada item traz ticker, CNPJ, tipo, classificações,
         administrador, gestor e os últimos indicadores disponíveis.
 
-        A lista ainda não inclui ETFs. Consulte suas cotações e preços históricos nos
-        endpoints de ações. A presença no catálogo de tickers não garante indicadores de
-        fundos.
+        Para ETFs, `etfCategory` separa renda fixa, renda variável, criptoativos e
+        imobiliário. Consulte cotações e preços históricos nos endpoints de ações. A
+        presença no catálogo de tickers não garante indicadores de fundos.
 
         `updatedAt` informa a atualização do cadastro. `priceDate` informa a data do
         preço. Consulte `asOfDate` em `/api/v2/funds/indicators` para a data da cota e
@@ -169,6 +170,8 @@ class FundsResource(SyncAPIResource):
           asset_type: Tipo do fundo.
 
           cnpjs: CNPJs separados por vírgula, até 20, com ou sem pontuação.
+
+          etf_category: Categoria do ETF. Só traz ETFs.
 
           limit: Itens por página.
 
@@ -203,6 +206,7 @@ class FundsResource(SyncAPIResource):
                     {
                         "asset_type": asset_type,
                         "cnpjs": cnpjs,
+                        "etf_category": etf_category,
                         "limit": limit,
                         "page": page,
                         "search": search,
@@ -578,6 +582,7 @@ class AsyncFundsResource(AsyncAPIResource):
         *,
         asset_type: Literal["fii", "fiagro", "fiinfra", "fif", "fidc", "fip", "etf", "other"] | Omit = omit,
         cnpjs: str | Omit = omit,
+        etf_category: Literal["fixed-income", "equity", "crypto", "real-estate"] | Omit = omit,
         limit: int | Omit = omit,
         page: int | Omit = omit,
         search: str | Omit = omit,
@@ -597,9 +602,9 @@ class AsyncFundsResource(AsyncAPIResource):
         FIDC, FIP e outros. Cada item traz ticker, CNPJ, tipo, classificações,
         administrador, gestor e os últimos indicadores disponíveis.
 
-        A lista ainda não inclui ETFs. Consulte suas cotações e preços históricos nos
-        endpoints de ações. A presença no catálogo de tickers não garante indicadores de
-        fundos.
+        Para ETFs, `etfCategory` separa renda fixa, renda variável, criptoativos e
+        imobiliário. Consulte cotações e preços históricos nos endpoints de ações. A
+        presença no catálogo de tickers não garante indicadores de fundos.
 
         `updatedAt` informa a atualização do cadastro. `priceDate` informa a data do
         preço. Consulte `asOfDate` em `/api/v2/funds/indicators` para a data da cota e
@@ -625,6 +630,8 @@ class AsyncFundsResource(AsyncAPIResource):
           asset_type: Tipo do fundo.
 
           cnpjs: CNPJs separados por vírgula, até 20, com ou sem pontuação.
+
+          etf_category: Categoria do ETF. Só traz ETFs.
 
           limit: Itens por página.
 
@@ -659,6 +666,7 @@ class AsyncFundsResource(AsyncAPIResource):
                     {
                         "asset_type": asset_type,
                         "cnpjs": cnpjs,
+                        "etf_category": etf_category,
                         "limit": limit,
                         "page": page,
                         "search": search,
