@@ -13,6 +13,7 @@ __all__ = ["FundIndicatorsResponse", "Fund"]
 
 class Fund(BaseModel):
     as_of_date: Optional[str] = FieldInfo(alias="asOfDate", default=None)
+    """Data do informe com a cota e o patrimônio. Pode ser anterior a `priceDate`."""
 
     asset_type: Literal["fii", "fiagro", "fiinfra", "fif", "fidc", "fip", "etf", "other"] = FieldInfo(alias="assetType")
 
@@ -35,6 +36,9 @@ class Fund(BaseModel):
     patrimonial_monthly_return: Optional[float] = FieldInfo(alias="patrimonialMonthlyReturn", default=None)
 
     price: Optional[float] = None
+
+    price_date: Optional[str] = FieldInfo(alias="priceDate", default=None)
+    """Data do preço de fechamento usado em `price` e `priceToNav`."""
 
     price_to_nav: Optional[float] = FieldInfo(alias="priceToNav", default=None)
 
