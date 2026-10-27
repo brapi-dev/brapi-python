@@ -33,6 +33,7 @@ class TestFunds:
         fund = client.v2.funds.list(
             asset_type="fii",
             cnpjs="42730834000100",
+            etf_category="fixed-income",
             limit=20,
             page=1,
             search="search",
@@ -227,6 +228,7 @@ class TestAsyncFunds:
         fund = await async_client.v2.funds.list(
             asset_type="fii",
             cnpjs="42730834000100",
+            etf_category="fixed-income",
             limit=20,
             page=1,
             search="search",

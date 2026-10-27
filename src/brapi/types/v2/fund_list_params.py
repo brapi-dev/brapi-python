@@ -18,6 +18,11 @@ class FundListParams(TypedDict, total=False):
     cnpjs: str
     """CNPJs separados por vírgula, até 20, com ou sem pontuação."""
 
+    etf_category: Annotated[
+        Literal["fixed-income", "equity", "crypto", "real-estate"], PropertyInfo(alias="etfCategory")
+    ]
+    """Categoria do ETF. Só traz ETFs."""
+
     limit: int
     """Itens por página."""
 

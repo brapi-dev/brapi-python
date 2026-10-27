@@ -59,6 +59,16 @@ class Fund(BaseModel):
 
     equity: Optional[float] = None
 
+    etf_category: Optional[Literal["fixed-income", "equity", "crypto", "real-estate"]] = FieldInfo(
+        alias="etfCategory", default=None
+    )
+    """
+    Categoria do ETF pela lista de ETFs da bolsa: `fixed-income` (renda fixa),
+    `equity` (renda variável), `crypto` (criptoativos) ou `real-estate`
+    (imobiliário). É `null` para fundos que não são ETF e para ETFs que nenhuma
+    lista da bolsa traz.
+    """
+
     fees: Optional[FundFees] = None
     """Taxas do regulamento mais recente do fundo que as informa.
 
