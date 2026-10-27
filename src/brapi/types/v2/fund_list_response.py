@@ -81,6 +81,9 @@ class Fund(BaseModel):
 
     price: Optional[float] = None
 
+    price_date: Optional[str] = FieldInfo(alias="priceDate", default=None)
+    """Data do preço de fechamento usado em `price` e `priceToNav`."""
+
     price_to_nav: Optional[float] = FieldInfo(alias="priceToNav", default=None)
 
     status: Optional[str] = None
