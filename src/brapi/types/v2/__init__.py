@@ -28,6 +28,7 @@ from .user_usage_response import UserUsageResponse as UserUsageResponse
 from .fii_dividends_params import FiiDividendsParams as FiiDividendsParams
 from .fii_reports_response import FiiReportsResponse as FiiReportsResponse
 from .fund_pagination_meta import FundPaginationMeta as FundPaginationMeta
+from .fund_screener_params import FundScreenerParams as FundScreenerParams
 from .future_list_response import FutureListResponse as FutureListResponse
 from .stock_profile_params import StockProfileParams as StockProfileParams
 from .stock_quote_response import StockQuoteResponse as StockQuoteResponse
@@ -50,6 +51,7 @@ from .ticker_resolve_params import TickerResolveParams as TickerResolveParams
 from .crypto_retrieve_params import CryptoRetrieveParams as CryptoRetrieveParams
 from .fii_dividends_response import FiiDividendsResponse as FiiDividendsResponse
 from .fund_indicators_params import FundIndicatorsParams as FundIndicatorsParams
+from .fund_screener_response import FundScreenerResponse as FundScreenerResponse
 from .stock_cash_flow_params import StockCashFlowParams as StockCashFlowParams
 from .stock_dividends_params import StockDividendsParams as StockDividendsParams
 from .stock_profile_response import StockProfileResponse as StockProfileResponse
@@ -77,6 +79,7 @@ from .stock_dividends_response import StockDividendsResponse as StockDividendsRe
 from .stock_value_added_params import StockValueAddedParams as StockValueAddedParams
 from .ticker_coverage_response import TickerCoverageResponse as TickerCoverageResponse
 from .fii_annual_reports_params import FiiAnnualReportsParams as FiiAnnualReportsParams
+from .fund_screener_cnpj_params import FundScreenerCnpjParams as FundScreenerCnpjParams
 from .inflation_retrieve_params import InflationRetrieveParams as InflationRetrieveParams
 from .option_expirations_params import OptionExpirationsParams as OptionExpirationsParams
 from .stock_fundamentals_series import StockFundamentalsSeries as StockFundamentalsSeries
@@ -92,6 +95,7 @@ from .prime_rate_retrieve_params import PrimeRateRetrieveParams as PrimeRateRetr
 from .stock_balance_sheet_params import StockBalanceSheetParams as StockBalanceSheetParams
 from .stock_value_added_response import StockValueAddedResponse as StockValueAddedResponse
 from .fii_annual_reports_response import FiiAnnualReportsResponse as FiiAnnualReportsResponse
+from .fund_screener_cnpj_response import FundScreenerCnpjResponse as FundScreenerCnpjResponse
 from .inflation_retrieve_response import InflationRetrieveResponse as InflationRetrieveResponse
 from .macro_list_available_params import MacroListAvailableParams as MacroListAvailableParams
 from .option_expirations_response import OptionExpirationsResponse as OptionExpirationsResponse
