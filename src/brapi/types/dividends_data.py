@@ -6,7 +6,47 @@ from pydantic import Field as FieldInfo
 
 from .._models import BaseModel
 
-__all__ = ["DividendsData", "CashDividend", "StockDividend"]
+__all__ = ["DividendsData", "CashDividend", "CashDividendBdr", "StockDividend"]
+
+
+class CashDividendBdr(BaseModel):
+    """Só em BDRs: o provento no exterior e os descontos até chegar em `rate`.
+
+    Campos não informados no aviso vêm nulos.
+    """
+
+    currency: Optional[str] = None
+    """Moeda do provento no exterior. Ex.: USD."""
+
+    depositary_fee_percent: Optional[float] = FieldInfo(alias="depositaryFeePercent", default=None)
+    """Taxa da instituição depositária, em % do provento."""
+
+    final: Optional[bool] = None
+    """`false` enquanto o valor é uma estimativa. `true` quando é o valor definitivo."""
+
+    fx_date: Optional[str] = FieldInfo(alias="fxDate", default=None)
+    """Data do câmbio (AAAA-MM-DD)."""
+
+    fx_rate: Optional[float] = FieldInfo(alias="fxRate", default=None)
+    """Câmbio usado na conversão para reais."""
+
+    gross_brl_per_bdr: Optional[float] = FieldInfo(alias="grossBrlPerBdr", default=None)
+    """Valor por BDR em reais, antes dos descontos no Brasil."""
+
+    gross_per_bdr: Optional[float] = FieldInfo(alias="grossPerBdr", default=None)
+    """Valor bruto por BDR, na moeda do provento."""
+
+    gross_per_share: Optional[float] = FieldInfo(alias="grossPerShare", default=None)
+    """Valor bruto por ação no exterior, na moeda do provento."""
+
+    iof_percent: Optional[float] = FieldInfo(alias="iofPercent", default=None)
+    """IOF sobre o câmbio, em %."""
+
+    ratio: Optional[str] = None
+    """Ações no exterior para BDRs. Ex.: "1:4" quando 1 ação equivale a 4 BDRs."""
+
+    withholding_tax_percent: Optional[float] = FieldInfo(alias="withholdingTaxPercent", default=None)
+    """Imposto retido no exterior, em %."""
 
 
 class CashDividend(BaseModel):
@@ -39,7 +79,11 @@ class CashDividend(BaseModel):
     """
 
     rate: float
-    """Valor por ação, em reais."""
+    """Valor por ação, em reais.
+
+    Em BDRs, o valor líquido por BDR, já sem o imposto no exterior, o IOF e a taxa
+    da instituição depositária.
+    """
 
     related_to: str = FieldInfo(alias="relatedTo")
     """Período a que o provento se refere. Ex.: 1º Trimestre/2024."""
@@ -52,6 +96,12 @@ class CashDividend(BaseModel):
     `true` quando o provento foi conferido em um documento publicado pela empresa ou
     pelo fundo. `false` quando vem de dados históricos que ainda não têm esse
     documento.
+    """
+
+    bdr: Optional[CashDividendBdr] = None
+    """Só em BDRs: o provento no exterior e os descontos até chegar em `rate`.
+
+    Campos não informados no aviso vêm nulos.
     """
 
     raw_rate: Optional[float] = FieldInfo(alias="rawRate", default=None)
