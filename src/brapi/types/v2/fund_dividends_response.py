@@ -30,6 +30,13 @@ class Dividend(BaseModel):
     payment_date: str = FieldInfo(alias="paymentDate")
 
     rate: float
+    """
+    Valor por cota, em reais, na escala das cotações ajustadas por desdobramentos e
+    grupamentos.
+    """
+
+    raw_rate: float = FieldInfo(alias="rawRate")
+    """Valor pago por cota na data do provento, sem ajuste."""
 
     symbol: str
 
