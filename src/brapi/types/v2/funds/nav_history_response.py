@@ -27,6 +27,17 @@ class History(BaseModel):
     monthly_return: Optional[float] = FieldInfo(alias="monthlyReturn", default=None)
 
     nav_per_share: Optional[float] = FieldInfo(alias="navPerShare", default=None)
+    """
+    Valor da cota na base de cotas dos preços: desdobramentos e grupamentos depois
+    de `date` já estão aplicados, como em `close`. As linhas por classe de FIDC
+    (`classOrSeries`) trazem o valor do informe.
+    """
+
+    raw_nav_per_share: Optional[float] = FieldInfo(alias="rawNavPerShare", default=None)
+    """
+    Valor patrimonial por cota como o informe declara, sem desdobramentos e
+    grupamentos posteriores.
+    """
 
     symbol: Optional[str] = None
 
