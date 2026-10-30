@@ -44,10 +44,20 @@ class Report(BaseModel):
     name: Optional[str] = None
 
     nav_per_share: Optional[float] = FieldInfo(alias="navPerShare", default=None)
+    """
+    Valor patrimonial por cota na base de cotas dos preços: desdobramentos e
+    grupamentos depois da data do informe já estão aplicados, como em `close`.
+    """
 
     net_equity: Optional[float] = FieldInfo(alias="netEquity", default=None)
 
     patrimonial_monthly_return: Optional[float] = FieldInfo(alias="patrimonialMonthlyReturn", default=None)
+
+    raw_nav_per_share: Optional[float] = FieldInfo(alias="rawNavPerShare", default=None)
+    """
+    Valor patrimonial por cota como o informe declara, sem desdobramentos e
+    grupamentos posteriores.
+    """
 
     reference_date: str = FieldInfo(alias="referenceDate")
 
