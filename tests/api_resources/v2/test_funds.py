@@ -12,6 +12,7 @@ from tests.utils import assert_matches_type
 from brapi.types.v2 import (
     FundListResponse,
     FundProfileResponse,
+    FundScreenerResponse,
     FundDividendsResponse,
     FundPortfolioResponse,
     FundIndicatorsResponse,
@@ -212,6 +213,76 @@ class TestFunds:
 
         assert cast(Any, response.is_closed) is True
 
+    @parametrize
+    def test_method_screener(self, client: Brapi) -> None:
+        fund = client.v2.funds.screener()
+        assert_matches_type(FundScreenerResponse, fund, path=["response"])
+
+    @parametrize
+    def test_method_screener_with_all_params(self, client: Brapi) -> None:
+        fund = client.v2.funds.screener(
+            asset_type="fii",
+            average_daily_traded_value_max=0,
+            average_daily_traded_value_min=0,
+            change_percent_max=0,
+            change_percent_min=0,
+            dividend_yield_max=0,
+            dividend_yield_min=0,
+            equity_max=0,
+            equity_min=0,
+            etf_category="fixed-income",
+            income_months12m_max=0,
+            income_months12m_min=0,
+            last_dividend_max=0,
+            last_dividend_min=0,
+            last_dividend_yield_max=0,
+            last_dividend_yield_min=0,
+            last_price_max=0,
+            last_price_min=0,
+            limit=20,
+            market_cap_max=0,
+            market_cap_min=0,
+            nav_per_share_max=0,
+            nav_per_share_min=0,
+            page=1,
+            price_change12m_max=0,
+            price_change12m_min=0,
+            price_to_nav_max=0,
+            price_to_nav_min=0,
+            search="KINEA",
+            segment="Logística",
+            segment_type="papel",
+            sort_by="dividendYield",
+            sort_order="desc",
+            total_fee_percent_max=0,
+            total_fee_percent_min=0,
+            total_investors_max=0,
+            total_investors_min=0,
+            volume_max=0,
+            volume_min=0,
+        )
+        assert_matches_type(FundScreenerResponse, fund, path=["response"])
+
+    @parametrize
+    def test_raw_response_screener(self, client: Brapi) -> None:
+        response = client.v2.funds.with_raw_response.screener()
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        fund = response.parse()
+        assert_matches_type(FundScreenerResponse, fund, path=["response"])
+
+    @parametrize
+    def test_streaming_response_screener(self, client: Brapi) -> None:
+        with client.v2.funds.with_streaming_response.screener() as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            fund = response.parse()
+            assert_matches_type(FundScreenerResponse, fund, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
 
 class TestAsyncFunds:
     parametrize = pytest.mark.parametrize(
@@ -404,5 +475,75 @@ class TestAsyncFunds:
 
             fund = await response.parse()
             assert_matches_type(FundProfileResponse, fund, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    async def test_method_screener(self, async_client: AsyncBrapi) -> None:
+        fund = await async_client.v2.funds.screener()
+        assert_matches_type(FundScreenerResponse, fund, path=["response"])
+
+    @parametrize
+    async def test_method_screener_with_all_params(self, async_client: AsyncBrapi) -> None:
+        fund = await async_client.v2.funds.screener(
+            asset_type="fii",
+            average_daily_traded_value_max=0,
+            average_daily_traded_value_min=0,
+            change_percent_max=0,
+            change_percent_min=0,
+            dividend_yield_max=0,
+            dividend_yield_min=0,
+            equity_max=0,
+            equity_min=0,
+            etf_category="fixed-income",
+            income_months12m_max=0,
+            income_months12m_min=0,
+            last_dividend_max=0,
+            last_dividend_min=0,
+            last_dividend_yield_max=0,
+            last_dividend_yield_min=0,
+            last_price_max=0,
+            last_price_min=0,
+            limit=20,
+            market_cap_max=0,
+            market_cap_min=0,
+            nav_per_share_max=0,
+            nav_per_share_min=0,
+            page=1,
+            price_change12m_max=0,
+            price_change12m_min=0,
+            price_to_nav_max=0,
+            price_to_nav_min=0,
+            search="KINEA",
+            segment="Logística",
+            segment_type="papel",
+            sort_by="dividendYield",
+            sort_order="desc",
+            total_fee_percent_max=0,
+            total_fee_percent_min=0,
+            total_investors_max=0,
+            total_investors_min=0,
+            volume_max=0,
+            volume_min=0,
+        )
+        assert_matches_type(FundScreenerResponse, fund, path=["response"])
+
+    @parametrize
+    async def test_raw_response_screener(self, async_client: AsyncBrapi) -> None:
+        response = await async_client.v2.funds.with_raw_response.screener()
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        fund = await response.parse()
+        assert_matches_type(FundScreenerResponse, fund, path=["response"])
+
+    @parametrize
+    async def test_streaming_response_screener(self, async_client: AsyncBrapi) -> None:
+        async with async_client.v2.funds.with_streaming_response.screener() as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            fund = await response.parse()
+            assert_matches_type(FundScreenerResponse, fund, path=["response"])
 
         assert cast(Any, response.is_closed) is True
