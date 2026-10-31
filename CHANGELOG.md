@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.13.0](https://github.com/brapi-dev/brapi-python/compare/v1.12.0...v1.13.0) (2026-10-31)
+
+
+### Features
+
+* **api:** show the consolidation basis of each statement period ([d01b8fe](https://github.com/brapi-dev/brapi-python/commit/d01b8feda852b162ba96d1d564d33dd643d2dbbc))
+* **etl:** ETF balance sheets and income statements from FNET balancetes ([af8a018](https://github.com/brapi-dev/brapi-python/commit/af8a018a3cfc41ab5fe8ea87c93d2a216aa9ac21))
+* **etl:** read BDR payouts from CVM RAD ([4ffd1c3](https://github.com/brapi-dev/brapi-python/commit/4ffd1c37684abb3910a3c70c3cd33f682a226c40))
+* **funds:** FIAGRO coverage endpoints and more monthly report fields ([ca32439](https://github.com/brapi-dev/brapi-python/commit/ca32439c3501d67c524236838af3c2d257c03180))
+
+
+### Bug Fixes
+
+* **api:** date the fund price by its own close ([7af5351](https://github.com/brapi-dev/brapi-python/commit/7af535146006a126701d2b68801359ad47148b31))
+* **api:** point ETF and fund coverage to the fund endpoints ([1ce1f34](https://github.com/brapi-dev/brapi-python/commit/1ce1f34631461ec7ea4e878be092fbaf9cb4c909))
+* **etl:** put payouts on the split-adjusted price basis ([639e1b4](https://github.com/brapi-dev/brapi-python/commit/639e1b47d6c2fa133985b006eb007a6e2a8325a8))
+* **funds:** tell fixed-income ETFs from equity ETFs ([258a915](https://github.com/brapi-dev/brapi-python/commit/258a915d0a4caa23d447bd217ea914f92394fb95))
+
+
+### Documentation
+
+* **api:** state the real referenceDate of the FII indicator history ([120be95](https://github.com/brapi-dev/brapi-python/commit/120be95c6649c747f6f1fc5455d4880e6e8b0fc5))
+
 ## [1.12.0](https://github.com/brapi-dev/brapi-python/compare/v1.11.1...v1.12.0) (2026-10-23)
 
 
