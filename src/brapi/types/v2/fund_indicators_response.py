@@ -32,6 +32,10 @@ class Fund(BaseModel):
     name: Optional[str] = None
 
     nav_per_share: Optional[float] = FieldInfo(alias="navPerShare", default=None)
+    """
+    Valor patrimonial por cota na base de cotas dos preços: desdobramentos e
+    grupamentos depois da data do informe já estão aplicados, como em `close`.
+    """
 
     patrimonial_monthly_return: Optional[float] = FieldInfo(alias="patrimonialMonthlyReturn", default=None)
 
@@ -41,6 +45,12 @@ class Fund(BaseModel):
     """Data do preço de fechamento usado em `price` e `priceToNav`."""
 
     price_to_nav: Optional[float] = FieldInfo(alias="priceToNav", default=None)
+
+    raw_nav_per_share: Optional[float] = FieldInfo(alias="rawNavPerShare", default=None)
+    """
+    Valor patrimonial por cota como o informe declara, sem desdobramentos e
+    grupamentos posteriores.
+    """
 
     shares_outstanding: Optional[float] = FieldInfo(alias="sharesOutstanding", default=None)
 
