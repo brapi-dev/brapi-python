@@ -79,10 +79,11 @@ class CashDividend(BaseModel):
     """
 
     rate: float
-    """Valor por ação, em reais.
-
-    Em BDRs, o valor líquido por BDR, já sem o imposto no exterior, o IOF e a taxa
-    da instituição depositária.
+    """
+    Valor por ação, em reais, na escala das cotações ajustadas por desdobramentos,
+    grupamentos e bonificações (`close` do histórico). Um provento anterior a um
+    desdobramento de 1 para 5 aparece dividido por 5. Em BDRs, o valor líquido por
+    BDR, já sem o imposto no exterior, o IOF e a taxa da instituição depositária.
     """
 
     related_to: str = FieldInfo(alias="relatedTo")
@@ -105,7 +106,10 @@ class CashDividend(BaseModel):
     """
 
     raw_rate: Optional[float] = FieldInfo(alias="rawRate", default=None)
-    """Valor por ação na escala dos preços sem ajuste. Vem com `includeRaw=true`."""
+    """Valor pago por ação na data do provento, na escala dos preços sem ajuste.
+
+    Vem com `includeRaw=true`.
+    """
 
 
 class StockDividend(BaseModel):

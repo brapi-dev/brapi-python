@@ -117,6 +117,10 @@ class IndicatorsResource(SyncAPIResource):
         um ponto por mês, com `referenceDate` no último dia do mês. O histórico começa
         em setembro de 2016.
 
+        `price` é o último fechamento do mês, e `navPerShare` é o valor patrimonial do
+        fim do mês, os dois na base de cotas atual. `dividendYield1m` soma os pagamentos
+        do mês, e `dividendYield12m` os dos 12 meses até ele, sobre `price`.
+
         Use para gráficos de P/VP e dividend yield, e para comparar um fundo com o
         próprio passado.
 
@@ -261,6 +265,10 @@ class AsyncIndicatorsResource(AsyncAPIResource):
         Série mensal dos [indicadores de FIIs](https://brapi.dev/docs/fiis/indicadores):
         um ponto por mês, com `referenceDate` no último dia do mês. O histórico começa
         em setembro de 2016.
+
+        `price` é o último fechamento do mês, e `navPerShare` é o valor patrimonial do
+        fim do mês, os dois na base de cotas atual. `dividendYield1m` soma os pagamentos
+        do mês, e `dividendYield12m` os dos 12 meses até ele, sobre `price`.
 
         Use para gráficos de P/VP e dividend yield, e para comparar um fundo com o
         próprio passado.
