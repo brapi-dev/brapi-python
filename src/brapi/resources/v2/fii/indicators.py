@@ -114,8 +114,9 @@ class IndicatorsResource(SyncAPIResource):
     ) -> IndicatorHistoryResponse:
         """
         Série mensal dos [indicadores de FIIs](https://brapi.dev/docs/fiis/indicadores):
-        um ponto por mês, com `referenceDate` no último dia do mês. O histórico começa
-        em setembro de 2016.
+        um ponto por mês, com `referenceDate` no dia 1º do mês do informe
+        (`2026-09-01 00:00:00+00` é setembro de 2026). O histórico começa em setembro
+        de 2016.
 
         `price` é o último fechamento do mês, e `navPerShare` é o valor patrimonial do
         fim do mês, os dois na base de cotas atual. `dividendYield1m` soma os pagamentos
@@ -263,8 +264,9 @@ class AsyncIndicatorsResource(AsyncAPIResource):
     ) -> IndicatorHistoryResponse:
         """
         Série mensal dos [indicadores de FIIs](https://brapi.dev/docs/fiis/indicadores):
-        um ponto por mês, com `referenceDate` no último dia do mês. O histórico começa
-        em setembro de 2016.
+        um ponto por mês, com `referenceDate` no dia 1º do mês do informe
+        (`2026-09-01 00:00:00+00` é setembro de 2026). O histórico começa em setembro
+        de 2016.
 
         `price` é o último fechamento do mês, e `navPerShare` é o valor patrimonial do
         fim do mês, os dois na base de cotas atual. `dividendYield1m` soma os pagamentos
