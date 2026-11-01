@@ -79,6 +79,7 @@ from .stock_dividends_response import StockDividendsResponse as StockDividendsRe
 from .stock_value_added_params import StockValueAddedParams as StockValueAddedParams
 from .ticker_coverage_response import TickerCoverageResponse as TickerCoverageResponse
 from .fii_annual_reports_params import FiiAnnualReportsParams as FiiAnnualReportsParams
+from .fund_screener_cnpj_params import FundScreenerCnpjParams as FundScreenerCnpjParams
 from .inflation_retrieve_params import InflationRetrieveParams as InflationRetrieveParams
 from .option_expirations_params import OptionExpirationsParams as OptionExpirationsParams
 from .stock_fundamentals_series import StockFundamentalsSeries as StockFundamentalsSeries
@@ -94,6 +95,7 @@ from .prime_rate_retrieve_params import PrimeRateRetrieveParams as PrimeRateRetr
 from .stock_balance_sheet_params import StockBalanceSheetParams as StockBalanceSheetParams
 from .stock_value_added_response import StockValueAddedResponse as StockValueAddedResponse
 from .fii_annual_reports_response import FiiAnnualReportsResponse as FiiAnnualReportsResponse
+from .fund_screener_cnpj_response import FundScreenerCnpjResponse as FundScreenerCnpjResponse
 from .inflation_retrieve_response import InflationRetrieveResponse as InflationRetrieveResponse
 from .macro_list_available_params import MacroListAvailableParams as MacroListAvailableParams
 from .option_expirations_response import OptionExpirationsResponse as OptionExpirationsResponse
