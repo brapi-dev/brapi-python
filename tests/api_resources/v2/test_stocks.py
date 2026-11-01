@@ -9,6 +9,7 @@ import pytest
 
 from brapi import Brapi, AsyncBrapi
 from tests.utils import assert_matches_type
+from brapi._utils import parse_datetime
 from brapi.types.v2 import (
     StockQuoteResponse,
     StockProfileResponse,
@@ -21,6 +22,7 @@ from brapi.types.v2 import (
     StockBalanceSheetResponse,
     StockFinancialDataResponse,
     StockIncomeStatementResponse,
+    StockEarningsCalendarResponse,
     StockInsiderTransactionsResponse,
 )
 
@@ -152,6 +154,46 @@ class TestStocks:
 
             stock = response.parse()
             assert_matches_type(StockDividendsResponse, stock, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    def test_method_earnings_calendar(self, client: Brapi) -> None:
+        stock = client.v2.stocks.earnings_calendar()
+        assert_matches_type(StockEarningsCalendarResponse, stock, path=["response"])
+
+    @parametrize
+    def test_method_earnings_calendar_with_all_params(self, client: Brapi) -> None:
+        stock = client.v2.stocks.earnings_calendar(
+            date_status="confirmed",
+            from_="2026-11-01",
+            limit=50,
+            page=1,
+            status="scheduled",
+            symbols="TIMS3",
+            to="2026-11-15",
+            types="quarterly",
+            updated_since=parse_datetime("2026-10-31T00:00:00Z"),
+        )
+        assert_matches_type(StockEarningsCalendarResponse, stock, path=["response"])
+
+    @parametrize
+    def test_raw_response_earnings_calendar(self, client: Brapi) -> None:
+        response = client.v2.stocks.with_raw_response.earnings_calendar()
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        stock = response.parse()
+        assert_matches_type(StockEarningsCalendarResponse, stock, path=["response"])
+
+    @parametrize
+    def test_streaming_response_earnings_calendar(self, client: Brapi) -> None:
+        with client.v2.stocks.with_streaming_response.earnings_calendar() as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            stock = response.parse()
+            assert_matches_type(StockEarningsCalendarResponse, stock, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -708,6 +750,46 @@ class TestAsyncStocks:
 
             stock = await response.parse()
             assert_matches_type(StockDividendsResponse, stock, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    async def test_method_earnings_calendar(self, async_client: AsyncBrapi) -> None:
+        stock = await async_client.v2.stocks.earnings_calendar()
+        assert_matches_type(StockEarningsCalendarResponse, stock, path=["response"])
+
+    @parametrize
+    async def test_method_earnings_calendar_with_all_params(self, async_client: AsyncBrapi) -> None:
+        stock = await async_client.v2.stocks.earnings_calendar(
+            date_status="confirmed",
+            from_="2026-11-01",
+            limit=50,
+            page=1,
+            status="scheduled",
+            symbols="TIMS3",
+            to="2026-11-15",
+            types="quarterly",
+            updated_since=parse_datetime("2026-10-31T00:00:00Z"),
+        )
+        assert_matches_type(StockEarningsCalendarResponse, stock, path=["response"])
+
+    @parametrize
+    async def test_raw_response_earnings_calendar(self, async_client: AsyncBrapi) -> None:
+        response = await async_client.v2.stocks.with_raw_response.earnings_calendar()
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        stock = await response.parse()
+        assert_matches_type(StockEarningsCalendarResponse, stock, path=["response"])
+
+    @parametrize
+    async def test_streaming_response_earnings_calendar(self, async_client: AsyncBrapi) -> None:
+        async with async_client.v2.stocks.with_streaming_response.earnings_calendar() as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            stock = await response.parse()
+            assert_matches_type(StockEarningsCalendarResponse, stock, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
