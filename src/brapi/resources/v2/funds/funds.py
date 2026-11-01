@@ -44,6 +44,7 @@ from ...._compat import cached_property
 from ....types.v2 import (
     fund_list_params,
     fund_profile_params,
+    fund_screener_params,
     fund_dividends_params,
     fund_portfolio_params,
     fund_indicators_params,
@@ -58,6 +59,7 @@ from ...._response import (
 from ...._base_client import make_request_options
 from ....types.v2.fund_list_response import FundListResponse
 from ....types.v2.fund_profile_response import FundProfileResponse
+from ....types.v2.fund_screener_response import FundScreenerResponse
 from ....types.v2.fund_dividends_response import FundDividendsResponse
 from ....types.v2.fund_portfolio_response import FundPortfolioResponse
 from ....types.v2.fund_indicators_response import FundIndicatorsResponse
@@ -524,6 +526,270 @@ class FundsResource(SyncAPIResource):
             cast_to=FundProfileResponse,
         )
 
+    def screener(
+        self,
+        *,
+        asset_type: Literal["fii", "fiagro", "fiinfra", "etf", "fidc", "fip", "fif"] | Omit = omit,
+        average_daily_traded_value_max: float | Omit = omit,
+        average_daily_traded_value_min: float | Omit = omit,
+        change_percent_max: float | Omit = omit,
+        change_percent_min: float | Omit = omit,
+        dividend_yield_max: float | Omit = omit,
+        dividend_yield_min: float | Omit = omit,
+        equity_max: float | Omit = omit,
+        equity_min: float | Omit = omit,
+        etf_category: Literal["fixed-income", "equity", "crypto", "real-estate"] | Omit = omit,
+        income_months12m_max: float | Omit = omit,
+        income_months12m_min: float | Omit = omit,
+        last_dividend_max: float | Omit = omit,
+        last_dividend_min: float | Omit = omit,
+        last_dividend_yield_max: float | Omit = omit,
+        last_dividend_yield_min: float | Omit = omit,
+        last_price_max: float | Omit = omit,
+        last_price_min: float | Omit = omit,
+        limit: int | Omit = omit,
+        market_cap_max: float | Omit = omit,
+        market_cap_min: float | Omit = omit,
+        nav_per_share_max: float | Omit = omit,
+        nav_per_share_min: float | Omit = omit,
+        page: int | Omit = omit,
+        price_change12m_max: float | Omit = omit,
+        price_change12m_min: float | Omit = omit,
+        price_to_nav_max: float | Omit = omit,
+        price_to_nav_min: float | Omit = omit,
+        search: str | Omit = omit,
+        segment: str | Omit = omit,
+        segment_type: Literal["tijolo", "papel", "hibrido", "fof"] | Omit = omit,
+        sort_by: Literal[
+            "symbol",
+            "name",
+            "lastPrice",
+            "changePercent",
+            "volume",
+            "averageDailyTradedValue",
+            "marketCap",
+            "dividendYield",
+            "lastDividend",
+            "lastDividendYield",
+            "incomeMonths12m",
+            "navPerShare",
+            "priceToNav",
+            "equity",
+            "totalInvestors",
+            "priceChange12m",
+            "totalFeePercent",
+        ]
+        | Omit = omit,
+        sort_order: Literal["asc", "desc"] | Omit = omit,
+        total_fee_percent_max: float | Omit = omit,
+        total_fee_percent_min: float | Omit = omit,
+        total_investors_max: float | Omit = omit,
+        total_investors_min: float | Omit = omit,
+        volume_max: float | Omit = omit,
+        volume_min: float | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> FundScreenerResponse:
+        """
+        Filtra e ordena os fundos negociados na B3 (FIIs, Fiagros, FI-Infra, ETFs, FIDCs
+        e FIPs) por preço, rendimentos, P/VP, liquidez, patrimônio e cotistas. Uma
+        chamada percorre todos os fundos.
+
+        `assetType` escolhe o tipo de fundo. Para FIIs, `segmentType` separa tijolo,
+        papel, fundos de fundos e híbridos, e `segment` usa o segmento do cadastro da
+        CVM. Para ETFs, `etfCategory` separa renda fixa, renda variável, cripto e
+        imobiliário.
+
+        Cada indicador aceita `{chave}Min` e `{chave}Max`. Os limites são inclusivos e
+        usam a mesma unidade da resposta: 10% é `0.1`. Um filtro remove os fundos sem o
+        dado. Na ordenação, os nulos ficam no fim.
+
+        Exemplos:
+
+        - FIIs de papel com dividend yield de pelo menos 12% e P/VP até 0,95:
+          `?assetType=fii&segmentType=papel&dividendYieldMin=0.12&priceToNavMax=0.95&sortBy=dividendYield`
+        - ETFs de renda fixa pela menor taxa:
+          `?assetType=etf&etfCategory=fixed-income&sortBy=totalFeePercent&sortOrder=asc`
+
+        `dividendYield` soma só os rendimentos dos últimos 12 meses pela data-com, sem
+        amortizações, e divide pelo último preço. `priceToNav` usa o último preço e o
+        valor patrimonial por cota do último informe. `averageDailyTradedValue` divide o
+        valor negociado nos últimos 30 dias pelos pregões do período.
+
+        Plano Pro.
+
+        | Indicador                  | Chave                     | Unidade                    |
+        | -------------------------- | ------------------------- | -------------------------- |
+        | Preço                      | `lastPrice`               | reais                      |
+        | Variação no dia            | `changePercent`           | porcentagem (2.81 = 2,81%) |
+        | Volume                     | `volume`                  | quantidade                 |
+        | Liquidez diária            | `averageDailyTradedValue` | reais                      |
+        | Valor de mercado           | `marketCap`               | reais                      |
+        | Dividend yield 12m         | `dividendYield`           | fração (0.06 = 6%)         |
+        | Último rendimento          | `lastDividend`            | reais                      |
+        | Yield do último rendimento | `lastDividendYield`       | fração (0.06 = 6%)         |
+        | Meses com rendimento       | `incomeMonths12m`         | quantidade                 |
+        | Valor patrimonial/cota     | `navPerShare`             | reais                      |
+        | P/VP                       | `priceToNav`              | múltiplo                   |
+        | Patrimônio líquido         | `equity`                  | reais                      |
+        | Cotistas                   | `totalInvestors`          | quantidade                 |
+        | Variação em 12 meses       | `priceChange12m`          | fração (0.06 = 6%)         |
+        | Taxa total                 | `totalFeePercent`         | porcentagem (2.81 = 2,81%) |
+
+        Args:
+          asset_type: Tipo do fundo: fii, fiagro, fiinfra, etf, fidc, fip ou fif. Sem ele, todos os
+              fundos listados.
+
+          average_daily_traded_value_max: Liquidez diária: valor máximo, inclusive. Unidade: reais.
+
+          average_daily_traded_value_min: Liquidez diária: valor mínimo, inclusive. Unidade: reais.
+
+          change_percent_max: Variação no dia: valor máximo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+
+          change_percent_min: Variação no dia: valor mínimo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+
+          dividend_yield_max: Dividend yield 12m: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
+
+          dividend_yield_min: Dividend yield 12m: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
+
+          equity_max: Patrimônio líquido: valor máximo, inclusive. Unidade: reais.
+
+          equity_min: Patrimônio líquido: valor mínimo, inclusive. Unidade: reais.
+
+          etf_category: Categoria do ETF pela lista da bolsa: fixed-income, equity, crypto ou
+              real-estate.
+
+          income_months12m_max: Meses com rendimento: valor máximo, inclusive. Unidade: quantidade.
+
+          income_months12m_min: Meses com rendimento: valor mínimo, inclusive. Unidade: quantidade.
+
+          last_dividend_max: Último rendimento: valor máximo, inclusive. Unidade: reais.
+
+          last_dividend_min: Último rendimento: valor mínimo, inclusive. Unidade: reais.
+
+          last_dividend_yield_max: Yield do último rendimento: valor máximo, inclusive. Unidade: fração (0.06 =
+              6%).
+
+          last_dividend_yield_min: Yield do último rendimento: valor mínimo, inclusive. Unidade: fração (0.06 =
+              6%).
+
+          last_price_max: Preço: valor máximo, inclusive. Unidade: reais.
+
+          last_price_min: Preço: valor mínimo, inclusive. Unidade: reais.
+
+          limit: Itens por página. Máximo: 200.
+
+          market_cap_max: Valor de mercado: valor máximo, inclusive. Unidade: reais.
+
+          market_cap_min: Valor de mercado: valor mínimo, inclusive. Unidade: reais.
+
+          nav_per_share_max: Valor patrimonial/cota: valor máximo, inclusive. Unidade: reais.
+
+          nav_per_share_min: Valor patrimonial/cota: valor mínimo, inclusive. Unidade: reais.
+
+          page: Número da página. Começa em 1.
+
+          price_change12m_max: Variação em 12 meses: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
+
+          price_change12m_min: Variação em 12 meses: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
+
+          price_to_nav_max: P/VP: valor máximo, inclusive. Unidade: múltiplo.
+
+          price_to_nav_min: P/VP: valor mínimo, inclusive. Unidade: múltiplo.
+
+          search: Parte do ticker ou do nome do fundo.
+
+          segment: Segmento do FII no cadastro da CVM, como Logística, Shoppings, Escritórios ou
+              Títulos e Val. Mob. Nome exato, sem diferença de maiúsculas.
+
+          segment_type: Tipo do FII pelo último informe: tijolo (imóveis), papel (CRI, LCI e títulos),
+              fof (cotas de outros FIIs) ou hibrido.
+
+          sort_by:
+              Campo de ordenação: uma chave de métrica, `symbol` ou `name`. Padrão:
+              `averageDailyTradedValue`. Valores nulos ficam no fim.
+
+          sort_order: Ordem. Padrão: `desc`.
+
+          total_fee_percent_max: Taxa total: valor máximo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+
+          total_fee_percent_min: Taxa total: valor mínimo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+
+          total_investors_max: Cotistas: valor máximo, inclusive. Unidade: quantidade.
+
+          total_investors_min: Cotistas: valor mínimo, inclusive. Unidade: quantidade.
+
+          volume_max: Volume: valor máximo, inclusive. Unidade: quantidade.
+
+          volume_min: Volume: valor mínimo, inclusive. Unidade: quantidade.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return self._get(
+            "/api/v2/funds/screener",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {
+                        "asset_type": asset_type,
+                        "average_daily_traded_value_max": average_daily_traded_value_max,
+                        "average_daily_traded_value_min": average_daily_traded_value_min,
+                        "change_percent_max": change_percent_max,
+                        "change_percent_min": change_percent_min,
+                        "dividend_yield_max": dividend_yield_max,
+                        "dividend_yield_min": dividend_yield_min,
+                        "equity_max": equity_max,
+                        "equity_min": equity_min,
+                        "etf_category": etf_category,
+                        "income_months12m_max": income_months12m_max,
+                        "income_months12m_min": income_months12m_min,
+                        "last_dividend_max": last_dividend_max,
+                        "last_dividend_min": last_dividend_min,
+                        "last_dividend_yield_max": last_dividend_yield_max,
+                        "last_dividend_yield_min": last_dividend_yield_min,
+                        "last_price_max": last_price_max,
+                        "last_price_min": last_price_min,
+                        "limit": limit,
+                        "market_cap_max": market_cap_max,
+                        "market_cap_min": market_cap_min,
+                        "nav_per_share_max": nav_per_share_max,
+                        "nav_per_share_min": nav_per_share_min,
+                        "page": page,
+                        "price_change12m_max": price_change12m_max,
+                        "price_change12m_min": price_change12m_min,
+                        "price_to_nav_max": price_to_nav_max,
+                        "price_to_nav_min": price_to_nav_min,
+                        "search": search,
+                        "segment": segment,
+                        "segment_type": segment_type,
+                        "sort_by": sort_by,
+                        "sort_order": sort_order,
+                        "total_fee_percent_max": total_fee_percent_max,
+                        "total_fee_percent_min": total_fee_percent_min,
+                        "total_investors_max": total_investors_max,
+                        "total_investors_min": total_investors_min,
+                        "volume_max": volume_max,
+                        "volume_min": volume_min,
+                    },
+                    fund_screener_params.FundScreenerParams,
+                ),
+            ),
+            cast_to=FundScreenerResponse,
+        )
+
 
 class AsyncFundsResource(AsyncAPIResource):
     """
@@ -984,6 +1250,270 @@ class AsyncFundsResource(AsyncAPIResource):
             cast_to=FundProfileResponse,
         )
 
+    async def screener(
+        self,
+        *,
+        asset_type: Literal["fii", "fiagro", "fiinfra", "etf", "fidc", "fip", "fif"] | Omit = omit,
+        average_daily_traded_value_max: float | Omit = omit,
+        average_daily_traded_value_min: float | Omit = omit,
+        change_percent_max: float | Omit = omit,
+        change_percent_min: float | Omit = omit,
+        dividend_yield_max: float | Omit = omit,
+        dividend_yield_min: float | Omit = omit,
+        equity_max: float | Omit = omit,
+        equity_min: float | Omit = omit,
+        etf_category: Literal["fixed-income", "equity", "crypto", "real-estate"] | Omit = omit,
+        income_months12m_max: float | Omit = omit,
+        income_months12m_min: float | Omit = omit,
+        last_dividend_max: float | Omit = omit,
+        last_dividend_min: float | Omit = omit,
+        last_dividend_yield_max: float | Omit = omit,
+        last_dividend_yield_min: float | Omit = omit,
+        last_price_max: float | Omit = omit,
+        last_price_min: float | Omit = omit,
+        limit: int | Omit = omit,
+        market_cap_max: float | Omit = omit,
+        market_cap_min: float | Omit = omit,
+        nav_per_share_max: float | Omit = omit,
+        nav_per_share_min: float | Omit = omit,
+        page: int | Omit = omit,
+        price_change12m_max: float | Omit = omit,
+        price_change12m_min: float | Omit = omit,
+        price_to_nav_max: float | Omit = omit,
+        price_to_nav_min: float | Omit = omit,
+        search: str | Omit = omit,
+        segment: str | Omit = omit,
+        segment_type: Literal["tijolo", "papel", "hibrido", "fof"] | Omit = omit,
+        sort_by: Literal[
+            "symbol",
+            "name",
+            "lastPrice",
+            "changePercent",
+            "volume",
+            "averageDailyTradedValue",
+            "marketCap",
+            "dividendYield",
+            "lastDividend",
+            "lastDividendYield",
+            "incomeMonths12m",
+            "navPerShare",
+            "priceToNav",
+            "equity",
+            "totalInvestors",
+            "priceChange12m",
+            "totalFeePercent",
+        ]
+        | Omit = omit,
+        sort_order: Literal["asc", "desc"] | Omit = omit,
+        total_fee_percent_max: float | Omit = omit,
+        total_fee_percent_min: float | Omit = omit,
+        total_investors_max: float | Omit = omit,
+        total_investors_min: float | Omit = omit,
+        volume_max: float | Omit = omit,
+        volume_min: float | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> FundScreenerResponse:
+        """
+        Filtra e ordena os fundos negociados na B3 (FIIs, Fiagros, FI-Infra, ETFs, FIDCs
+        e FIPs) por preço, rendimentos, P/VP, liquidez, patrimônio e cotistas. Uma
+        chamada percorre todos os fundos.
+
+        `assetType` escolhe o tipo de fundo. Para FIIs, `segmentType` separa tijolo,
+        papel, fundos de fundos e híbridos, e `segment` usa o segmento do cadastro da
+        CVM. Para ETFs, `etfCategory` separa renda fixa, renda variável, cripto e
+        imobiliário.
+
+        Cada indicador aceita `{chave}Min` e `{chave}Max`. Os limites são inclusivos e
+        usam a mesma unidade da resposta: 10% é `0.1`. Um filtro remove os fundos sem o
+        dado. Na ordenação, os nulos ficam no fim.
+
+        Exemplos:
+
+        - FIIs de papel com dividend yield de pelo menos 12% e P/VP até 0,95:
+          `?assetType=fii&segmentType=papel&dividendYieldMin=0.12&priceToNavMax=0.95&sortBy=dividendYield`
+        - ETFs de renda fixa pela menor taxa:
+          `?assetType=etf&etfCategory=fixed-income&sortBy=totalFeePercent&sortOrder=asc`
+
+        `dividendYield` soma só os rendimentos dos últimos 12 meses pela data-com, sem
+        amortizações, e divide pelo último preço. `priceToNav` usa o último preço e o
+        valor patrimonial por cota do último informe. `averageDailyTradedValue` divide o
+        valor negociado nos últimos 30 dias pelos pregões do período.
+
+        Plano Pro.
+
+        | Indicador                  | Chave                     | Unidade                    |
+        | -------------------------- | ------------------------- | -------------------------- |
+        | Preço                      | `lastPrice`               | reais                      |
+        | Variação no dia            | `changePercent`           | porcentagem (2.81 = 2,81%) |
+        | Volume                     | `volume`                  | quantidade                 |
+        | Liquidez diária            | `averageDailyTradedValue` | reais                      |
+        | Valor de mercado           | `marketCap`               | reais                      |
+        | Dividend yield 12m         | `dividendYield`           | fração (0.06 = 6%)         |
+        | Último rendimento          | `lastDividend`            | reais                      |
+        | Yield do último rendimento | `lastDividendYield`       | fração (0.06 = 6%)         |
+        | Meses com rendimento       | `incomeMonths12m`         | quantidade                 |
+        | Valor patrimonial/cota     | `navPerShare`             | reais                      |
+        | P/VP                       | `priceToNav`              | múltiplo                   |
+        | Patrimônio líquido         | `equity`                  | reais                      |
+        | Cotistas                   | `totalInvestors`          | quantidade                 |
+        | Variação em 12 meses       | `priceChange12m`          | fração (0.06 = 6%)         |
+        | Taxa total                 | `totalFeePercent`         | porcentagem (2.81 = 2,81%) |
+
+        Args:
+          asset_type: Tipo do fundo: fii, fiagro, fiinfra, etf, fidc, fip ou fif. Sem ele, todos os
+              fundos listados.
+
+          average_daily_traded_value_max: Liquidez diária: valor máximo, inclusive. Unidade: reais.
+
+          average_daily_traded_value_min: Liquidez diária: valor mínimo, inclusive. Unidade: reais.
+
+          change_percent_max: Variação no dia: valor máximo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+
+          change_percent_min: Variação no dia: valor mínimo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+
+          dividend_yield_max: Dividend yield 12m: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
+
+          dividend_yield_min: Dividend yield 12m: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
+
+          equity_max: Patrimônio líquido: valor máximo, inclusive. Unidade: reais.
+
+          equity_min: Patrimônio líquido: valor mínimo, inclusive. Unidade: reais.
+
+          etf_category: Categoria do ETF pela lista da bolsa: fixed-income, equity, crypto ou
+              real-estate.
+
+          income_months12m_max: Meses com rendimento: valor máximo, inclusive. Unidade: quantidade.
+
+          income_months12m_min: Meses com rendimento: valor mínimo, inclusive. Unidade: quantidade.
+
+          last_dividend_max: Último rendimento: valor máximo, inclusive. Unidade: reais.
+
+          last_dividend_min: Último rendimento: valor mínimo, inclusive. Unidade: reais.
+
+          last_dividend_yield_max: Yield do último rendimento: valor máximo, inclusive. Unidade: fração (0.06 =
+              6%).
+
+          last_dividend_yield_min: Yield do último rendimento: valor mínimo, inclusive. Unidade: fração (0.06 =
+              6%).
+
+          last_price_max: Preço: valor máximo, inclusive. Unidade: reais.
+
+          last_price_min: Preço: valor mínimo, inclusive. Unidade: reais.
+
+          limit: Itens por página. Máximo: 200.
+
+          market_cap_max: Valor de mercado: valor máximo, inclusive. Unidade: reais.
+
+          market_cap_min: Valor de mercado: valor mínimo, inclusive. Unidade: reais.
+
+          nav_per_share_max: Valor patrimonial/cota: valor máximo, inclusive. Unidade: reais.
+
+          nav_per_share_min: Valor patrimonial/cota: valor mínimo, inclusive. Unidade: reais.
+
+          page: Número da página. Começa em 1.
+
+          price_change12m_max: Variação em 12 meses: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
+
+          price_change12m_min: Variação em 12 meses: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
+
+          price_to_nav_max: P/VP: valor máximo, inclusive. Unidade: múltiplo.
+
+          price_to_nav_min: P/VP: valor mínimo, inclusive. Unidade: múltiplo.
+
+          search: Parte do ticker ou do nome do fundo.
+
+          segment: Segmento do FII no cadastro da CVM, como Logística, Shoppings, Escritórios ou
+              Títulos e Val. Mob. Nome exato, sem diferença de maiúsculas.
+
+          segment_type: Tipo do FII pelo último informe: tijolo (imóveis), papel (CRI, LCI e títulos),
+              fof (cotas de outros FIIs) ou hibrido.
+
+          sort_by:
+              Campo de ordenação: uma chave de métrica, `symbol` ou `name`. Padrão:
+              `averageDailyTradedValue`. Valores nulos ficam no fim.
+
+          sort_order: Ordem. Padrão: `desc`.
+
+          total_fee_percent_max: Taxa total: valor máximo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+
+          total_fee_percent_min: Taxa total: valor mínimo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+
+          total_investors_max: Cotistas: valor máximo, inclusive. Unidade: quantidade.
+
+          total_investors_min: Cotistas: valor mínimo, inclusive. Unidade: quantidade.
+
+          volume_max: Volume: valor máximo, inclusive. Unidade: quantidade.
+
+          volume_min: Volume: valor mínimo, inclusive. Unidade: quantidade.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return await self._get(
+            "/api/v2/funds/screener",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {
+                        "asset_type": asset_type,
+                        "average_daily_traded_value_max": average_daily_traded_value_max,
+                        "average_daily_traded_value_min": average_daily_traded_value_min,
+                        "change_percent_max": change_percent_max,
+                        "change_percent_min": change_percent_min,
+                        "dividend_yield_max": dividend_yield_max,
+                        "dividend_yield_min": dividend_yield_min,
+                        "equity_max": equity_max,
+                        "equity_min": equity_min,
+                        "etf_category": etf_category,
+                        "income_months12m_max": income_months12m_max,
+                        "income_months12m_min": income_months12m_min,
+                        "last_dividend_max": last_dividend_max,
+                        "last_dividend_min": last_dividend_min,
+                        "last_dividend_yield_max": last_dividend_yield_max,
+                        "last_dividend_yield_min": last_dividend_yield_min,
+                        "last_price_max": last_price_max,
+                        "last_price_min": last_price_min,
+                        "limit": limit,
+                        "market_cap_max": market_cap_max,
+                        "market_cap_min": market_cap_min,
+                        "nav_per_share_max": nav_per_share_max,
+                        "nav_per_share_min": nav_per_share_min,
+                        "page": page,
+                        "price_change12m_max": price_change12m_max,
+                        "price_change12m_min": price_change12m_min,
+                        "price_to_nav_max": price_to_nav_max,
+                        "price_to_nav_min": price_to_nav_min,
+                        "search": search,
+                        "segment": segment,
+                        "segment_type": segment_type,
+                        "sort_by": sort_by,
+                        "sort_order": sort_order,
+                        "total_fee_percent_max": total_fee_percent_max,
+                        "total_fee_percent_min": total_fee_percent_min,
+                        "total_investors_max": total_investors_max,
+                        "total_investors_min": total_investors_min,
+                        "volume_max": volume_max,
+                        "volume_min": volume_min,
+                    },
+                    fund_screener_params.FundScreenerParams,
+                ),
+            ),
+            cast_to=FundScreenerResponse,
+        )
+
 
 class FundsResourceWithRawResponse:
     def __init__(self, funds: FundsResource) -> None:
@@ -1003,6 +1533,9 @@ class FundsResourceWithRawResponse:
         )
         self.profile = to_raw_response_wrapper(
             funds.profile,
+        )
+        self.screener = to_raw_response_wrapper(
+            funds.screener,
         )
 
     @cached_property
@@ -1053,6 +1586,9 @@ class AsyncFundsResourceWithRawResponse:
         self.profile = async_to_raw_response_wrapper(
             funds.profile,
         )
+        self.screener = async_to_raw_response_wrapper(
+            funds.screener,
+        )
 
     @cached_property
     def nav(self) -> AsyncNavResourceWithRawResponse:
@@ -1102,6 +1638,9 @@ class FundsResourceWithStreamingResponse:
         self.profile = to_streamed_response_wrapper(
             funds.profile,
         )
+        self.screener = to_streamed_response_wrapper(
+            funds.screener,
+        )
 
     @cached_property
     def nav(self) -> NavResourceWithStreamingResponse:
@@ -1150,6 +1689,9 @@ class AsyncFundsResourceWithStreamingResponse:
         )
         self.profile = async_to_streamed_response_wrapper(
             funds.profile,
+        )
+        self.screener = async_to_streamed_response_wrapper(
+            funds.screener,
         )
 
     @cached_property
