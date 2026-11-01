@@ -38,7 +38,7 @@ class StockEarningsCalendarParams(TypedDict, total=False):
     """
 
     symbols: str
-    """Tickers separados por vírgula.
+    """Tickers separados por vírgula, de ações ou BDRs.
 
     Máximo de 20. PETR3 e PETR4 retornam a mesma empresa.
     """
