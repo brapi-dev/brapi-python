@@ -110,6 +110,7 @@ from brapi.types.v2 import (
     StockBalanceSheetResponse,
     StockCashFlowResponse,
     StockDividendsResponse,
+    StockEarningsCalendarResponse,
     StockFinancialDataResponse,
     StockHistoricalResponse,
     StockIncomeStatementResponse,
@@ -127,6 +128,7 @@ Methods:
 - <code title="get /api/v2/stocks/balance-sheet">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">balance_sheet</a>(\*\*<a href="src/brapi/types/v2/stock_balance_sheet_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_balance_sheet_response.py">StockBalanceSheetResponse</a></code>
 - <code title="get /api/v2/stocks/cash-flow">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">cash_flow</a>(\*\*<a href="src/brapi/types/v2/stock_cash_flow_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_cash_flow_response.py">StockCashFlowResponse</a></code>
 - <code title="get /api/v2/stocks/dividends">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">dividends</a>(\*\*<a href="src/brapi/types/v2/stock_dividends_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_dividends_response.py">StockDividendsResponse</a></code>
+- <code title="get /api/v2/stocks/earnings-calendar">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">earnings_calendar</a>(\*\*<a href="src/brapi/types/v2/stock_earnings_calendar_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_earnings_calendar_response.py">StockEarningsCalendarResponse</a></code>
 - <code title="get /api/v2/stocks/financial-data">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">financial_data</a>(\*\*<a href="src/brapi/types/v2/stock_financial_data_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_financial_data_response.py">StockFinancialDataResponse</a></code>
 - <code title="get /api/v2/stocks/historical">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">historical</a>(\*\*<a href="src/brapi/types/v2/stock_historical_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_historical_response.py">StockHistoricalResponse</a></code>
 - <code title="get /api/v2/stocks/income-statement">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">income_statement</a>(\*\*<a href="src/brapi/types/v2/stock_income_statement_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_income_statement_response.py">StockIncomeStatementResponse</a></code>
