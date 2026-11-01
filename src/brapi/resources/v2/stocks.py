@@ -168,6 +168,9 @@ class StocksResource(SyncAPIResource):
         `freeCashFlow` soma o caixa operacional e o caixa de investimento. Ele é `null`
         quando um dos dois falta.
 
+        `depreciationAndAmortization` só vem preenchido para BDRs com demonstrações da
+        SEC. Para empresas da CVM, a depreciação está na DVA.
+
         `consolidationType` informa a base de cada período: `consolidated` para o
         demonstrativo consolidado ou `individual` para o demonstrativo só da
         controladora. Empresas sem controladas entregam só o individual.
@@ -1473,6 +1476,9 @@ class AsyncStocksResource(AsyncAPIResource):
 
         `freeCashFlow` soma o caixa operacional e o caixa de investimento. Ele é `null`
         quando um dos dois falta.
+
+        `depreciationAndAmortization` só vem preenchido para BDRs com demonstrações da
+        SEC. Para empresas da CVM, a depreciação está na DVA.
 
         `consolidationType` informa a base de cada período: `consolidated` para o
         demonstrativo consolidado ou `individual` para o demonstrativo só da
