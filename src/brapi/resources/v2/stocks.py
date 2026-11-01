@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Union
+from datetime import datetime
 from typing_extensions import Literal
 
 import httpx
@@ -21,6 +23,7 @@ from ...types.v2 import (
     stock_balance_sheet_params,
     stock_financial_data_params,
     stock_income_statement_params,
+    stock_earnings_calendar_params,
     stock_insider_transactions_params,
 )
 from ..._resource import SyncAPIResource, AsyncAPIResource
@@ -42,6 +45,7 @@ from ...types.v2.stock_value_added_response import StockValueAddedResponse
 from ...types.v2.stock_balance_sheet_response import StockBalanceSheetResponse
 from ...types.v2.stock_financial_data_response import StockFinancialDataResponse
 from ...types.v2.stock_income_statement_response import StockIncomeStatementResponse
+from ...types.v2.stock_earnings_calendar_response import StockEarningsCalendarResponse
 from ...types.v2.stock_insider_transactions_response import StockInsiderTransactionsResponse
 
 __all__ = ["StocksResource", "AsyncStocksResource"]
@@ -309,6 +313,100 @@ class StocksResource(SyncAPIResource):
                 ),
             ),
             cast_to=StockDividendsResponse,
+        )
+
+    def earnings_calendar(
+        self,
+        *,
+        date_status: Literal["confirmed", "estimated"] | Omit = omit,
+        from_: str | Omit = omit,
+        limit: int | Omit = omit,
+        page: int | Omit = omit,
+        status: str | Omit = omit,
+        symbols: str | Omit = omit,
+        to: str | Omit = omit,
+        types: str | Omit = omit,
+        updated_since: Union[str, datetime] | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> StockEarningsCalendarResponse:
+        """
+        Datas de divulgação dos resultados trimestrais (ITR) e anuais (DFP) das empresas
+        listadas na B3. A atualização ocorre duas vezes por dia.
+
+        Cada item é uma divulgação de uma empresa, com todos os seus tickers. `date`
+        traz a data real quando os resultados já foram entregues e a data prevista nos
+        demais casos. `dateChanges` mostra quando a empresa mudou a data.
+
+        `fiscalYear` e `fiscalPeriod` indicam o período dos resultados. Empresas com
+        exercício fora do ano civil usam o ano em que o exercício termina.
+
+        Sem `symbols`, o intervalo máximo é de 366 dias. Com `symbols`, ele é de 10
+        anos. Use `updatedSince` para receber só as divulgações alteradas.
+
+        Todos os planos. PETR4, MGLU3, VALE3 e ITUB4 permitem testes gratuitos, sem
+        token.
+
+        Args:
+          date_status: `confirmed` traz datas informadas pela empresa. `estimated` traz datas
+              estimadas.
+
+          from_: Data inicial de divulgação. Padrão: 7 dias antes de hoje, ou 97 dias antes de
+              `to`. O intervalo máximo é de 366 dias, ou de 10 anos com `symbols`.
+
+          limit: Máximo de divulgações por página.
+
+          page: Página.
+
+          status: Situações separadas por vírgula: `scheduled` (prevista), `published` (divulgada)
+              e `overdue` (atrasada).
+
+          symbols: Tickers separados por vírgula. Máximo de 20. PETR3 e PETR4 retornam a mesma
+              empresa.
+
+          to: Data final de divulgação. Padrão: 97 dias depois de `from` (90 dias depois de
+              hoje).
+
+          types: Tipos separados por vírgula: `quarterly` (trimestral) e `annual` (anual).
+
+          updated_since: Retorna só divulgações alteradas a partir deste momento, em ISO 8601. Use para
+              sincronizar sua base.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return self._get(
+            "/api/v2/stocks/earnings-calendar",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {
+                        "date_status": date_status,
+                        "from_": from_,
+                        "limit": limit,
+                        "page": page,
+                        "status": status,
+                        "symbols": symbols,
+                        "to": to,
+                        "types": types,
+                        "updated_since": updated_since,
+                    },
+                    stock_earnings_calendar_params.StockEarningsCalendarParams,
+                ),
+            ),
+            cast_to=StockEarningsCalendarResponse,
         )
 
     def financial_data(
@@ -1620,6 +1718,100 @@ class AsyncStocksResource(AsyncAPIResource):
             cast_to=StockDividendsResponse,
         )
 
+    async def earnings_calendar(
+        self,
+        *,
+        date_status: Literal["confirmed", "estimated"] | Omit = omit,
+        from_: str | Omit = omit,
+        limit: int | Omit = omit,
+        page: int | Omit = omit,
+        status: str | Omit = omit,
+        symbols: str | Omit = omit,
+        to: str | Omit = omit,
+        types: str | Omit = omit,
+        updated_since: Union[str, datetime] | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> StockEarningsCalendarResponse:
+        """
+        Datas de divulgação dos resultados trimestrais (ITR) e anuais (DFP) das empresas
+        listadas na B3. A atualização ocorre duas vezes por dia.
+
+        Cada item é uma divulgação de uma empresa, com todos os seus tickers. `date`
+        traz a data real quando os resultados já foram entregues e a data prevista nos
+        demais casos. `dateChanges` mostra quando a empresa mudou a data.
+
+        `fiscalYear` e `fiscalPeriod` indicam o período dos resultados. Empresas com
+        exercício fora do ano civil usam o ano em que o exercício termina.
+
+        Sem `symbols`, o intervalo máximo é de 366 dias. Com `symbols`, ele é de 10
+        anos. Use `updatedSince` para receber só as divulgações alteradas.
+
+        Todos os planos. PETR4, MGLU3, VALE3 e ITUB4 permitem testes gratuitos, sem
+        token.
+
+        Args:
+          date_status: `confirmed` traz datas informadas pela empresa. `estimated` traz datas
+              estimadas.
+
+          from_: Data inicial de divulgação. Padrão: 7 dias antes de hoje, ou 97 dias antes de
+              `to`. O intervalo máximo é de 366 dias, ou de 10 anos com `symbols`.
+
+          limit: Máximo de divulgações por página.
+
+          page: Página.
+
+          status: Situações separadas por vírgula: `scheduled` (prevista), `published` (divulgada)
+              e `overdue` (atrasada).
+
+          symbols: Tickers separados por vírgula. Máximo de 20. PETR3 e PETR4 retornam a mesma
+              empresa.
+
+          to: Data final de divulgação. Padrão: 97 dias depois de `from` (90 dias depois de
+              hoje).
+
+          types: Tipos separados por vírgula: `quarterly` (trimestral) e `annual` (anual).
+
+          updated_since: Retorna só divulgações alteradas a partir deste momento, em ISO 8601. Use para
+              sincronizar sua base.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return await self._get(
+            "/api/v2/stocks/earnings-calendar",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {
+                        "date_status": date_status,
+                        "from_": from_,
+                        "limit": limit,
+                        "page": page,
+                        "status": status,
+                        "symbols": symbols,
+                        "to": to,
+                        "types": types,
+                        "updated_since": updated_since,
+                    },
+                    stock_earnings_calendar_params.StockEarningsCalendarParams,
+                ),
+            ),
+            cast_to=StockEarningsCalendarResponse,
+        )
+
     async def financial_data(
         self,
         *,
@@ -2678,6 +2870,9 @@ class StocksResourceWithRawResponse:
         self.dividends = to_raw_response_wrapper(
             stocks.dividends,
         )
+        self.earnings_calendar = to_raw_response_wrapper(
+            stocks.earnings_calendar,
+        )
         self.financial_data = to_raw_response_wrapper(
             stocks.financial_data,
         )
@@ -2719,6 +2914,9 @@ class AsyncStocksResourceWithRawResponse:
         )
         self.dividends = async_to_raw_response_wrapper(
             stocks.dividends,
+        )
+        self.earnings_calendar = async_to_raw_response_wrapper(
+            stocks.earnings_calendar,
         )
         self.financial_data = async_to_raw_response_wrapper(
             stocks.financial_data,
@@ -2762,6 +2960,9 @@ class StocksResourceWithStreamingResponse:
         self.dividends = to_streamed_response_wrapper(
             stocks.dividends,
         )
+        self.earnings_calendar = to_streamed_response_wrapper(
+            stocks.earnings_calendar,
+        )
         self.financial_data = to_streamed_response_wrapper(
             stocks.financial_data,
         )
@@ -2803,6 +3004,9 @@ class AsyncStocksResourceWithStreamingResponse:
         )
         self.dividends = async_to_streamed_response_wrapper(
             stocks.dividends,
+        )
+        self.earnings_calendar = async_to_streamed_response_wrapper(
+            stocks.earnings_calendar,
         )
         self.financial_data = async_to_streamed_response_wrapper(
             stocks.financial_data,
