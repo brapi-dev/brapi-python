@@ -139,6 +139,24 @@ Methods:
 - <code title="get /api/v2/stocks/statistics">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">statistics</a>(\*\*<a href="src/brapi/types/v2/stock_statistics_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_statistics_response.py">StockStatisticsResponse</a></code>
 - <code title="get /api/v2/stocks/value-added">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">value_added</a>(\*\*<a href="src/brapi/types/v2/stock_value_added_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_value_added_response.py">StockValueAddedResponse</a></code>
 
+## RevenueSources
+
+Types:
+
+```python
+from brapi.types.v2 import (
+    RevenueSourceRetrieveResponse,
+    RevenueSourceActivitiesResponse,
+    RevenueSourceCompareResponse,
+)
+```
+
+Methods:
+
+- <code title="get /api/v2/revenue-sources">client.v2.revenue_sources.<a href="./src/brapi/resources/v2/revenue_sources.py">retrieve</a>(\*\*<a href="src/brapi/types/v2/revenue_source_retrieve_params.py">params</a>) -> <a href="./src/brapi/types/v2/revenue_source_retrieve_response.py">RevenueSourceRetrieveResponse</a></code>
+- <code title="get /api/v2/revenue-sources/activities">client.v2.revenue_sources.<a href="./src/brapi/resources/v2/revenue_sources.py">activities</a>(\*\*<a href="src/brapi/types/v2/revenue_source_activities_params.py">params</a>) -> <a href="./src/brapi/types/v2/revenue_source_activities_response.py">RevenueSourceActivitiesResponse</a></code>
+- <code title="get /api/v2/revenue-sources/compare">client.v2.revenue_sources.<a href="./src/brapi/resources/v2/revenue_sources.py">compare</a>(\*\*<a href="src/brapi/types/v2/revenue_source_compare_params.py">params</a>) -> <a href="./src/brapi/types/v2/revenue_source_compare_response.py">RevenueSourceCompareResponse</a></code>
+
 ## Tickers
 
 Types:
