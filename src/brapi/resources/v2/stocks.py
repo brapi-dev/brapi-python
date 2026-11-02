@@ -336,11 +336,17 @@ class StocksResource(SyncAPIResource):
     ) -> StockEarningsCalendarResponse:
         """
         Datas de divulgação dos resultados trimestrais (ITR) e anuais (DFP) das empresas
-        listadas na B3. A atualização ocorre duas vezes por dia.
+        listadas na B3 e das empresas estrangeiras com BDRs. A atualização ocorre duas
+        vezes por dia.
 
         Cada item é uma divulgação de uma empresa, com todos os seus tickers. `date`
         traz a data real quando os resultados já foram entregues e a data prevista nos
         demais casos. `dateChanges` mostra quando a empresa mudou a data.
+
+        Para BDRs, a data real é a do comunicado de resultados da empresa. `releaseTime`
+        mostra o horário em relação ao pregão de Nova York. As próximas datas de BDRs
+        são estimadas (`dateStatus` = `estimated`) com a data do mesmo período no ano
+        anterior.
 
         `fiscalYear` e `fiscalPeriod` indicam o período dos resultados. Empresas com
         exercício fora do ano civil usam o ano em que o exercício termina.
@@ -365,8 +371,8 @@ class StocksResource(SyncAPIResource):
           status: `scheduled` (prevista), `published` (divulgada) ou `overdue` (atrasada). Para
               mais de uma, separe por vírgula.
 
-          symbols: Tickers separados por vírgula. Máximo de 20. PETR3 e PETR4 retornam a mesma
-              empresa.
+          symbols: Tickers separados por vírgula, de ações ou BDRs. Máximo de 20. PETR3 e PETR4
+              retornam a mesma empresa.
 
           to: Data final de divulgação. Padrão: 97 dias depois de `from` (90 dias depois de
               hoje).
@@ -1740,11 +1746,17 @@ class AsyncStocksResource(AsyncAPIResource):
     ) -> StockEarningsCalendarResponse:
         """
         Datas de divulgação dos resultados trimestrais (ITR) e anuais (DFP) das empresas
-        listadas na B3. A atualização ocorre duas vezes por dia.
+        listadas na B3 e das empresas estrangeiras com BDRs. A atualização ocorre duas
+        vezes por dia.
 
         Cada item é uma divulgação de uma empresa, com todos os seus tickers. `date`
         traz a data real quando os resultados já foram entregues e a data prevista nos
         demais casos. `dateChanges` mostra quando a empresa mudou a data.
+
+        Para BDRs, a data real é a do comunicado de resultados da empresa. `releaseTime`
+        mostra o horário em relação ao pregão de Nova York. As próximas datas de BDRs
+        são estimadas (`dateStatus` = `estimated`) com a data do mesmo período no ano
+        anterior.
 
         `fiscalYear` e `fiscalPeriod` indicam o período dos resultados. Empresas com
         exercício fora do ano civil usam o ano em que o exercício termina.
@@ -1769,8 +1781,8 @@ class AsyncStocksResource(AsyncAPIResource):
           status: `scheduled` (prevista), `published` (divulgada) ou `overdue` (atrasada). Para
               mais de uma, separe por vírgula.
 
-          symbols: Tickers separados por vírgula. Máximo de 20. PETR3 e PETR4 retornam a mesma
-              empresa.
+          symbols: Tickers separados por vírgula, de ações ou BDRs. Máximo de 20. PETR3 e PETR4
+              retornam a mesma empresa.
 
           to: Data final de divulgação. Padrão: 97 dias depois de `from` (90 dias depois de
               hoje).
