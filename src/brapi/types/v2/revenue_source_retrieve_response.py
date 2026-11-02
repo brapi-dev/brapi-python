@@ -137,7 +137,8 @@ class ResultYearSegment(BaseModel):
     uma conferência moveu o valor para outro segmento. `reviewed`: uma pessoa
     conferiu o segmento. `label-disputed`: duas leituras deram nomes diferentes ao
     segmento. `duplicate`: a mesma receita aparece em uma controlada listada.
-    `includes-construction`: o valor inclui receita de construção.
+    `includes-construction`: o valor inclui receita de construção. `gross`: o valor
+    é receita bruta, antes de impostos e devoluções.
     """
 
     growth: Optional[float] = None
@@ -183,7 +184,7 @@ class ResultYearTotalCheck(BaseModel):
     """Conferência dos segmentos com a receita total."""
 
     diff: Optional[float] = None
-    """Diferença entre `sum` e `total`."""
+    """Diferença entre `sum` e `total`, ou `grossTotal` quando existe."""
 
     sum: float
     """Soma dos segmentos lidos, com as eliminações entre segmentos."""
@@ -192,7 +193,10 @@ class ResultYearTotalCheck(BaseModel):
     """Receita total publicada."""
 
     verified: bool
-    """true quando a soma confere com a receita total."""
+    """true quando a soma confere com a receita total, ou com `grossTotal`."""
+
+    gross_total: Optional[float] = FieldInfo(alias="grossTotal", default=None)
+    """Receita bruta publicada, quando os segmentos são de receita bruta."""
 
 
 class ResultYear(BaseModel):
@@ -215,7 +219,8 @@ class ResultYear(BaseModel):
     segments_total: float = FieldInfo(alias="segmentsTotal")
     """Soma dos segmentos.
 
-    Pode passar da receita total quando os segmentos vendem entre si.
+    Pode passar da receita total quando os segmentos vendem entre si ou são de
+    receita bruta.
     """
 
     status: Literal["ok", "no-segments", "review"]
