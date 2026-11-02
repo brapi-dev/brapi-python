@@ -165,6 +165,7 @@ class TestStocks:
     @parametrize
     def test_method_earnings_calendar_with_all_params(self, client: Brapi) -> None:
         stock = client.v2.stocks.earnings_calendar(
+            cnpjs="33541368000116",
             date_status="confirmed",
             from_="2026-11-01",
             limit=50,
@@ -761,6 +762,7 @@ class TestAsyncStocks:
     @parametrize
     async def test_method_earnings_calendar_with_all_params(self, async_client: AsyncBrapi) -> None:
         stock = await async_client.v2.stocks.earnings_calendar(
+            cnpjs="33541368000116",
             date_status="confirmed",
             from_="2026-11-01",
             limit=50,
