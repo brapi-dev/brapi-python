@@ -59,14 +59,19 @@ class Result(BaseModel):
     date_status: Literal["confirmed", "estimated"] = FieldInfo(alias="dateStatus")
     """`confirmed` quando a empresa informou ou já divulgou a data.
 
-    `estimated` quando a data é uma estimativa.
+    `estimated` quando a data é uma estimativa, feita com a data do mesmo período no
+    ano anterior.
     """
 
     filing_date: Optional[str] = FieldInfo(alias="filingDate", default=None)
     """Data de entrega das demonstrações financeiras."""
 
     fiscal_period: Literal["Q1", "Q2", "Q3", "H1", "FY"] = FieldInfo(alias="fiscalPeriod")
-    """Período do exercício. `FY` é o exercício completo, que inclui o 4º trimestre."""
+    """Período do exercício.
+
+    `FY` é o exercício completo, que inclui o 4º trimestre. `H1` é o 1º semestre,
+    para empresas que divulgam resultados semestrais.
+    """
 
     fiscal_year: int = FieldInfo(alias="fiscalYear")
     """Exercício social.
@@ -88,7 +93,11 @@ class Result(BaseModel):
     release_time: Optional[Literal["beforeMarket", "duringMarket", "afterMarket"]] = FieldInfo(
         alias="releaseTime", default=None
     )
-    """Horário da divulgação em relação ao pregão. null quando não informado."""
+    """
+    Horário da divulgação em relação ao pregão de Nova York (09h30 às 16h00, horário
+    local): `beforeMarket`, `duringMarket` ou `afterMarket`. Só para BDRs. null
+    quando não informado.
+    """
 
     reported_date: Optional[str] = FieldInfo(alias="reportedDate", default=None)
     """Data em que os resultados foram entregues."""
