@@ -318,6 +318,7 @@ class StocksResource(SyncAPIResource):
     def earnings_calendar(
         self,
         *,
+        cnpjs: str | Omit = omit,
         date_status: Literal["confirmed", "estimated"] | Omit = omit,
         from_: str | Omit = omit,
         limit: int | Omit = omit,
@@ -339,9 +340,11 @@ class StocksResource(SyncAPIResource):
         listadas na B3 e das empresas estrangeiras com BDRs. A atualização ocorre duas
         vezes por dia.
 
-        Cada item é uma divulgação de uma empresa, com todos os seus tickers. `date`
-        traz a data real quando os resultados já foram entregues e a data prevista nos
-        demais casos. `dateChanges` mostra quando a empresa mudou a data.
+        Cada item é uma divulgação de uma empresa, com todos os seus tickers e
+        debêntures. Empresas sem ações listadas têm `tickers` vazio. Para consultar
+        essas empresas, use `cnpjs`. `date` traz a data real quando os resultados já
+        foram entregues e a data prevista nos demais casos. `dateChanges` mostra quando
+        a empresa mudou a data.
 
         Para BDRs, a data real é a do comunicado de resultados da empresa. `releaseTime`
         mostra o horário em relação ao pregão de Nova York. As próximas datas de BDRs
@@ -358,11 +361,14 @@ class StocksResource(SyncAPIResource):
         token.
 
         Args:
+          cnpjs: CNPJs das empresas separados por vírgula, com ou sem pontuação. Máximo de 20.
+              Use para empresas sem ações listadas, como emissoras de debêntures.
+
           date_status: `confirmed` traz datas informadas pela empresa. `estimated` traz datas
               estimadas.
 
           from_: Data inicial de divulgação. Padrão: 7 dias antes de hoje, ou 97 dias antes de
-              `to`. O intervalo máximo é de 366 dias, ou de 10 anos com `symbols`.
+              `to`. O intervalo máximo é de 366 dias, ou de 10 anos com `symbols` ou `cnpjs`.
 
           limit: Máximo de divulgações por página.
 
@@ -400,6 +406,7 @@ class StocksResource(SyncAPIResource):
                 timeout=timeout,
                 query=maybe_transform(
                     {
+                        "cnpjs": cnpjs,
                         "date_status": date_status,
                         "from_": from_,
                         "limit": limit,
@@ -1728,6 +1735,7 @@ class AsyncStocksResource(AsyncAPIResource):
     async def earnings_calendar(
         self,
         *,
+        cnpjs: str | Omit = omit,
         date_status: Literal["confirmed", "estimated"] | Omit = omit,
         from_: str | Omit = omit,
         limit: int | Omit = omit,
@@ -1749,9 +1757,11 @@ class AsyncStocksResource(AsyncAPIResource):
         listadas na B3 e das empresas estrangeiras com BDRs. A atualização ocorre duas
         vezes por dia.
 
-        Cada item é uma divulgação de uma empresa, com todos os seus tickers. `date`
-        traz a data real quando os resultados já foram entregues e a data prevista nos
-        demais casos. `dateChanges` mostra quando a empresa mudou a data.
+        Cada item é uma divulgação de uma empresa, com todos os seus tickers e
+        debêntures. Empresas sem ações listadas têm `tickers` vazio. Para consultar
+        essas empresas, use `cnpjs`. `date` traz a data real quando os resultados já
+        foram entregues e a data prevista nos demais casos. `dateChanges` mostra quando
+        a empresa mudou a data.
 
         Para BDRs, a data real é a do comunicado de resultados da empresa. `releaseTime`
         mostra o horário em relação ao pregão de Nova York. As próximas datas de BDRs
@@ -1768,11 +1778,14 @@ class AsyncStocksResource(AsyncAPIResource):
         token.
 
         Args:
+          cnpjs: CNPJs das empresas separados por vírgula, com ou sem pontuação. Máximo de 20.
+              Use para empresas sem ações listadas, como emissoras de debêntures.
+
           date_status: `confirmed` traz datas informadas pela empresa. `estimated` traz datas
               estimadas.
 
           from_: Data inicial de divulgação. Padrão: 7 dias antes de hoje, ou 97 dias antes de
-              `to`. O intervalo máximo é de 366 dias, ou de 10 anos com `symbols`.
+              `to`. O intervalo máximo é de 366 dias, ou de 10 anos com `symbols` ou `cnpjs`.
 
           limit: Máximo de divulgações por página.
 
@@ -1810,6 +1823,7 @@ class AsyncStocksResource(AsyncAPIResource):
                 timeout=timeout,
                 query=await async_maybe_transform(
                     {
+                        "cnpjs": cnpjs,
                         "date_status": date_status,
                         "from_": from_,
                         "limit": limit,

@@ -48,6 +48,9 @@ class Result(BaseModel):
     call_date: Optional[str] = FieldInfo(alias="callDate", default=None)
     """Data da apresentação pública dos resultados."""
 
+    cnpj: Optional[str] = None
+    """CNPJ da empresa. null para empresas estrangeiras com BDRs."""
+
     company_name: str = FieldInfo(alias="companyName")
 
     date: str
@@ -62,6 +65,9 @@ class Result(BaseModel):
     `estimated` quando a data é uma estimativa, feita com a data do mesmo período no
     ano anterior.
     """
+
+    debentures: List[str]
+    """Códigos das debêntures da empresa que ainda não venceram."""
 
     filing_date: Optional[str] = FieldInfo(alias="filingDate", default=None)
     """Data de entrega das demonstrações financeiras."""
@@ -111,7 +117,10 @@ class Result(BaseModel):
     """
 
     tickers: List[str]
-    """Tickers negociados da empresa."""
+    """Tickers das ações ou BDRs da empresa.
+
+    Vazio quando a empresa não tem ações listadas.
+    """
 
     updated_at: str = FieldInfo(alias="updatedAt")
     """Momento da última mudança nesta divulgação."""
