@@ -120,6 +120,14 @@ from .prime_rate import (
     PrimeRateResourceWithStreamingResponse,
     AsyncPrimeRateResourceWithStreamingResponse,
 )
+from .revenue_sources import (
+    RevenueSourcesResource,
+    AsyncRevenueSourcesResource,
+    RevenueSourcesResourceWithRawResponse,
+    AsyncRevenueSourcesResourceWithRawResponse,
+    RevenueSourcesResourceWithStreamingResponse,
+    AsyncRevenueSourcesResourceWithStreamingResponse,
+)
 
 __all__ = [
     "CryptoResource",
@@ -158,6 +166,12 @@ __all__ = [
     "AsyncStocksResourceWithRawResponse",
     "StocksResourceWithStreamingResponse",
     "AsyncStocksResourceWithStreamingResponse",
+    "RevenueSourcesResource",
+    "AsyncRevenueSourcesResource",
+    "RevenueSourcesResourceWithRawResponse",
+    "AsyncRevenueSourcesResourceWithRawResponse",
+    "RevenueSourcesResourceWithStreamingResponse",
+    "AsyncRevenueSourcesResourceWithStreamingResponse",
     "TickersResource",
     "AsyncTickersResource",
     "TickersResourceWithRawResponse",
