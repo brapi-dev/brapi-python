@@ -108,6 +108,14 @@ from .options.options import (
     OptionsResourceWithStreamingResponse,
     AsyncOptionsResourceWithStreamingResponse,
 )
+from .revenue_sources import (
+    RevenueSourcesResource,
+    AsyncRevenueSourcesResource,
+    RevenueSourcesResourceWithRawResponse,
+    AsyncRevenueSourcesResourceWithRawResponse,
+    RevenueSourcesResourceWithStreamingResponse,
+    AsyncRevenueSourcesResourceWithStreamingResponse,
+)
 from .treasury.treasury import (
     TreasuryResource,
     AsyncTreasuryResource,
@@ -153,6 +161,10 @@ class V2Resource(SyncAPIResource):
     @cached_property
     def stocks(self) -> StocksResource:
         return StocksResource(self._client)
+
+    @cached_property
+    def revenue_sources(self) -> RevenueSourcesResource:
+        return RevenueSourcesResource(self._client)
 
     @cached_property
     def tickers(self) -> TickersResource:
@@ -257,6 +269,10 @@ class AsyncV2Resource(AsyncAPIResource):
     @cached_property
     def stocks(self) -> AsyncStocksResource:
         return AsyncStocksResource(self._client)
+
+    @cached_property
+    def revenue_sources(self) -> AsyncRevenueSourcesResource:
+        return AsyncRevenueSourcesResource(self._client)
 
     @cached_property
     def tickers(self) -> AsyncTickersResource:
@@ -366,6 +382,10 @@ class V2ResourceWithRawResponse:
         return StocksResourceWithRawResponse(self._v2.stocks)
 
     @cached_property
+    def revenue_sources(self) -> RevenueSourcesResourceWithRawResponse:
+        return RevenueSourcesResourceWithRawResponse(self._v2.revenue_sources)
+
+    @cached_property
     def tickers(self) -> TickersResourceWithRawResponse:
         """Descubra, filtre e valide tickers B3 disponíveis na brapi.
 
@@ -452,6 +472,10 @@ class AsyncV2ResourceWithRawResponse:
     @cached_property
     def stocks(self) -> AsyncStocksResourceWithRawResponse:
         return AsyncStocksResourceWithRawResponse(self._v2.stocks)
+
+    @cached_property
+    def revenue_sources(self) -> AsyncRevenueSourcesResourceWithRawResponse:
+        return AsyncRevenueSourcesResourceWithRawResponse(self._v2.revenue_sources)
 
     @cached_property
     def tickers(self) -> AsyncTickersResourceWithRawResponse:
@@ -542,6 +566,10 @@ class V2ResourceWithStreamingResponse:
         return StocksResourceWithStreamingResponse(self._v2.stocks)
 
     @cached_property
+    def revenue_sources(self) -> RevenueSourcesResourceWithStreamingResponse:
+        return RevenueSourcesResourceWithStreamingResponse(self._v2.revenue_sources)
+
+    @cached_property
     def tickers(self) -> TickersResourceWithStreamingResponse:
         """Descubra, filtre e valide tickers B3 disponíveis na brapi.
 
@@ -628,6 +656,10 @@ class AsyncV2ResourceWithStreamingResponse:
     @cached_property
     def stocks(self) -> AsyncStocksResourceWithStreamingResponse:
         return AsyncStocksResourceWithStreamingResponse(self._v2.stocks)
+
+    @cached_property
+    def revenue_sources(self) -> AsyncRevenueSourcesResourceWithStreamingResponse:
+        return AsyncRevenueSourcesResourceWithStreamingResponse(self._v2.revenue_sources)
 
     @cached_property
     def tickers(self) -> AsyncTickersResourceWithStreamingResponse:
