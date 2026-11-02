@@ -105,8 +105,9 @@ class Result(BaseModel):
     status: Literal["scheduled", "published", "overdue"]
     """`published` quando os resultados foram entregues.
 
-    `overdue` quando a data passou há mais de 2 dias úteis sem entrega. `scheduled`
-    nos demais casos.
+    `overdue` quando a data informada pela empresa passou há mais de 2 dias úteis
+    sem entrega. Uma data estimada que passou continua `scheduled`. `scheduled` nos
+    demais casos.
     """
 
     tickers: List[str]
