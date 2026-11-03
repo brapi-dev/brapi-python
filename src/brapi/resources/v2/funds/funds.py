@@ -228,7 +228,7 @@ class FundsResource(SyncAPIResource):
     def dividends(
         self,
         *,
-        asset_type: Literal["fiagro", "fiinfra", "fif", "fidc", "fip", "other"] | Omit = omit,
+        asset_type: Literal["etf", "fiagro", "fiinfra", "fif", "fidc", "fip", "other"] | Omit = omit,
         cnpjs: str | Omit = omit,
         end_date: str | Omit = omit,
         limit: int | Omit = omit,
@@ -244,10 +244,9 @@ class FundsResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> FundDividendsResponse:
-        """Dividendos e rendimentos de FIAGRO, FI-Infra, FIF, FIDC e FIP listados.
-
-        Cada
-        evento traz data de declaração, data-com (`lastDatePrior`), data ex quando
+        """
+        Dividendos e rendimentos de ETFs, FIAGRO, FI-Infra, FIF, FIDC e FIP listados.
+        Cada evento traz data de declaração, data-com (`lastDatePrior`), data ex quando
         existe, data de pagamento, valor por cota e rótulo.
 
         Use para calcular renda, montar calendários de pagamento e comparar rendimentos.
@@ -1157,7 +1156,7 @@ class AsyncFundsResource(AsyncAPIResource):
     async def dividends(
         self,
         *,
-        asset_type: Literal["fiagro", "fiinfra", "fif", "fidc", "fip", "other"] | Omit = omit,
+        asset_type: Literal["etf", "fiagro", "fiinfra", "fif", "fidc", "fip", "other"] | Omit = omit,
         cnpjs: str | Omit = omit,
         end_date: str | Omit = omit,
         limit: int | Omit = omit,
@@ -1173,10 +1172,9 @@ class AsyncFundsResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> FundDividendsResponse:
-        """Dividendos e rendimentos de FIAGRO, FI-Infra, FIF, FIDC e FIP listados.
-
-        Cada
-        evento traz data de declaração, data-com (`lastDatePrior`), data ex quando
+        """
+        Dividendos e rendimentos de ETFs, FIAGRO, FI-Infra, FIF, FIDC e FIP listados.
+        Cada evento traz data de declaração, data-com (`lastDatePrior`), data ex quando
         existe, data de pagamento, valor por cota e rótulo.
 
         Use para calcular renda, montar calendários de pagamento e comparar rendimentos.

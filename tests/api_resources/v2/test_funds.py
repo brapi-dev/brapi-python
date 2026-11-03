@@ -74,7 +74,7 @@ class TestFunds:
     @parametrize
     def test_method_dividends_with_all_params(self, client: Brapi) -> None:
         fund = client.v2.funds.dividends(
-            asset_type="fiagro",
+            asset_type="etf",
             cnpjs="42730834000100",
             end_date="2026-06-30",
             limit=20,
@@ -396,7 +396,7 @@ class TestAsyncFunds:
     @parametrize
     async def test_method_dividends_with_all_params(self, async_client: AsyncBrapi) -> None:
         fund = await async_client.v2.funds.dividends(
-            asset_type="fiagro",
+            asset_type="etf",
             cnpjs="42730834000100",
             end_date="2026-06-30",
             limit=20,
