@@ -67,7 +67,10 @@ class Result(BaseModel):
     """
 
     debentures: List[str]
-    """Códigos das debêntures da empresa que ainda não venceram."""
+    """Códigos das debêntures da empresa que ainda não venceram.
+
+    Plano Pro; vazio nos demais planos.
+    """
 
     filing_date: Optional[str] = FieldInfo(alias="filingDate", default=None)
     """Data de entrega das demonstrações financeiras."""

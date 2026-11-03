@@ -357,8 +357,8 @@ class StocksResource(SyncAPIResource):
         Sem `symbols`, o intervalo máximo é de 366 dias. Com `symbols`, ele é de 10
         anos. Use `updatedSince` para receber só as divulgações alteradas.
 
-        Todos os planos. PETR4, MGLU3, VALE3 e ITUB4 permitem testes gratuitos, sem
-        token.
+        Todos os planos. A lista `debentures` vem preenchida só no plano Pro. PETR4,
+        MGLU3, VALE3 e ITUB4 permitem testes gratuitos, sem token.
 
         Args:
           cnpjs: CNPJs das empresas separados por vírgula, com ou sem pontuação. Máximo de 20.
@@ -1774,8 +1774,8 @@ class AsyncStocksResource(AsyncAPIResource):
         Sem `symbols`, o intervalo máximo é de 366 dias. Com `symbols`, ele é de 10
         anos. Use `updatedSince` para receber só as divulgações alteradas.
 
-        Todos os planos. PETR4, MGLU3, VALE3 e ITUB4 permitem testes gratuitos, sem
-        token.
+        Todos os planos. A lista `debentures` vem preenchida só no plano Pro. PETR4,
+        MGLU3, VALE3 e ITUB4 permitem testes gratuitos, sem token.
 
         Args:
           cnpjs: CNPJs das empresas separados por vírgula, com ou sem pontuação. Máximo de 20.
