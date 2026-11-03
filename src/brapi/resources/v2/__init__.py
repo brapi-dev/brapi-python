@@ -104,6 +104,14 @@ from .inflation import (
     InflationResourceWithStreamingResponse,
     AsyncInflationResourceWithStreamingResponse,
 )
+from .debentures import (
+    DebenturesResource,
+    AsyncDebenturesResource,
+    DebenturesResourceWithRawResponse,
+    AsyncDebenturesResourceWithRawResponse,
+    DebenturesResourceWithStreamingResponse,
+    AsyncDebenturesResourceWithStreamingResponse,
+)
 from .dictionary import (
     DictionaryResource,
     AsyncDictionaryResource,
@@ -214,6 +222,12 @@ __all__ = [
     "AsyncTreasuryResourceWithRawResponse",
     "TreasuryResourceWithStreamingResponse",
     "AsyncTreasuryResourceWithStreamingResponse",
+    "DebenturesResource",
+    "AsyncDebenturesResource",
+    "DebenturesResourceWithRawResponse",
+    "AsyncDebenturesResourceWithRawResponse",
+    "DebenturesResourceWithStreamingResponse",
+    "AsyncDebenturesResourceWithStreamingResponse",
     "UserResource",
     "AsyncUserResource",
     "UserResourceWithRawResponse",
