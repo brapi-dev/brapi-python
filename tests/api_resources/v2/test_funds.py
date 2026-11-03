@@ -16,7 +16,6 @@ from brapi.types.v2 import (
     FundDividendsResponse,
     FundPortfolioResponse,
     FundIndicatorsResponse,
-    FundScreenerCnpjResponse,
 )
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
@@ -222,11 +221,13 @@ class TestFunds:
     @parametrize
     def test_method_screener_with_all_params(self, client: Brapi) -> None:
         fund = client.v2.funds.screener(
+            anbima_classification="Previdência",
             asset_type="fii",
             average_daily_traded_value_max=0,
             average_daily_traded_value_min=0,
             change_percent_max=0,
             change_percent_min=0,
+            classification="renda-fixa",
             dividend_yield_max=0,
             dividend_yield_min=0,
             equity_max=0,
@@ -241,15 +242,28 @@ class TestFunds:
             last_price_max=0,
             last_price_min=0,
             limit=20,
+            manager="Itaú",
             market_cap_max=0,
             market_cap_min=0,
             nav_per_share_max=0,
             nav_per_share_min=0,
+            net_flow1m_max=0,
+            net_flow1m_min=0,
             page=1,
             price_change12m_max=0,
             price_change12m_min=0,
             price_to_nav_max=0,
             price_to_nav_min=0,
+            return12m_max=0,
+            return12m_min=0,
+            return1m_max=0,
+            return1m_min=0,
+            return36m_max=0,
+            return36m_min=0,
+            return_day_max=0,
+            return_day_min=0,
+            return_ytd_max=0,
+            return_ytd_min=0,
             search="KINEA",
             segment="Logística",
             segment_type="papel",
@@ -281,63 +295,6 @@ class TestFunds:
 
             fund = response.parse()
             assert_matches_type(FundScreenerResponse, fund, path=["response"])
-
-        assert cast(Any, response.is_closed) is True
-
-    @parametrize
-    def test_method_screener_cnpj(self, client: Brapi) -> None:
-        fund = client.v2.funds.screener_cnpj()
-        assert_matches_type(FundScreenerCnpjResponse, fund, path=["response"])
-
-    @parametrize
-    def test_method_screener_cnpj_with_all_params(self, client: Brapi) -> None:
-        fund = client.v2.funds.screener_cnpj(
-            anbima_classification="Previdência",
-            classification="renda-fixa",
-            equity_max=0,
-            equity_min=0,
-            limit=20,
-            manager="Itaú",
-            nav_per_share_max=0,
-            nav_per_share_min=0,
-            net_flow1m_max=0,
-            net_flow1m_min=0,
-            page=1,
-            return12m_max=0,
-            return12m_min=0,
-            return1m_max=0,
-            return1m_min=0,
-            return36m_max=0,
-            return36m_min=0,
-            return_day_max=0,
-            return_day_min=0,
-            return_ytd_max=0,
-            return_ytd_min=0,
-            search="Itaú Previdência",
-            sort_by="return12m",
-            sort_order="desc",
-            total_investors_max=0,
-            total_investors_min=0,
-        )
-        assert_matches_type(FundScreenerCnpjResponse, fund, path=["response"])
-
-    @parametrize
-    def test_raw_response_screener_cnpj(self, client: Brapi) -> None:
-        response = client.v2.funds.with_raw_response.screener_cnpj()
-
-        assert response.is_closed is True
-        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-        fund = response.parse()
-        assert_matches_type(FundScreenerCnpjResponse, fund, path=["response"])
-
-    @parametrize
-    def test_streaming_response_screener_cnpj(self, client: Brapi) -> None:
-        with client.v2.funds.with_streaming_response.screener_cnpj() as response:
-            assert not response.is_closed
-            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-
-            fund = response.parse()
-            assert_matches_type(FundScreenerCnpjResponse, fund, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -544,11 +501,13 @@ class TestAsyncFunds:
     @parametrize
     async def test_method_screener_with_all_params(self, async_client: AsyncBrapi) -> None:
         fund = await async_client.v2.funds.screener(
+            anbima_classification="Previdência",
             asset_type="fii",
             average_daily_traded_value_max=0,
             average_daily_traded_value_min=0,
             change_percent_max=0,
             change_percent_min=0,
+            classification="renda-fixa",
             dividend_yield_max=0,
             dividend_yield_min=0,
             equity_max=0,
@@ -563,15 +522,28 @@ class TestAsyncFunds:
             last_price_max=0,
             last_price_min=0,
             limit=20,
+            manager="Itaú",
             market_cap_max=0,
             market_cap_min=0,
             nav_per_share_max=0,
             nav_per_share_min=0,
+            net_flow1m_max=0,
+            net_flow1m_min=0,
             page=1,
             price_change12m_max=0,
             price_change12m_min=0,
             price_to_nav_max=0,
             price_to_nav_min=0,
+            return12m_max=0,
+            return12m_min=0,
+            return1m_max=0,
+            return1m_min=0,
+            return36m_max=0,
+            return36m_min=0,
+            return_day_max=0,
+            return_day_min=0,
+            return_ytd_max=0,
+            return_ytd_min=0,
             search="KINEA",
             segment="Logística",
             segment_type="papel",
@@ -603,62 +575,5 @@ class TestAsyncFunds:
 
             fund = await response.parse()
             assert_matches_type(FundScreenerResponse, fund, path=["response"])
-
-        assert cast(Any, response.is_closed) is True
-
-    @parametrize
-    async def test_method_screener_cnpj(self, async_client: AsyncBrapi) -> None:
-        fund = await async_client.v2.funds.screener_cnpj()
-        assert_matches_type(FundScreenerCnpjResponse, fund, path=["response"])
-
-    @parametrize
-    async def test_method_screener_cnpj_with_all_params(self, async_client: AsyncBrapi) -> None:
-        fund = await async_client.v2.funds.screener_cnpj(
-            anbima_classification="Previdência",
-            classification="renda-fixa",
-            equity_max=0,
-            equity_min=0,
-            limit=20,
-            manager="Itaú",
-            nav_per_share_max=0,
-            nav_per_share_min=0,
-            net_flow1m_max=0,
-            net_flow1m_min=0,
-            page=1,
-            return12m_max=0,
-            return12m_min=0,
-            return1m_max=0,
-            return1m_min=0,
-            return36m_max=0,
-            return36m_min=0,
-            return_day_max=0,
-            return_day_min=0,
-            return_ytd_max=0,
-            return_ytd_min=0,
-            search="Itaú Previdência",
-            sort_by="return12m",
-            sort_order="desc",
-            total_investors_max=0,
-            total_investors_min=0,
-        )
-        assert_matches_type(FundScreenerCnpjResponse, fund, path=["response"])
-
-    @parametrize
-    async def test_raw_response_screener_cnpj(self, async_client: AsyncBrapi) -> None:
-        response = await async_client.v2.funds.with_raw_response.screener_cnpj()
-
-        assert response.is_closed is True
-        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-        fund = await response.parse()
-        assert_matches_type(FundScreenerCnpjResponse, fund, path=["response"])
-
-    @parametrize
-    async def test_streaming_response_screener_cnpj(self, async_client: AsyncBrapi) -> None:
-        async with async_client.v2.funds.with_streaming_response.screener_cnpj() as response:
-            assert not response.is_closed
-            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-
-            fund = await response.parse()
-            assert_matches_type(FundScreenerCnpjResponse, fund, path=["response"])
 
         assert cast(Any, response.is_closed) is True

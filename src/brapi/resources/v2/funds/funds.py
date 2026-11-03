@@ -48,7 +48,6 @@ from ....types.v2 import (
     fund_dividends_params,
     fund_portfolio_params,
     fund_indicators_params,
-    fund_screener_cnpj_params,
 )
 from ...._resource import SyncAPIResource, AsyncAPIResource
 from ...._response import (
@@ -64,7 +63,6 @@ from ....types.v2.fund_screener_response import FundScreenerResponse
 from ....types.v2.fund_dividends_response import FundDividendsResponse
 from ....types.v2.fund_portfolio_response import FundPortfolioResponse
 from ....types.v2.fund_indicators_response import FundIndicatorsResponse
-from ....types.v2.fund_screener_cnpj_response import FundScreenerCnpjResponse
 
 __all__ = ["FundsResource", "AsyncFundsResource"]
 
@@ -530,11 +528,13 @@ class FundsResource(SyncAPIResource):
     def screener(
         self,
         *,
-        asset_type: Literal["fii", "fiagro", "fiinfra", "etf", "fidc", "fip", "fif"] | Omit = omit,
+        anbima_classification: str | Omit = omit,
+        asset_type: Literal["fii", "fiagro", "fiinfra", "etf", "fidc", "fip", "fif", "unlisted"] | Omit = omit,
         average_daily_traded_value_max: float | Omit = omit,
         average_daily_traded_value_min: float | Omit = omit,
         change_percent_max: float | Omit = omit,
         change_percent_min: float | Omit = omit,
+        classification: Literal["renda-fixa", "multimercado", "acoes", "cambial", "fmp-fgts"] | Omit = omit,
         dividend_yield_max: float | Omit = omit,
         dividend_yield_min: float | Omit = omit,
         equity_max: float | Omit = omit,
@@ -549,15 +549,28 @@ class FundsResource(SyncAPIResource):
         last_price_max: float | Omit = omit,
         last_price_min: float | Omit = omit,
         limit: int | Omit = omit,
+        manager: str | Omit = omit,
         market_cap_max: float | Omit = omit,
         market_cap_min: float | Omit = omit,
         nav_per_share_max: float | Omit = omit,
         nav_per_share_min: float | Omit = omit,
+        net_flow1m_max: float | Omit = omit,
+        net_flow1m_min: float | Omit = omit,
         page: int | Omit = omit,
         price_change12m_max: float | Omit = omit,
         price_change12m_min: float | Omit = omit,
         price_to_nav_max: float | Omit = omit,
         price_to_nav_min: float | Omit = omit,
+        return12m_max: float | Omit = omit,
+        return12m_min: float | Omit = omit,
+        return1m_max: float | Omit = omit,
+        return1m_min: float | Omit = omit,
+        return36m_max: float | Omit = omit,
+        return36m_min: float | Omit = omit,
+        return_day_max: float | Omit = omit,
+        return_day_min: float | Omit = omit,
+        return_ytd_max: float | Omit = omit,
+        return_ytd_min: float | Omit = omit,
         search: str | Omit = omit,
         segment: str | Omit = omit,
         segment_type: Literal["tijolo", "papel", "hibrido", "fof"] | Omit = omit,
@@ -579,6 +592,13 @@ class FundsResource(SyncAPIResource):
             "totalInvestors",
             "priceChange12m",
             "totalFeePercent",
+            "cnpj",
+            "returnDay",
+            "return1m",
+            "returnYtd",
+            "return12m",
+            "return36m",
+            "netFlow1m",
         ]
         | Omit = omit,
         sort_order: Literal["asc", "desc"] | Omit = omit,
@@ -595,15 +615,26 @@ class FundsResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> FundScreenerResponse:
-        """
-        Filtra e ordena os fundos negociados na B3 (FIIs, Fiagros, FI-Infra, ETFs, FIDCs
-        e FIPs) por preço, rendimentos, P/VP, liquidez, patrimônio e cotistas. Uma
-        chamada percorre todos os fundos.
+        """Filtra e ordena os fundos de investimento por indicadores.
 
-        `assetType` escolhe o tipo de fundo. Para FIIs, `segmentType` separa tijolo,
-        papel, fundos de fundos e híbridos, e `segment` usa o segmento do cadastro da
-        CVM. Para ETFs, `etfCategory` separa renda fixa, renda variável, cripto e
-        imobiliário.
+        Uma chamada percorre
+        todos os fundos.
+
+        Sem `assetType`, ou com um tipo listado, a busca cobre os fundos negociados na
+        B3 (FIIs, Fiagros, FI-Infra, ETFs, FIDCs e FIPs), por preço, rendimentos, P/VP,
+        liquidez, patrimônio e cotistas. Para FIIs, `segmentType` separa tijolo, papel,
+        fundos de fundos e híbridos, e `segment` usa o segmento do cadastro da CVM. Para
+        ETFs, `etfCategory` separa renda fixa, renda variável, cripto e imobiliário.
+
+        Com `assetType=unlisted`, a busca cobre os fundos sem ticker na B3,
+        identificados pelo CNPJ (renda fixa, multimercado, ações, previdência), por
+        rentabilidade, patrimônio, cotistas e captação. Entram os fundos com situação
+        "Em Funcionamento Normal" na CVM que enviaram o informe diário nos últimos 20
+        dias. `classification` usa a classe da CVM, `anbimaClassification` busca parte
+        da classificação ANBIMA e `manager` busca parte do nome do gestor. Cada item
+        traz `cnpj` em vez de `symbol`.
+
+        Um filtro ou uma ordenação de um só grupo de fundos responde 400 no outro grupo.
 
         Cada indicador aceita `{chave}Min` e `{chave}Max`. Os limites são inclusivos e
         usam a mesma unidade da resposta: 10% é `0.1`. Um filtro remove os fundos sem o
@@ -615,13 +646,26 @@ class FundsResource(SyncAPIResource):
           `?assetType=fii&segmentType=papel&dividendYieldMin=0.12&priceToNavMax=0.95&sortBy=dividendYield`
         - ETFs de renda fixa pela menor taxa:
           `?assetType=etf&etfCategory=fixed-income&sortBy=totalFeePercent&sortOrder=asc`
+        - Fundos de previdência de renda fixa pela maior rentabilidade em 12 meses:
+          `?assetType=unlisted&classification=renda-fixa&anbimaClassification=Previdência&sortBy=return12m`
+        - Fundos cujo CNPJ começa com 12.345.678:
+          `?assetType=unlisted&search=12.345.678`
 
         `dividendYield` soma só os rendimentos dos últimos 12 meses pela data-com, sem
         amortizações, e divide pelo último preço. `priceToNav` usa o último preço e o
         valor patrimonial por cota do último informe. `averageDailyTradedValue` divide o
         valor negociado nos últimos 30 dias pelos pregões do período.
 
+        Os dados dos fundos sem ticker vêm do informe diário que os fundos enviam à CVM.
+        Ele costuma chegar com 1 a 3 dias úteis de atraso: `navDate` mostra a data do
+        último informe de cada fundo. As rentabilidades são a variação da cota: brutas
+        de imposto de renda e líquidas de taxas. Uma rentabilidade é nula quando falta a
+        cota inicial ou quando a cota muda mais de 10 vezes no período, o que indica
+        desdobramento ou grupamento de cotas.
+
         Plano Pro.
+
+        Indicadores dos fundos listados:
 
         | Indicador                  | Chave                     | Unidade                    |
         | -------------------------- | ------------------------- | -------------------------- |
@@ -641,92 +685,172 @@ class FundsResource(SyncAPIResource):
         | Variação em 12 meses       | `priceChange12m`          | fração (0.06 = 6%)         |
         | Taxa total                 | `totalFeePercent`         | porcentagem (2.81 = 2,81%) |
 
+        Indicadores dos fundos sem ticker (`assetType=unlisted`):
+
+        | Indicador                 | Chave            | Unidade            |
+        | ------------------------- | ---------------- | ------------------ |
+        | Valor da cota             | `navPerShare`    | reais              |
+        | Variação no dia           | `returnDay`      | fração (0.06 = 6%) |
+        | Rentabilidade em 1 mês    | `return1m`       | fração (0.06 = 6%) |
+        | Rentabilidade no ano      | `returnYtd`      | fração (0.06 = 6%) |
+        | Rentabilidade em 12 meses | `return12m`      | fração (0.06 = 6%) |
+        | Rentabilidade em 36 meses | `return36m`      | fração (0.06 = 6%) |
+        | Patrimônio líquido        | `equity`         | reais              |
+        | Cotistas                  | `totalInvestors` | quantidade         |
+        | Captação líquida em 1 mês | `netFlow1m`      | reais              |
+
         Args:
-          asset_type: Tipo do fundo: fii, fiagro, fiinfra, etf, fidc, fip ou fif. Sem ele, todos os
-              fundos listados.
+          anbima_classification:
+              Parte da classificação ANBIMA, sem diferença de maiúsculas e acentos. Exemplos:
+              Previdência, Exterior, Crédito Livre. Só com `assetType=unlisted`.
 
-          average_daily_traded_value_max: Liquidez diária: valor máximo, inclusive. Unidade: reais.
+          asset_type: Tipo do fundo listado: fii, fiagro, fiinfra, etf, fidc, fip ou fif. Sem ele,
+              todos os fundos listados. `unlisted` troca para os fundos sem ticker na bolsa,
+              por CNPJ.
 
-          average_daily_traded_value_min: Liquidez diária: valor mínimo, inclusive. Unidade: reais.
+          average_daily_traded_value_max: Liquidez diária: valor máximo, inclusive. Unidade: reais. Só para fundos
+              listados.
+
+          average_daily_traded_value_min: Liquidez diária: valor mínimo, inclusive. Unidade: reais. Só para fundos
+              listados.
 
           change_percent_max: Variação no dia: valor máximo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+              Só para fundos listados.
 
           change_percent_min: Variação no dia: valor mínimo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+              Só para fundos listados.
 
-          dividend_yield_max: Dividend yield 12m: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
+          classification: Classe do fundo na CVM: renda-fixa, multimercado, acoes, cambial ou fmp-fgts. Só
+              com `assetType=unlisted`.
 
-          dividend_yield_min: Dividend yield 12m: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
+          dividend_yield_max: Dividend yield 12m: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Só
+              para fundos listados.
+
+          dividend_yield_min: Dividend yield 12m: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Só
+              para fundos listados.
 
           equity_max: Patrimônio líquido: valor máximo, inclusive. Unidade: reais.
 
           equity_min: Patrimônio líquido: valor mínimo, inclusive. Unidade: reais.
 
           etf_category: Categoria do ETF pela lista da bolsa: fixed-income, equity, crypto ou
-              real-estate.
+              real-estate. Só para fundos listados.
 
-          income_months12m_max: Meses com rendimento: valor máximo, inclusive. Unidade: quantidade.
+          income_months12m_max: Meses com rendimento: valor máximo, inclusive. Unidade: quantidade. Só para
+              fundos listados.
 
-          income_months12m_min: Meses com rendimento: valor mínimo, inclusive. Unidade: quantidade.
+          income_months12m_min: Meses com rendimento: valor mínimo, inclusive. Unidade: quantidade. Só para
+              fundos listados.
 
-          last_dividend_max: Último rendimento: valor máximo, inclusive. Unidade: reais.
+          last_dividend_max: Último rendimento: valor máximo, inclusive. Unidade: reais. Só para fundos
+              listados.
 
-          last_dividend_min: Último rendimento: valor mínimo, inclusive. Unidade: reais.
+          last_dividend_min: Último rendimento: valor mínimo, inclusive. Unidade: reais. Só para fundos
+              listados.
 
           last_dividend_yield_max: Yield do último rendimento: valor máximo, inclusive. Unidade: fração (0.06 =
-              6%).
+              6%). Só para fundos listados.
 
           last_dividend_yield_min: Yield do último rendimento: valor mínimo, inclusive. Unidade: fração (0.06 =
-              6%).
+              6%). Só para fundos listados.
 
-          last_price_max: Preço: valor máximo, inclusive. Unidade: reais.
+          last_price_max: Preço: valor máximo, inclusive. Unidade: reais. Só para fundos listados.
 
-          last_price_min: Preço: valor mínimo, inclusive. Unidade: reais.
+          last_price_min: Preço: valor mínimo, inclusive. Unidade: reais. Só para fundos listados.
 
           limit: Itens por página. Máximo: 200.
 
-          market_cap_max: Valor de mercado: valor máximo, inclusive. Unidade: reais.
+          manager: Parte do nome do gestor, sem diferença de maiúsculas e acentos. Só com
+              `assetType=unlisted`.
 
-          market_cap_min: Valor de mercado: valor mínimo, inclusive. Unidade: reais.
+          market_cap_max: Valor de mercado: valor máximo, inclusive. Unidade: reais. Só para fundos
+              listados.
+
+          market_cap_min: Valor de mercado: valor mínimo, inclusive. Unidade: reais. Só para fundos
+              listados.
 
           nav_per_share_max: Valor patrimonial/cota: valor máximo, inclusive. Unidade: reais.
 
           nav_per_share_min: Valor patrimonial/cota: valor mínimo, inclusive. Unidade: reais.
 
+          net_flow1m_max: Captação líquida em 1 mês: valor máximo, inclusive. Unidade: reais. Só com
+              `assetType=unlisted`.
+
+          net_flow1m_min: Captação líquida em 1 mês: valor mínimo, inclusive. Unidade: reais. Só com
+              `assetType=unlisted`.
+
           page: Número da página. Começa em 1.
 
-          price_change12m_max: Variação em 12 meses: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
+          price_change12m_max: Variação em 12 meses: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Só
+              para fundos listados.
 
-          price_change12m_min: Variação em 12 meses: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
+          price_change12m_min: Variação em 12 meses: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Só
+              para fundos listados.
 
-          price_to_nav_max: P/VP: valor máximo, inclusive. Unidade: múltiplo.
+          price_to_nav_max: P/VP: valor máximo, inclusive. Unidade: múltiplo. Só para fundos listados.
 
-          price_to_nav_min: P/VP: valor mínimo, inclusive. Unidade: múltiplo.
+          price_to_nav_min: P/VP: valor mínimo, inclusive. Unidade: múltiplo. Só para fundos listados.
 
-          search: Parte do ticker ou do nome do fundo.
+          return12m_max: Rentabilidade em 12 meses: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
+              Só com `assetType=unlisted`.
+
+          return12m_min: Rentabilidade em 12 meses: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
+              Só com `assetType=unlisted`.
+
+          return1m_max: Rentabilidade em 1 mês: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Só
+              com `assetType=unlisted`.
+
+          return1m_min: Rentabilidade em 1 mês: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Só
+              com `assetType=unlisted`.
+
+          return36m_max: Rentabilidade em 36 meses: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
+              Só com `assetType=unlisted`.
+
+          return36m_min: Rentabilidade em 36 meses: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
+              Só com `assetType=unlisted`.
+
+          return_day_max: Variação no dia: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Só com
+              `assetType=unlisted`.
+
+          return_day_min: Variação no dia: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Só com
+              `assetType=unlisted`.
+
+          return_ytd_max: Rentabilidade no ano: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Só
+              com `assetType=unlisted`.
+
+          return_ytd_min: Rentabilidade no ano: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Só
+              com `assetType=unlisted`.
+
+          search: Parte do ticker ou do nome do fundo. Com `assetType=unlisted`, parte do nome ou
+              da razão social; números, com ou sem pontuação, buscam o início do CNPJ.
 
           segment: Segmento do FII no cadastro da CVM, como Logística, Shoppings, Escritórios ou
-              Títulos e Val. Mob. Nome exato, sem diferença de maiúsculas.
+              Títulos e Val. Mob. Nome exato, sem diferença de maiúsculas. Só para fundos
+              listados.
 
           segment_type: Tipo do FII pelo último informe: tijolo (imóveis), papel (CRI, LCI e títulos),
-              fof (cotas de outros FIIs) ou hibrido.
+              fof (cotas de outros FIIs) ou hibrido. Só para fundos listados.
 
-          sort_by:
-              Campo de ordenação: uma chave de métrica, `symbol` ou `name`. Padrão:
-              `averageDailyTradedValue`. Valores nulos ficam no fim.
+          sort_by: Campo de ordenação: uma chave de métrica, `symbol` ou `name`; com
+              `assetType=unlisted`, uma chave de indicador, `name` ou `cnpj`. Padrão:
+              `averageDailyTradedValue`; com `assetType=unlisted`, `totalInvestors`. Valores
+              nulos ficam no fim.
 
           sort_order: Ordem. Padrão: `desc`.
 
-          total_fee_percent_max: Taxa total: valor máximo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+          total_fee_percent_max: Taxa total: valor máximo, inclusive. Unidade: porcentagem (2.81 = 2,81%). Só
+              para fundos listados.
 
-          total_fee_percent_min: Taxa total: valor mínimo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+          total_fee_percent_min: Taxa total: valor mínimo, inclusive. Unidade: porcentagem (2.81 = 2,81%). Só
+              para fundos listados.
 
           total_investors_max: Cotistas: valor máximo, inclusive. Unidade: quantidade.
 
           total_investors_min: Cotistas: valor mínimo, inclusive. Unidade: quantidade.
 
-          volume_max: Volume: valor máximo, inclusive. Unidade: quantidade.
+          volume_max: Volume: valor máximo, inclusive. Unidade: quantidade. Só para fundos listados.
 
-          volume_min: Volume: valor mínimo, inclusive. Unidade: quantidade.
+          volume_min: Volume: valor mínimo, inclusive. Unidade: quantidade. Só para fundos listados.
 
           extra_headers: Send extra headers
 
@@ -745,11 +869,13 @@ class FundsResource(SyncAPIResource):
                 timeout=timeout,
                 query=maybe_transform(
                     {
+                        "anbima_classification": anbima_classification,
                         "asset_type": asset_type,
                         "average_daily_traded_value_max": average_daily_traded_value_max,
                         "average_daily_traded_value_min": average_daily_traded_value_min,
                         "change_percent_max": change_percent_max,
                         "change_percent_min": change_percent_min,
+                        "classification": classification,
                         "dividend_yield_max": dividend_yield_max,
                         "dividend_yield_min": dividend_yield_min,
                         "equity_max": equity_max,
@@ -764,15 +890,28 @@ class FundsResource(SyncAPIResource):
                         "last_price_max": last_price_max,
                         "last_price_min": last_price_min,
                         "limit": limit,
+                        "manager": manager,
                         "market_cap_max": market_cap_max,
                         "market_cap_min": market_cap_min,
                         "nav_per_share_max": nav_per_share_max,
                         "nav_per_share_min": nav_per_share_min,
+                        "net_flow1m_max": net_flow1m_max,
+                        "net_flow1m_min": net_flow1m_min,
                         "page": page,
                         "price_change12m_max": price_change12m_max,
                         "price_change12m_min": price_change12m_min,
                         "price_to_nav_max": price_to_nav_max,
                         "price_to_nav_min": price_to_nav_min,
+                        "return12m_max": return12m_max,
+                        "return12m_min": return12m_min,
+                        "return1m_max": return1m_max,
+                        "return1m_min": return1m_min,
+                        "return36m_max": return36m_max,
+                        "return36m_min": return36m_min,
+                        "return_day_max": return_day_max,
+                        "return_day_min": return_day_min,
+                        "return_ytd_max": return_ytd_max,
+                        "return_ytd_min": return_ytd_min,
                         "search": search,
                         "segment": segment,
                         "segment_type": segment_type,
@@ -789,211 +928,6 @@ class FundsResource(SyncAPIResource):
                 ),
             ),
             cast_to=FundScreenerResponse,
-        )
-
-    def screener_cnpj(
-        self,
-        *,
-        anbima_classification: str | Omit = omit,
-        classification: Literal["renda-fixa", "multimercado", "acoes", "cambial", "fmp-fgts"] | Omit = omit,
-        equity_max: float | Omit = omit,
-        equity_min: float | Omit = omit,
-        limit: int | Omit = omit,
-        manager: str | Omit = omit,
-        nav_per_share_max: float | Omit = omit,
-        nav_per_share_min: float | Omit = omit,
-        net_flow1m_max: float | Omit = omit,
-        net_flow1m_min: float | Omit = omit,
-        page: int | Omit = omit,
-        return12m_max: float | Omit = omit,
-        return12m_min: float | Omit = omit,
-        return1m_max: float | Omit = omit,
-        return1m_min: float | Omit = omit,
-        return36m_max: float | Omit = omit,
-        return36m_min: float | Omit = omit,
-        return_day_max: float | Omit = omit,
-        return_day_min: float | Omit = omit,
-        return_ytd_max: float | Omit = omit,
-        return_ytd_min: float | Omit = omit,
-        search: str | Omit = omit,
-        sort_by: Literal[
-            "name",
-            "cnpj",
-            "navPerShare",
-            "returnDay",
-            "return1m",
-            "returnYtd",
-            "return12m",
-            "return36m",
-            "equity",
-            "totalInvestors",
-            "netFlow1m",
-        ]
-        | Omit = omit,
-        sort_order: Literal["asc", "desc"] | Omit = omit,
-        total_investors_max: float | Omit = omit,
-        total_investors_min: float | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> FundScreenerCnpjResponse:
-        """
-        Filtra e ordena os fundos de investimento sem ticker na B3, identificados pelo
-        CNPJ, por rentabilidade, patrimônio, cotistas e captação. Uma chamada percorre
-        todos os fundos.
-
-        Entram só os fundos sem ticker na B3, com situação "Em Funcionamento Normal" na
-        CVM, que enviaram o informe diário nos últimos 20 dias. Para os fundos
-        negociados na bolsa, use `/api/v2/funds/screener`.
-
-        Os dados vêm do informe diário que os fundos enviam à CVM. Ele costuma chegar
-        com 1 a 3 dias úteis de atraso: `navDate` mostra a data do último informe de
-        cada fundo.
-
-        As rentabilidades são a variação da cota: brutas de imposto de renda e líquidas
-        de taxas. Uma rentabilidade é nula quando falta a cota inicial ou quando a cota
-        muda mais de 10 vezes no período, o que indica desdobramento ou grupamento de
-        cotas.
-
-        `search` busca no nome e na razão social. Números, com ou sem pontuação, buscam
-        o início do CNPJ. `classification` usa a classe da CVM, `anbimaClassification`
-        busca parte da classificação ANBIMA e `manager` busca parte do nome do gestor.
-
-        Cada indicador aceita `{chave}Min` e `{chave}Max`. Os limites são inclusivos e
-        usam a mesma unidade da resposta: 10% é `0.1`. Um filtro remove os fundos sem o
-        dado. Na ordenação, os nulos ficam no fim.
-
-        Exemplos:
-
-        - Fundos de previdência de renda fixa pela maior rentabilidade em 12 meses:
-          `?classification=renda-fixa&anbimaClassification=Previdência&sortBy=return12m`
-        - Multimercados com pelo menos R$ 100 milhões e 1.000 cotistas:
-          `?classification=multimercado&equityMin=100000000&totalInvestorsMin=1000`
-        - Fundos cujo CNPJ começa com 12.345.678: `?search=12.345.678`
-
-        Plano Pro.
-
-        | Indicador                 | Chave            | Unidade            |
-        | ------------------------- | ---------------- | ------------------ |
-        | Valor da cota             | `navPerShare`    | reais              |
-        | Variação no dia           | `returnDay`      | fração (0.06 = 6%) |
-        | Rentabilidade em 1 mês    | `return1m`       | fração (0.06 = 6%) |
-        | Rentabilidade no ano      | `returnYtd`      | fração (0.06 = 6%) |
-        | Rentabilidade em 12 meses | `return12m`      | fração (0.06 = 6%) |
-        | Rentabilidade em 36 meses | `return36m`      | fração (0.06 = 6%) |
-        | Patrimônio líquido        | `equity`         | reais              |
-        | Cotistas                  | `totalInvestors` | quantidade         |
-        | Captação líquida em 1 mês | `netFlow1m`      | reais              |
-
-        Args:
-          anbima_classification:
-              Parte da classificação ANBIMA, sem diferença de maiúsculas e acentos. Exemplos:
-              Previdência, Exterior, Crédito Livre.
-
-          classification: Classe do fundo na CVM: renda-fixa, multimercado, acoes, cambial ou fmp-fgts.
-
-          equity_max: Patrimônio líquido: valor máximo, inclusive. Unidade: reais.
-
-          equity_min: Patrimônio líquido: valor mínimo, inclusive. Unidade: reais.
-
-          limit: Itens por página. Máximo: 200.
-
-          manager: Parte do nome do gestor, sem diferença de maiúsculas e acentos.
-
-          nav_per_share_max: Valor da cota: valor máximo, inclusive. Unidade: reais.
-
-          nav_per_share_min: Valor da cota: valor mínimo, inclusive. Unidade: reais.
-
-          net_flow1m_max: Captação líquida em 1 mês: valor máximo, inclusive. Unidade: reais.
-
-          net_flow1m_min: Captação líquida em 1 mês: valor mínimo, inclusive. Unidade: reais.
-
-          page: Número da página. Começa em 1.
-
-          return12m_max: Rentabilidade em 12 meses: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
-
-          return12m_min: Rentabilidade em 12 meses: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
-
-          return1m_max: Rentabilidade em 1 mês: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
-
-          return1m_min: Rentabilidade em 1 mês: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
-
-          return36m_max: Rentabilidade em 36 meses: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
-
-          return36m_min: Rentabilidade em 36 meses: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
-
-          return_day_max: Variação no dia: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
-
-          return_day_min: Variação no dia: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
-
-          return_ytd_max: Rentabilidade no ano: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
-
-          return_ytd_min: Rentabilidade no ano: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
-
-          search: Parte do nome ou da razão social do fundo, sem diferença de maiúsculas e
-              acentos. Números, com ou sem pontuação, buscam o início do CNPJ.
-
-          sort_by:
-              Campo de ordenação: uma chave de indicador, `name` ou `cnpj`. Padrão:
-              `totalInvestors`. Valores nulos ficam no fim.
-
-          sort_order: Ordem. Padrão: `desc`.
-
-          total_investors_max: Cotistas: valor máximo, inclusive. Unidade: quantidade.
-
-          total_investors_min: Cotistas: valor mínimo, inclusive. Unidade: quantidade.
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        return self._get(
-            "/api/v2/funds/screener/cnpj",
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=maybe_transform(
-                    {
-                        "anbima_classification": anbima_classification,
-                        "classification": classification,
-                        "equity_max": equity_max,
-                        "equity_min": equity_min,
-                        "limit": limit,
-                        "manager": manager,
-                        "nav_per_share_max": nav_per_share_max,
-                        "nav_per_share_min": nav_per_share_min,
-                        "net_flow1m_max": net_flow1m_max,
-                        "net_flow1m_min": net_flow1m_min,
-                        "page": page,
-                        "return12m_max": return12m_max,
-                        "return12m_min": return12m_min,
-                        "return1m_max": return1m_max,
-                        "return1m_min": return1m_min,
-                        "return36m_max": return36m_max,
-                        "return36m_min": return36m_min,
-                        "return_day_max": return_day_max,
-                        "return_day_min": return_day_min,
-                        "return_ytd_max": return_ytd_max,
-                        "return_ytd_min": return_ytd_min,
-                        "search": search,
-                        "sort_by": sort_by,
-                        "sort_order": sort_order,
-                        "total_investors_max": total_investors_max,
-                        "total_investors_min": total_investors_min,
-                    },
-                    fund_screener_cnpj_params.FundScreenerCnpjParams,
-                ),
-            ),
-            cast_to=FundScreenerCnpjResponse,
         )
 
 
@@ -1458,11 +1392,13 @@ class AsyncFundsResource(AsyncAPIResource):
     async def screener(
         self,
         *,
-        asset_type: Literal["fii", "fiagro", "fiinfra", "etf", "fidc", "fip", "fif"] | Omit = omit,
+        anbima_classification: str | Omit = omit,
+        asset_type: Literal["fii", "fiagro", "fiinfra", "etf", "fidc", "fip", "fif", "unlisted"] | Omit = omit,
         average_daily_traded_value_max: float | Omit = omit,
         average_daily_traded_value_min: float | Omit = omit,
         change_percent_max: float | Omit = omit,
         change_percent_min: float | Omit = omit,
+        classification: Literal["renda-fixa", "multimercado", "acoes", "cambial", "fmp-fgts"] | Omit = omit,
         dividend_yield_max: float | Omit = omit,
         dividend_yield_min: float | Omit = omit,
         equity_max: float | Omit = omit,
@@ -1477,15 +1413,28 @@ class AsyncFundsResource(AsyncAPIResource):
         last_price_max: float | Omit = omit,
         last_price_min: float | Omit = omit,
         limit: int | Omit = omit,
+        manager: str | Omit = omit,
         market_cap_max: float | Omit = omit,
         market_cap_min: float | Omit = omit,
         nav_per_share_max: float | Omit = omit,
         nav_per_share_min: float | Omit = omit,
+        net_flow1m_max: float | Omit = omit,
+        net_flow1m_min: float | Omit = omit,
         page: int | Omit = omit,
         price_change12m_max: float | Omit = omit,
         price_change12m_min: float | Omit = omit,
         price_to_nav_max: float | Omit = omit,
         price_to_nav_min: float | Omit = omit,
+        return12m_max: float | Omit = omit,
+        return12m_min: float | Omit = omit,
+        return1m_max: float | Omit = omit,
+        return1m_min: float | Omit = omit,
+        return36m_max: float | Omit = omit,
+        return36m_min: float | Omit = omit,
+        return_day_max: float | Omit = omit,
+        return_day_min: float | Omit = omit,
+        return_ytd_max: float | Omit = omit,
+        return_ytd_min: float | Omit = omit,
         search: str | Omit = omit,
         segment: str | Omit = omit,
         segment_type: Literal["tijolo", "papel", "hibrido", "fof"] | Omit = omit,
@@ -1507,6 +1456,13 @@ class AsyncFundsResource(AsyncAPIResource):
             "totalInvestors",
             "priceChange12m",
             "totalFeePercent",
+            "cnpj",
+            "returnDay",
+            "return1m",
+            "returnYtd",
+            "return12m",
+            "return36m",
+            "netFlow1m",
         ]
         | Omit = omit,
         sort_order: Literal["asc", "desc"] | Omit = omit,
@@ -1523,15 +1479,26 @@ class AsyncFundsResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> FundScreenerResponse:
-        """
-        Filtra e ordena os fundos negociados na B3 (FIIs, Fiagros, FI-Infra, ETFs, FIDCs
-        e FIPs) por preço, rendimentos, P/VP, liquidez, patrimônio e cotistas. Uma
-        chamada percorre todos os fundos.
+        """Filtra e ordena os fundos de investimento por indicadores.
 
-        `assetType` escolhe o tipo de fundo. Para FIIs, `segmentType` separa tijolo,
-        papel, fundos de fundos e híbridos, e `segment` usa o segmento do cadastro da
-        CVM. Para ETFs, `etfCategory` separa renda fixa, renda variável, cripto e
-        imobiliário.
+        Uma chamada percorre
+        todos os fundos.
+
+        Sem `assetType`, ou com um tipo listado, a busca cobre os fundos negociados na
+        B3 (FIIs, Fiagros, FI-Infra, ETFs, FIDCs e FIPs), por preço, rendimentos, P/VP,
+        liquidez, patrimônio e cotistas. Para FIIs, `segmentType` separa tijolo, papel,
+        fundos de fundos e híbridos, e `segment` usa o segmento do cadastro da CVM. Para
+        ETFs, `etfCategory` separa renda fixa, renda variável, cripto e imobiliário.
+
+        Com `assetType=unlisted`, a busca cobre os fundos sem ticker na B3,
+        identificados pelo CNPJ (renda fixa, multimercado, ações, previdência), por
+        rentabilidade, patrimônio, cotistas e captação. Entram os fundos com situação
+        "Em Funcionamento Normal" na CVM que enviaram o informe diário nos últimos 20
+        dias. `classification` usa a classe da CVM, `anbimaClassification` busca parte
+        da classificação ANBIMA e `manager` busca parte do nome do gestor. Cada item
+        traz `cnpj` em vez de `symbol`.
+
+        Um filtro ou uma ordenação de um só grupo de fundos responde 400 no outro grupo.
 
         Cada indicador aceita `{chave}Min` e `{chave}Max`. Os limites são inclusivos e
         usam a mesma unidade da resposta: 10% é `0.1`. Um filtro remove os fundos sem o
@@ -1543,13 +1510,26 @@ class AsyncFundsResource(AsyncAPIResource):
           `?assetType=fii&segmentType=papel&dividendYieldMin=0.12&priceToNavMax=0.95&sortBy=dividendYield`
         - ETFs de renda fixa pela menor taxa:
           `?assetType=etf&etfCategory=fixed-income&sortBy=totalFeePercent&sortOrder=asc`
+        - Fundos de previdência de renda fixa pela maior rentabilidade em 12 meses:
+          `?assetType=unlisted&classification=renda-fixa&anbimaClassification=Previdência&sortBy=return12m`
+        - Fundos cujo CNPJ começa com 12.345.678:
+          `?assetType=unlisted&search=12.345.678`
 
         `dividendYield` soma só os rendimentos dos últimos 12 meses pela data-com, sem
         amortizações, e divide pelo último preço. `priceToNav` usa o último preço e o
         valor patrimonial por cota do último informe. `averageDailyTradedValue` divide o
         valor negociado nos últimos 30 dias pelos pregões do período.
 
+        Os dados dos fundos sem ticker vêm do informe diário que os fundos enviam à CVM.
+        Ele costuma chegar com 1 a 3 dias úteis de atraso: `navDate` mostra a data do
+        último informe de cada fundo. As rentabilidades são a variação da cota: brutas
+        de imposto de renda e líquidas de taxas. Uma rentabilidade é nula quando falta a
+        cota inicial ou quando a cota muda mais de 10 vezes no período, o que indica
+        desdobramento ou grupamento de cotas.
+
         Plano Pro.
+
+        Indicadores dos fundos listados:
 
         | Indicador                  | Chave                     | Unidade                    |
         | -------------------------- | ------------------------- | -------------------------- |
@@ -1569,92 +1549,172 @@ class AsyncFundsResource(AsyncAPIResource):
         | Variação em 12 meses       | `priceChange12m`          | fração (0.06 = 6%)         |
         | Taxa total                 | `totalFeePercent`         | porcentagem (2.81 = 2,81%) |
 
+        Indicadores dos fundos sem ticker (`assetType=unlisted`):
+
+        | Indicador                 | Chave            | Unidade            |
+        | ------------------------- | ---------------- | ------------------ |
+        | Valor da cota             | `navPerShare`    | reais              |
+        | Variação no dia           | `returnDay`      | fração (0.06 = 6%) |
+        | Rentabilidade em 1 mês    | `return1m`       | fração (0.06 = 6%) |
+        | Rentabilidade no ano      | `returnYtd`      | fração (0.06 = 6%) |
+        | Rentabilidade em 12 meses | `return12m`      | fração (0.06 = 6%) |
+        | Rentabilidade em 36 meses | `return36m`      | fração (0.06 = 6%) |
+        | Patrimônio líquido        | `equity`         | reais              |
+        | Cotistas                  | `totalInvestors` | quantidade         |
+        | Captação líquida em 1 mês | `netFlow1m`      | reais              |
+
         Args:
-          asset_type: Tipo do fundo: fii, fiagro, fiinfra, etf, fidc, fip ou fif. Sem ele, todos os
-              fundos listados.
+          anbima_classification:
+              Parte da classificação ANBIMA, sem diferença de maiúsculas e acentos. Exemplos:
+              Previdência, Exterior, Crédito Livre. Só com `assetType=unlisted`.
 
-          average_daily_traded_value_max: Liquidez diária: valor máximo, inclusive. Unidade: reais.
+          asset_type: Tipo do fundo listado: fii, fiagro, fiinfra, etf, fidc, fip ou fif. Sem ele,
+              todos os fundos listados. `unlisted` troca para os fundos sem ticker na bolsa,
+              por CNPJ.
 
-          average_daily_traded_value_min: Liquidez diária: valor mínimo, inclusive. Unidade: reais.
+          average_daily_traded_value_max: Liquidez diária: valor máximo, inclusive. Unidade: reais. Só para fundos
+              listados.
+
+          average_daily_traded_value_min: Liquidez diária: valor mínimo, inclusive. Unidade: reais. Só para fundos
+              listados.
 
           change_percent_max: Variação no dia: valor máximo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+              Só para fundos listados.
 
           change_percent_min: Variação no dia: valor mínimo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+              Só para fundos listados.
 
-          dividend_yield_max: Dividend yield 12m: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
+          classification: Classe do fundo na CVM: renda-fixa, multimercado, acoes, cambial ou fmp-fgts. Só
+              com `assetType=unlisted`.
 
-          dividend_yield_min: Dividend yield 12m: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
+          dividend_yield_max: Dividend yield 12m: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Só
+              para fundos listados.
+
+          dividend_yield_min: Dividend yield 12m: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Só
+              para fundos listados.
 
           equity_max: Patrimônio líquido: valor máximo, inclusive. Unidade: reais.
 
           equity_min: Patrimônio líquido: valor mínimo, inclusive. Unidade: reais.
 
           etf_category: Categoria do ETF pela lista da bolsa: fixed-income, equity, crypto ou
-              real-estate.
+              real-estate. Só para fundos listados.
 
-          income_months12m_max: Meses com rendimento: valor máximo, inclusive. Unidade: quantidade.
+          income_months12m_max: Meses com rendimento: valor máximo, inclusive. Unidade: quantidade. Só para
+              fundos listados.
 
-          income_months12m_min: Meses com rendimento: valor mínimo, inclusive. Unidade: quantidade.
+          income_months12m_min: Meses com rendimento: valor mínimo, inclusive. Unidade: quantidade. Só para
+              fundos listados.
 
-          last_dividend_max: Último rendimento: valor máximo, inclusive. Unidade: reais.
+          last_dividend_max: Último rendimento: valor máximo, inclusive. Unidade: reais. Só para fundos
+              listados.
 
-          last_dividend_min: Último rendimento: valor mínimo, inclusive. Unidade: reais.
+          last_dividend_min: Último rendimento: valor mínimo, inclusive. Unidade: reais. Só para fundos
+              listados.
 
           last_dividend_yield_max: Yield do último rendimento: valor máximo, inclusive. Unidade: fração (0.06 =
-              6%).
+              6%). Só para fundos listados.
 
           last_dividend_yield_min: Yield do último rendimento: valor mínimo, inclusive. Unidade: fração (0.06 =
-              6%).
+              6%). Só para fundos listados.
 
-          last_price_max: Preço: valor máximo, inclusive. Unidade: reais.
+          last_price_max: Preço: valor máximo, inclusive. Unidade: reais. Só para fundos listados.
 
-          last_price_min: Preço: valor mínimo, inclusive. Unidade: reais.
+          last_price_min: Preço: valor mínimo, inclusive. Unidade: reais. Só para fundos listados.
 
           limit: Itens por página. Máximo: 200.
 
-          market_cap_max: Valor de mercado: valor máximo, inclusive. Unidade: reais.
+          manager: Parte do nome do gestor, sem diferença de maiúsculas e acentos. Só com
+              `assetType=unlisted`.
 
-          market_cap_min: Valor de mercado: valor mínimo, inclusive. Unidade: reais.
+          market_cap_max: Valor de mercado: valor máximo, inclusive. Unidade: reais. Só para fundos
+              listados.
+
+          market_cap_min: Valor de mercado: valor mínimo, inclusive. Unidade: reais. Só para fundos
+              listados.
 
           nav_per_share_max: Valor patrimonial/cota: valor máximo, inclusive. Unidade: reais.
 
           nav_per_share_min: Valor patrimonial/cota: valor mínimo, inclusive. Unidade: reais.
 
+          net_flow1m_max: Captação líquida em 1 mês: valor máximo, inclusive. Unidade: reais. Só com
+              `assetType=unlisted`.
+
+          net_flow1m_min: Captação líquida em 1 mês: valor mínimo, inclusive. Unidade: reais. Só com
+              `assetType=unlisted`.
+
           page: Número da página. Começa em 1.
 
-          price_change12m_max: Variação em 12 meses: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
+          price_change12m_max: Variação em 12 meses: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Só
+              para fundos listados.
 
-          price_change12m_min: Variação em 12 meses: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
+          price_change12m_min: Variação em 12 meses: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Só
+              para fundos listados.
 
-          price_to_nav_max: P/VP: valor máximo, inclusive. Unidade: múltiplo.
+          price_to_nav_max: P/VP: valor máximo, inclusive. Unidade: múltiplo. Só para fundos listados.
 
-          price_to_nav_min: P/VP: valor mínimo, inclusive. Unidade: múltiplo.
+          price_to_nav_min: P/VP: valor mínimo, inclusive. Unidade: múltiplo. Só para fundos listados.
 
-          search: Parte do ticker ou do nome do fundo.
+          return12m_max: Rentabilidade em 12 meses: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
+              Só com `assetType=unlisted`.
+
+          return12m_min: Rentabilidade em 12 meses: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
+              Só com `assetType=unlisted`.
+
+          return1m_max: Rentabilidade em 1 mês: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Só
+              com `assetType=unlisted`.
+
+          return1m_min: Rentabilidade em 1 mês: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Só
+              com `assetType=unlisted`.
+
+          return36m_max: Rentabilidade em 36 meses: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
+              Só com `assetType=unlisted`.
+
+          return36m_min: Rentabilidade em 36 meses: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
+              Só com `assetType=unlisted`.
+
+          return_day_max: Variação no dia: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Só com
+              `assetType=unlisted`.
+
+          return_day_min: Variação no dia: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Só com
+              `assetType=unlisted`.
+
+          return_ytd_max: Rentabilidade no ano: valor máximo, inclusive. Unidade: fração (0.06 = 6%). Só
+              com `assetType=unlisted`.
+
+          return_ytd_min: Rentabilidade no ano: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Só
+              com `assetType=unlisted`.
+
+          search: Parte do ticker ou do nome do fundo. Com `assetType=unlisted`, parte do nome ou
+              da razão social; números, com ou sem pontuação, buscam o início do CNPJ.
 
           segment: Segmento do FII no cadastro da CVM, como Logística, Shoppings, Escritórios ou
-              Títulos e Val. Mob. Nome exato, sem diferença de maiúsculas.
+              Títulos e Val. Mob. Nome exato, sem diferença de maiúsculas. Só para fundos
+              listados.
 
           segment_type: Tipo do FII pelo último informe: tijolo (imóveis), papel (CRI, LCI e títulos),
-              fof (cotas de outros FIIs) ou hibrido.
+              fof (cotas de outros FIIs) ou hibrido. Só para fundos listados.
 
-          sort_by:
-              Campo de ordenação: uma chave de métrica, `symbol` ou `name`. Padrão:
-              `averageDailyTradedValue`. Valores nulos ficam no fim.
+          sort_by: Campo de ordenação: uma chave de métrica, `symbol` ou `name`; com
+              `assetType=unlisted`, uma chave de indicador, `name` ou `cnpj`. Padrão:
+              `averageDailyTradedValue`; com `assetType=unlisted`, `totalInvestors`. Valores
+              nulos ficam no fim.
 
           sort_order: Ordem. Padrão: `desc`.
 
-          total_fee_percent_max: Taxa total: valor máximo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+          total_fee_percent_max: Taxa total: valor máximo, inclusive. Unidade: porcentagem (2.81 = 2,81%). Só
+              para fundos listados.
 
-          total_fee_percent_min: Taxa total: valor mínimo, inclusive. Unidade: porcentagem (2.81 = 2,81%).
+          total_fee_percent_min: Taxa total: valor mínimo, inclusive. Unidade: porcentagem (2.81 = 2,81%). Só
+              para fundos listados.
 
           total_investors_max: Cotistas: valor máximo, inclusive. Unidade: quantidade.
 
           total_investors_min: Cotistas: valor mínimo, inclusive. Unidade: quantidade.
 
-          volume_max: Volume: valor máximo, inclusive. Unidade: quantidade.
+          volume_max: Volume: valor máximo, inclusive. Unidade: quantidade. Só para fundos listados.
 
-          volume_min: Volume: valor mínimo, inclusive. Unidade: quantidade.
+          volume_min: Volume: valor mínimo, inclusive. Unidade: quantidade. Só para fundos listados.
 
           extra_headers: Send extra headers
 
@@ -1673,11 +1733,13 @@ class AsyncFundsResource(AsyncAPIResource):
                 timeout=timeout,
                 query=await async_maybe_transform(
                     {
+                        "anbima_classification": anbima_classification,
                         "asset_type": asset_type,
                         "average_daily_traded_value_max": average_daily_traded_value_max,
                         "average_daily_traded_value_min": average_daily_traded_value_min,
                         "change_percent_max": change_percent_max,
                         "change_percent_min": change_percent_min,
+                        "classification": classification,
                         "dividend_yield_max": dividend_yield_max,
                         "dividend_yield_min": dividend_yield_min,
                         "equity_max": equity_max,
@@ -1692,15 +1754,28 @@ class AsyncFundsResource(AsyncAPIResource):
                         "last_price_max": last_price_max,
                         "last_price_min": last_price_min,
                         "limit": limit,
+                        "manager": manager,
                         "market_cap_max": market_cap_max,
                         "market_cap_min": market_cap_min,
                         "nav_per_share_max": nav_per_share_max,
                         "nav_per_share_min": nav_per_share_min,
+                        "net_flow1m_max": net_flow1m_max,
+                        "net_flow1m_min": net_flow1m_min,
                         "page": page,
                         "price_change12m_max": price_change12m_max,
                         "price_change12m_min": price_change12m_min,
                         "price_to_nav_max": price_to_nav_max,
                         "price_to_nav_min": price_to_nav_min,
+                        "return12m_max": return12m_max,
+                        "return12m_min": return12m_min,
+                        "return1m_max": return1m_max,
+                        "return1m_min": return1m_min,
+                        "return36m_max": return36m_max,
+                        "return36m_min": return36m_min,
+                        "return_day_max": return_day_max,
+                        "return_day_min": return_day_min,
+                        "return_ytd_max": return_ytd_max,
+                        "return_ytd_min": return_ytd_min,
                         "search": search,
                         "segment": segment,
                         "segment_type": segment_type,
@@ -1717,211 +1792,6 @@ class AsyncFundsResource(AsyncAPIResource):
                 ),
             ),
             cast_to=FundScreenerResponse,
-        )
-
-    async def screener_cnpj(
-        self,
-        *,
-        anbima_classification: str | Omit = omit,
-        classification: Literal["renda-fixa", "multimercado", "acoes", "cambial", "fmp-fgts"] | Omit = omit,
-        equity_max: float | Omit = omit,
-        equity_min: float | Omit = omit,
-        limit: int | Omit = omit,
-        manager: str | Omit = omit,
-        nav_per_share_max: float | Omit = omit,
-        nav_per_share_min: float | Omit = omit,
-        net_flow1m_max: float | Omit = omit,
-        net_flow1m_min: float | Omit = omit,
-        page: int | Omit = omit,
-        return12m_max: float | Omit = omit,
-        return12m_min: float | Omit = omit,
-        return1m_max: float | Omit = omit,
-        return1m_min: float | Omit = omit,
-        return36m_max: float | Omit = omit,
-        return36m_min: float | Omit = omit,
-        return_day_max: float | Omit = omit,
-        return_day_min: float | Omit = omit,
-        return_ytd_max: float | Omit = omit,
-        return_ytd_min: float | Omit = omit,
-        search: str | Omit = omit,
-        sort_by: Literal[
-            "name",
-            "cnpj",
-            "navPerShare",
-            "returnDay",
-            "return1m",
-            "returnYtd",
-            "return12m",
-            "return36m",
-            "equity",
-            "totalInvestors",
-            "netFlow1m",
-        ]
-        | Omit = omit,
-        sort_order: Literal["asc", "desc"] | Omit = omit,
-        total_investors_max: float | Omit = omit,
-        total_investors_min: float | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> FundScreenerCnpjResponse:
-        """
-        Filtra e ordena os fundos de investimento sem ticker na B3, identificados pelo
-        CNPJ, por rentabilidade, patrimônio, cotistas e captação. Uma chamada percorre
-        todos os fundos.
-
-        Entram só os fundos sem ticker na B3, com situação "Em Funcionamento Normal" na
-        CVM, que enviaram o informe diário nos últimos 20 dias. Para os fundos
-        negociados na bolsa, use `/api/v2/funds/screener`.
-
-        Os dados vêm do informe diário que os fundos enviam à CVM. Ele costuma chegar
-        com 1 a 3 dias úteis de atraso: `navDate` mostra a data do último informe de
-        cada fundo.
-
-        As rentabilidades são a variação da cota: brutas de imposto de renda e líquidas
-        de taxas. Uma rentabilidade é nula quando falta a cota inicial ou quando a cota
-        muda mais de 10 vezes no período, o que indica desdobramento ou grupamento de
-        cotas.
-
-        `search` busca no nome e na razão social. Números, com ou sem pontuação, buscam
-        o início do CNPJ. `classification` usa a classe da CVM, `anbimaClassification`
-        busca parte da classificação ANBIMA e `manager` busca parte do nome do gestor.
-
-        Cada indicador aceita `{chave}Min` e `{chave}Max`. Os limites são inclusivos e
-        usam a mesma unidade da resposta: 10% é `0.1`. Um filtro remove os fundos sem o
-        dado. Na ordenação, os nulos ficam no fim.
-
-        Exemplos:
-
-        - Fundos de previdência de renda fixa pela maior rentabilidade em 12 meses:
-          `?classification=renda-fixa&anbimaClassification=Previdência&sortBy=return12m`
-        - Multimercados com pelo menos R$ 100 milhões e 1.000 cotistas:
-          `?classification=multimercado&equityMin=100000000&totalInvestorsMin=1000`
-        - Fundos cujo CNPJ começa com 12.345.678: `?search=12.345.678`
-
-        Plano Pro.
-
-        | Indicador                 | Chave            | Unidade            |
-        | ------------------------- | ---------------- | ------------------ |
-        | Valor da cota             | `navPerShare`    | reais              |
-        | Variação no dia           | `returnDay`      | fração (0.06 = 6%) |
-        | Rentabilidade em 1 mês    | `return1m`       | fração (0.06 = 6%) |
-        | Rentabilidade no ano      | `returnYtd`      | fração (0.06 = 6%) |
-        | Rentabilidade em 12 meses | `return12m`      | fração (0.06 = 6%) |
-        | Rentabilidade em 36 meses | `return36m`      | fração (0.06 = 6%) |
-        | Patrimônio líquido        | `equity`         | reais              |
-        | Cotistas                  | `totalInvestors` | quantidade         |
-        | Captação líquida em 1 mês | `netFlow1m`      | reais              |
-
-        Args:
-          anbima_classification:
-              Parte da classificação ANBIMA, sem diferença de maiúsculas e acentos. Exemplos:
-              Previdência, Exterior, Crédito Livre.
-
-          classification: Classe do fundo na CVM: renda-fixa, multimercado, acoes, cambial ou fmp-fgts.
-
-          equity_max: Patrimônio líquido: valor máximo, inclusive. Unidade: reais.
-
-          equity_min: Patrimônio líquido: valor mínimo, inclusive. Unidade: reais.
-
-          limit: Itens por página. Máximo: 200.
-
-          manager: Parte do nome do gestor, sem diferença de maiúsculas e acentos.
-
-          nav_per_share_max: Valor da cota: valor máximo, inclusive. Unidade: reais.
-
-          nav_per_share_min: Valor da cota: valor mínimo, inclusive. Unidade: reais.
-
-          net_flow1m_max: Captação líquida em 1 mês: valor máximo, inclusive. Unidade: reais.
-
-          net_flow1m_min: Captação líquida em 1 mês: valor mínimo, inclusive. Unidade: reais.
-
-          page: Número da página. Começa em 1.
-
-          return12m_max: Rentabilidade em 12 meses: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
-
-          return12m_min: Rentabilidade em 12 meses: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
-
-          return1m_max: Rentabilidade em 1 mês: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
-
-          return1m_min: Rentabilidade em 1 mês: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
-
-          return36m_max: Rentabilidade em 36 meses: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
-
-          return36m_min: Rentabilidade em 36 meses: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
-
-          return_day_max: Variação no dia: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
-
-          return_day_min: Variação no dia: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
-
-          return_ytd_max: Rentabilidade no ano: valor máximo, inclusive. Unidade: fração (0.06 = 6%).
-
-          return_ytd_min: Rentabilidade no ano: valor mínimo, inclusive. Unidade: fração (0.06 = 6%).
-
-          search: Parte do nome ou da razão social do fundo, sem diferença de maiúsculas e
-              acentos. Números, com ou sem pontuação, buscam o início do CNPJ.
-
-          sort_by:
-              Campo de ordenação: uma chave de indicador, `name` ou `cnpj`. Padrão:
-              `totalInvestors`. Valores nulos ficam no fim.
-
-          sort_order: Ordem. Padrão: `desc`.
-
-          total_investors_max: Cotistas: valor máximo, inclusive. Unidade: quantidade.
-
-          total_investors_min: Cotistas: valor mínimo, inclusive. Unidade: quantidade.
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        return await self._get(
-            "/api/v2/funds/screener/cnpj",
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=await async_maybe_transform(
-                    {
-                        "anbima_classification": anbima_classification,
-                        "classification": classification,
-                        "equity_max": equity_max,
-                        "equity_min": equity_min,
-                        "limit": limit,
-                        "manager": manager,
-                        "nav_per_share_max": nav_per_share_max,
-                        "nav_per_share_min": nav_per_share_min,
-                        "net_flow1m_max": net_flow1m_max,
-                        "net_flow1m_min": net_flow1m_min,
-                        "page": page,
-                        "return12m_max": return12m_max,
-                        "return12m_min": return12m_min,
-                        "return1m_max": return1m_max,
-                        "return1m_min": return1m_min,
-                        "return36m_max": return36m_max,
-                        "return36m_min": return36m_min,
-                        "return_day_max": return_day_max,
-                        "return_day_min": return_day_min,
-                        "return_ytd_max": return_ytd_max,
-                        "return_ytd_min": return_ytd_min,
-                        "search": search,
-                        "sort_by": sort_by,
-                        "sort_order": sort_order,
-                        "total_investors_max": total_investors_max,
-                        "total_investors_min": total_investors_min,
-                    },
-                    fund_screener_cnpj_params.FundScreenerCnpjParams,
-                ),
-            ),
-            cast_to=FundScreenerCnpjResponse,
         )
 
 
@@ -1946,9 +1816,6 @@ class FundsResourceWithRawResponse:
         )
         self.screener = to_raw_response_wrapper(
             funds.screener,
-        )
-        self.screener_cnpj = to_raw_response_wrapper(
-            funds.screener_cnpj,
         )
 
     @cached_property
@@ -2002,9 +1869,6 @@ class AsyncFundsResourceWithRawResponse:
         self.screener = async_to_raw_response_wrapper(
             funds.screener,
         )
-        self.screener_cnpj = async_to_raw_response_wrapper(
-            funds.screener_cnpj,
-        )
 
     @cached_property
     def nav(self) -> AsyncNavResourceWithRawResponse:
@@ -2057,9 +1921,6 @@ class FundsResourceWithStreamingResponse:
         self.screener = to_streamed_response_wrapper(
             funds.screener,
         )
-        self.screener_cnpj = to_streamed_response_wrapper(
-            funds.screener_cnpj,
-        )
 
     @cached_property
     def nav(self) -> NavResourceWithStreamingResponse:
@@ -2111,9 +1972,6 @@ class AsyncFundsResourceWithStreamingResponse:
         )
         self.screener = async_to_streamed_response_wrapper(
             funds.screener,
-        )
-        self.screener_cnpj = async_to_streamed_response_wrapper(
-            funds.screener_cnpj,
         )
 
     @cached_property
