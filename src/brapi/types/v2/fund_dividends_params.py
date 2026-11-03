@@ -10,7 +10,9 @@ __all__ = ["FundDividendsParams"]
 
 
 class FundDividendsParams(TypedDict, total=False):
-    asset_type: Annotated[Literal["fiagro", "fiinfra", "fif", "fidc", "fip", "other"], PropertyInfo(alias="assetType")]
+    asset_type: Annotated[
+        Literal["etf", "fiagro", "fiinfra", "fif", "fidc", "fip", "other"], PropertyInfo(alias="assetType")
+    ]
     """Tipo do fundo."""
 
     cnpjs: str

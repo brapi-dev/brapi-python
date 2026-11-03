@@ -13,7 +13,7 @@ __all__ = ["FundDividendsResponse", "Dividend"]
 
 
 class Dividend(BaseModel):
-    asset_type: Literal["fiagro", "fiinfra", "fif", "fidc", "fip", "other"] = FieldInfo(alias="assetType")
+    asset_type: Literal["etf", "fiagro", "fiinfra", "fif", "fidc", "fip", "other"] = FieldInfo(alias="assetType")
 
     cnpj: str
 
