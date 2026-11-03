@@ -58,6 +58,7 @@ class DebenturesResource(SyncAPIResource):
         maturity_from: str | Omit = omit,
         maturity_to: str | Omit = omit,
         page: int | Omit = omit,
+        search: str | Omit = omit,
         sort_by: Literal["symbol", "maturityDate", "issueDate"] | Omit = omit,
         sort_order: Literal["asc", "desc"] | Omit = omit,
         status: Literal["active", "inactive"] | Omit = omit,
@@ -98,6 +99,9 @@ class DebenturesResource(SyncAPIResource):
 
           page: Página.
 
+          search: Busca pelo código da debênture ou pelo nome da emissora. Cada palavra deve estar
+              no início do código ou de uma palavra do nome.
+
           sort_by: Campo de ordenação.
 
           sort_order: Ordem crescente (`asc`) ou decrescente (`desc`).
@@ -131,6 +135,7 @@ class DebenturesResource(SyncAPIResource):
                         "maturity_from": maturity_from,
                         "maturity_to": maturity_to,
                         "page": page,
+                        "search": search,
                         "sort_by": sort_by,
                         "sort_order": sort_order,
                         "status": status,
@@ -219,6 +224,7 @@ class AsyncDebenturesResource(AsyncAPIResource):
         maturity_from: str | Omit = omit,
         maturity_to: str | Omit = omit,
         page: int | Omit = omit,
+        search: str | Omit = omit,
         sort_by: Literal["symbol", "maturityDate", "issueDate"] | Omit = omit,
         sort_order: Literal["asc", "desc"] | Omit = omit,
         status: Literal["active", "inactive"] | Omit = omit,
@@ -259,6 +265,9 @@ class AsyncDebenturesResource(AsyncAPIResource):
 
           page: Página.
 
+          search: Busca pelo código da debênture ou pelo nome da emissora. Cada palavra deve estar
+              no início do código ou de uma palavra do nome.
+
           sort_by: Campo de ordenação.
 
           sort_order: Ordem crescente (`asc`) ou decrescente (`desc`).
@@ -292,6 +301,7 @@ class AsyncDebenturesResource(AsyncAPIResource):
                         "maturity_from": maturity_from,
                         "maturity_to": maturity_to,
                         "page": page,
+                        "search": search,
                         "sort_by": sort_by,
                         "sort_order": sort_order,
                         "status": status,

@@ -40,6 +40,12 @@ class DebentureListParams(TypedDict, total=False):
     page: int
     """Página."""
 
+    search: str
+    """Busca pelo código da debênture ou pelo nome da emissora.
+
+    Cada palavra deve estar no início do código ou de uma palavra do nome.
+    """
+
     sort_by: Annotated[Literal["symbol", "maturityDate", "issueDate"], PropertyInfo(alias="sortBy")]
     """Campo de ordenação."""
 
