@@ -262,7 +262,6 @@ from brapi.types.v2 import (
     FundPortfolioResponse,
     FundProfileResponse,
     FundScreenerResponse,
-    FundScreenerCnpjResponse,
 )
 ```
 
@@ -274,7 +273,6 @@ Methods:
 - <code title="get /api/v2/funds/portfolio">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">portfolio</a>(\*\*<a href="src/brapi/types/v2/fund_portfolio_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_portfolio_response.py">FundPortfolioResponse</a></code>
 - <code title="get /api/v2/funds/profile">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">profile</a>(\*\*<a href="src/brapi/types/v2/fund_profile_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_profile_response.py">FundProfileResponse</a></code>
 - <code title="get /api/v2/funds/screener">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">screener</a>(\*\*<a href="src/brapi/types/v2/fund_screener_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_screener_response.py">FundScreenerResponse</a></code>
-- <code title="get /api/v2/funds/screener/cnpj">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">screener_cnpj</a>(\*\*<a href="src/brapi/types/v2/fund_screener_cnpj_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_screener_cnpj_response.py">FundScreenerCnpjResponse</a></code>
 
 ### Nav
 
