@@ -67,6 +67,14 @@ from .inflation import (
     InflationResourceWithStreamingResponse,
     AsyncInflationResourceWithStreamingResponse,
 )
+from .debentures import (
+    DebenturesResource,
+    AsyncDebenturesResource,
+    DebenturesResourceWithRawResponse,
+    AsyncDebenturesResourceWithRawResponse,
+    DebenturesResourceWithStreamingResponse,
+    AsyncDebenturesResourceWithStreamingResponse,
+)
 from .dictionary import (
     DictionaryResource,
     AsyncDictionaryResource,
@@ -212,6 +220,13 @@ class V2Resource(SyncAPIResource):
         return TreasuryResource(self._client)
 
     @cached_property
+    def debentures(self) -> DebenturesResource:
+        """
+        Consulte dados de títulos públicos e outros instrumentos de renda fixa brasileira.
+        """
+        return DebenturesResource(self._client)
+
+    @cached_property
     def user(self) -> UserResource:
         """Dados da conta autenticada, como plano atual e uso da janela vigente."""
         return UserResource(self._client)
@@ -318,6 +333,13 @@ class AsyncV2Resource(AsyncAPIResource):
         Consulte dados de títulos públicos e outros instrumentos de renda fixa brasileira.
         """
         return AsyncTreasuryResource(self._client)
+
+    @cached_property
+    def debentures(self) -> AsyncDebenturesResource:
+        """
+        Consulte dados de títulos públicos e outros instrumentos de renda fixa brasileira.
+        """
+        return AsyncDebenturesResource(self._client)
 
     @cached_property
     def user(self) -> AsyncUserResource:
@@ -431,6 +453,13 @@ class V2ResourceWithRawResponse:
         return TreasuryResourceWithRawResponse(self._v2.treasury)
 
     @cached_property
+    def debentures(self) -> DebenturesResourceWithRawResponse:
+        """
+        Consulte dados de títulos públicos e outros instrumentos de renda fixa brasileira.
+        """
+        return DebenturesResourceWithRawResponse(self._v2.debentures)
+
+    @cached_property
     def user(self) -> UserResourceWithRawResponse:
         """Dados da conta autenticada, como plano atual e uso da janela vigente."""
         return UserResourceWithRawResponse(self._v2.user)
@@ -521,6 +550,13 @@ class AsyncV2ResourceWithRawResponse:
         Consulte dados de títulos públicos e outros instrumentos de renda fixa brasileira.
         """
         return AsyncTreasuryResourceWithRawResponse(self._v2.treasury)
+
+    @cached_property
+    def debentures(self) -> AsyncDebenturesResourceWithRawResponse:
+        """
+        Consulte dados de títulos públicos e outros instrumentos de renda fixa brasileira.
+        """
+        return AsyncDebenturesResourceWithRawResponse(self._v2.debentures)
 
     @cached_property
     def user(self) -> AsyncUserResourceWithRawResponse:
@@ -615,6 +651,13 @@ class V2ResourceWithStreamingResponse:
         return TreasuryResourceWithStreamingResponse(self._v2.treasury)
 
     @cached_property
+    def debentures(self) -> DebenturesResourceWithStreamingResponse:
+        """
+        Consulte dados de títulos públicos e outros instrumentos de renda fixa brasileira.
+        """
+        return DebenturesResourceWithStreamingResponse(self._v2.debentures)
+
+    @cached_property
     def user(self) -> UserResourceWithStreamingResponse:
         """Dados da conta autenticada, como plano atual e uso da janela vigente."""
         return UserResourceWithStreamingResponse(self._v2.user)
@@ -705,6 +748,13 @@ class AsyncV2ResourceWithStreamingResponse:
         Consulte dados de títulos públicos e outros instrumentos de renda fixa brasileira.
         """
         return AsyncTreasuryResourceWithStreamingResponse(self._v2.treasury)
+
+    @cached_property
+    def debentures(self) -> AsyncDebenturesResourceWithStreamingResponse:
+        """
+        Consulte dados de títulos públicos e outros instrumentos de renda fixa brasileira.
+        """
+        return AsyncDebenturesResourceWithStreamingResponse(self._v2.debentures)
 
     @cached_property
     def user(self) -> AsyncUserResourceWithStreamingResponse:
