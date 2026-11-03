@@ -41,6 +41,9 @@ class Debenture(BaseModel):
 
     issuer_name: str = FieldInfo(alias="issuerName")
 
+    issuer_ticker: Optional[str] = FieldInfo(alias="issuerTicker", default=None)
+    """Ticker principal da emissora na bolsa, quando ela tem ações listadas."""
+
     maturity_date: Optional[str] = FieldInfo(alias="maturityDate", default=None)
     """Data de vencimento, já com prorrogações."""
 
