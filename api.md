@@ -491,6 +491,24 @@ Methods:
 - <code title="get /api/v2/treasury/indicators">client.v2.treasury.indicators.<a href="./src/brapi/resources/v2/treasury/indicators.py">retrieve</a>(\*\*<a href="src/brapi/types/v2/treasury/indicator_retrieve_params.py">params</a>) -> <a href="./src/brapi/types/v2/treasury/indicator_retrieve_response.py">IndicatorRetrieveResponse</a></code>
 - <code title="get /api/v2/treasury/indicators/history">client.v2.treasury.indicators.<a href="./src/brapi/resources/v2/treasury/indicators.py">history</a>(\*\*<a href="src/brapi/types/v2/treasury/indicator_history_params.py">params</a>) -> <a href="./src/brapi/types/v2/treasury/indicator_history_response.py">IndicatorHistoryResponse</a></code>
 
+## Debentures
+
+Types:
+
+```python
+from brapi.types.v2 import (
+    Debenture,
+    DebentureProfile,
+    DebentureListResponse,
+    DebentureProfileResponse,
+)
+```
+
+Methods:
+
+- <code title="get /api/v2/debentures/list">client.v2.debentures.<a href="./src/brapi/resources/v2/debentures.py">list</a>(\*\*<a href="src/brapi/types/v2/debenture_list_params.py">params</a>) -> <a href="./src/brapi/types/v2/debenture_list_response.py">DebentureListResponse</a></code>
+- <code title="get /api/v2/debentures/profile">client.v2.debentures.<a href="./src/brapi/resources/v2/debentures.py">profile</a>(\*\*<a href="src/brapi/types/v2/debenture_profile_params.py">params</a>) -> <a href="./src/brapi/types/v2/debenture_profile_response.py">DebentureProfileResponse</a></code>
+
 ## User
 
 Types:
