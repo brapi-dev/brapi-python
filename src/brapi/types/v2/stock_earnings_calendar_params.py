@@ -12,6 +12,13 @@ __all__ = ["StockEarningsCalendarParams"]
 
 
 class StockEarningsCalendarParams(TypedDict, total=False):
+    cnpjs: str
+    """CNPJs das empresas separados por vírgula, com ou sem pontuação.
+
+    Máximo de 20. Use para empresas sem ações listadas, como emissoras de
+    debêntures.
+    """
+
     date_status: Annotated[Literal["confirmed", "estimated"], PropertyInfo(alias="dateStatus")]
     """`confirmed` traz datas informadas pela empresa.
 
@@ -22,7 +29,7 @@ class StockEarningsCalendarParams(TypedDict, total=False):
     """Data inicial de divulgação.
 
     Padrão: 7 dias antes de hoje, ou 97 dias antes de `to`. O intervalo máximo é de
-    366 dias, ou de 10 anos com `symbols`.
+    366 dias, ou de 10 anos com `symbols` ou `cnpjs`.
     """
 
     limit: int
