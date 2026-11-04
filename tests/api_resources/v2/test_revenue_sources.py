@@ -31,6 +31,7 @@ class TestRevenueSources:
         revenue_source = client.v2.revenue_sources.retrieve(
             cnpjs="x",
             end_year=2025,
+            period="annual",
             start_year=2024,
             symbols="PETR4",
         )
@@ -144,6 +145,7 @@ class TestAsyncRevenueSources:
         revenue_source = await async_client.v2.revenue_sources.retrieve(
             cnpjs="x",
             end_year=2025,
+            period="annual",
             start_year=2024,
             symbols="PETR4",
         )
