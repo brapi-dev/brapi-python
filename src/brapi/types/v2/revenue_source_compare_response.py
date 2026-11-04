@@ -41,9 +41,9 @@ class IssuerYearSource(BaseModel):
 
     form: str
     """
-    Documento de origem: `dfp` (demonstrações anuais na CVM), `10-K`, `20-F` ou
-    `40-F` (relatório anual na SEC) ou `fii-quarterly` (informes trimestrais de FIIs
-    na CVM).
+    Documento de origem: `dfp` (demonstrações anuais na CVM), `itr` (demonstrações
+    trimestrais na CVM), `10-K`, `20-F` ou `40-F` (relatório anual na SEC) ou
+    `fii-quarterly` (informes trimestrais de FIIs na CVM).
     """
 
     page: Optional[int] = None
