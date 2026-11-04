@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing_extensions import Annotated, TypedDict
+from typing_extensions import Literal, Annotated, TypedDict
 
 from ..._utils import PropertyInfo
 
@@ -18,6 +18,13 @@ class RevenueSourceRetrieveParams(TypedDict, total=False):
 
     end_year: Annotated[int, PropertyInfo(alias="endYear")]
     """Último exercício social. Padrão: o mais recente disponível."""
+
+    period: Literal["annual", "quarterly"]
+    """`annual` (padrão): exercícios em `years`.
+
+    `quarterly`: trimestres em `quarters`, com a receita acumulada no ano e a
+    receita dos 3 meses. Só para empresas da B3 com exercício de janeiro a dezembro.
+    """
 
     start_year: Annotated[int, PropertyInfo(alias="startYear")]
     """Primeiro exercício social. Padrão: o mais antigo disponível."""
