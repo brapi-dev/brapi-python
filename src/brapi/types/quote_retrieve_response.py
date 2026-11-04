@@ -109,6 +109,12 @@ class ResultSummaryProfile(BaseModel):
     industry_key: Optional[str] = FieldInfo(alias="industryKey", default=None)
     """Chave do setor"""
 
+    listing_segment: Optional[str] = FieldInfo(alias="listingSegment", default=None)
+    """
+    Código do segmento de listagem na B3, por exemplo NM (Novo Mercado), N1
+    (Nível 1) ou N2 (Nível 2). Nulo quando a B3 não informa um segmento.
+    """
+
     long_business_summary: Optional[str] = FieldInfo(alias="longBusinessSummary", default=None)
     """Descrição da empresa"""
 
