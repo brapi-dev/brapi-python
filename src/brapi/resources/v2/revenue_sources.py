@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing_extensions import Literal
+
 import httpx
 
 from ..._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
@@ -48,6 +50,7 @@ class RevenueSourcesResource(SyncAPIResource):
         *,
         cnpjs: str | Omit = omit,
         end_year: int | Omit = omit,
+        period: Literal["annual", "quarterly"] | Omit = omit,
         start_year: int | Omit = omit,
         symbols: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -70,6 +73,10 @@ class RevenueSourcesResource(SyncAPIResource):
         carteira mais recente: o peso de cada ação, BDR ou FII na carteira vezes a parte
         de cada atividade na receita da empresa.
 
+        Com `period=quarterly`, `quarters` traz cada trimestre das empresas da B3: a
+        receita acumulada no ano por segmento e, em `quarterValue`, a receita dos 3
+        meses. O 4º trimestre vem das demonstrações anuais.
+
         Concessões de energia, saneamento, gás e rodovias registram o investimento na
         rede como receita de construção. Use `growthExConstruction` para comparar o
         crescimento sem ela.
@@ -82,6 +89,10 @@ class RevenueSourcesResource(SyncAPIResource):
               ticker.
 
           end_year: Último exercício social. Padrão: o mais recente disponível.
+
+          period: `annual` (padrão): exercícios em `years`. `quarterly`: trimestres em `quarters`,
+              com a receita acumulada no ano e a receita dos 3 meses. Só para empresas da B3
+              com exercício de janeiro a dezembro.
 
           start_year: Primeiro exercício social. Padrão: o mais antigo disponível.
 
@@ -107,6 +118,7 @@ class RevenueSourcesResource(SyncAPIResource):
                     {
                         "cnpjs": cnpjs,
                         "end_year": end_year,
+                        "period": period,
                         "start_year": start_year,
                         "symbols": symbols,
                     },
@@ -251,6 +263,7 @@ class AsyncRevenueSourcesResource(AsyncAPIResource):
         *,
         cnpjs: str | Omit = omit,
         end_year: int | Omit = omit,
+        period: Literal["annual", "quarterly"] | Omit = omit,
         start_year: int | Omit = omit,
         symbols: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -273,6 +286,10 @@ class AsyncRevenueSourcesResource(AsyncAPIResource):
         carteira mais recente: o peso de cada ação, BDR ou FII na carteira vezes a parte
         de cada atividade na receita da empresa.
 
+        Com `period=quarterly`, `quarters` traz cada trimestre das empresas da B3: a
+        receita acumulada no ano por segmento e, em `quarterValue`, a receita dos 3
+        meses. O 4º trimestre vem das demonstrações anuais.
+
         Concessões de energia, saneamento, gás e rodovias registram o investimento na
         rede como receita de construção. Use `growthExConstruction` para comparar o
         crescimento sem ela.
@@ -285,6 +302,10 @@ class AsyncRevenueSourcesResource(AsyncAPIResource):
               ticker.
 
           end_year: Último exercício social. Padrão: o mais recente disponível.
+
+          period: `annual` (padrão): exercícios em `years`. `quarterly`: trimestres em `quarters`,
+              com a receita acumulada no ano e a receita dos 3 meses. Só para empresas da B3
+              com exercício de janeiro a dezembro.
 
           start_year: Primeiro exercício social. Padrão: o mais antigo disponível.
 
@@ -310,6 +331,7 @@ class AsyncRevenueSourcesResource(AsyncAPIResource):
                     {
                         "cnpjs": cnpjs,
                         "end_year": end_year,
+                        "period": period,
                         "start_year": start_year,
                         "symbols": symbols,
                     },
