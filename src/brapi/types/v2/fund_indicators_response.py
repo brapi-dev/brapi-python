@@ -24,10 +24,12 @@ class Fund(BaseModel):
     daily_redemptions: Optional[float] = FieldInfo(alias="dailyRedemptions", default=None)
 
     dividend_yield_monthly: Optional[float] = FieldInfo(alias="dividendYieldMonthly", default=None)
+    """Rendimento distribuído no mês sobre o valor patrimonial da cota, em %."""
 
     equity: Optional[float] = None
 
     monthly_return: Optional[float] = FieldInfo(alias="monthlyReturn", default=None)
+    """Rentabilidade da cota no mês do informe, em %."""
 
     name: Optional[str] = None
 
@@ -38,6 +40,7 @@ class Fund(BaseModel):
     """
 
     patrimonial_monthly_return: Optional[float] = FieldInfo(alias="patrimonialMonthlyReturn", default=None)
+    """Rentabilidade patrimonial no mês do informe, em %."""
 
     price: Optional[float] = None
 
