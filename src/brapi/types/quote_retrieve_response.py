@@ -39,8 +39,11 @@ class ResultHistoricalDataPrice(BaseModel):
     low: float
     """Preço mínimo no intervalo."""
 
-    open: float
-    """Preço de abertura no intervalo."""
+    open: Optional[float] = None
+    """Preço de abertura no intervalo.
+
+    Nulo quando a bolsa não publica a abertura, como nos ETFs de renda fixa.
+    """
 
     volume: int
     """Volume negociado no intervalo."""
