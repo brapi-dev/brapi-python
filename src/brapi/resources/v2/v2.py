@@ -2,6 +2,14 @@
 
 from __future__ import annotations
 
+from .news import (
+    NewsResource,
+    AsyncNewsResource,
+    NewsResourceWithRawResponse,
+    AsyncNewsResourceWithRawResponse,
+    NewsResourceWithStreamingResponse,
+    AsyncNewsResourceWithStreamingResponse,
+)
 from .user import (
     UserResource,
     AsyncUserResource,
@@ -227,6 +235,13 @@ class V2Resource(SyncAPIResource):
         return DebenturesResource(self._client)
 
     @cached_property
+    def news(self) -> NewsResource:
+        """
+        Notícias de empresas da B3 e do mercado, com resumo, sentimento, importância e ativos citados.
+        """
+        return NewsResource(self._client)
+
+    @cached_property
     def user(self) -> UserResource:
         """Dados da conta autenticada, como plano atual e uso da janela vigente."""
         return UserResource(self._client)
@@ -340,6 +355,13 @@ class AsyncV2Resource(AsyncAPIResource):
         Consulte dados de títulos públicos e outros instrumentos de renda fixa brasileira.
         """
         return AsyncDebenturesResource(self._client)
+
+    @cached_property
+    def news(self) -> AsyncNewsResource:
+        """
+        Notícias de empresas da B3 e do mercado, com resumo, sentimento, importância e ativos citados.
+        """
+        return AsyncNewsResource(self._client)
 
     @cached_property
     def user(self) -> AsyncUserResource:
@@ -460,6 +482,13 @@ class V2ResourceWithRawResponse:
         return DebenturesResourceWithRawResponse(self._v2.debentures)
 
     @cached_property
+    def news(self) -> NewsResourceWithRawResponse:
+        """
+        Notícias de empresas da B3 e do mercado, com resumo, sentimento, importância e ativos citados.
+        """
+        return NewsResourceWithRawResponse(self._v2.news)
+
+    @cached_property
     def user(self) -> UserResourceWithRawResponse:
         """Dados da conta autenticada, como plano atual e uso da janela vigente."""
         return UserResourceWithRawResponse(self._v2.user)
@@ -557,6 +586,13 @@ class AsyncV2ResourceWithRawResponse:
         Consulte dados de títulos públicos e outros instrumentos de renda fixa brasileira.
         """
         return AsyncDebenturesResourceWithRawResponse(self._v2.debentures)
+
+    @cached_property
+    def news(self) -> AsyncNewsResourceWithRawResponse:
+        """
+        Notícias de empresas da B3 e do mercado, com resumo, sentimento, importância e ativos citados.
+        """
+        return AsyncNewsResourceWithRawResponse(self._v2.news)
 
     @cached_property
     def user(self) -> AsyncUserResourceWithRawResponse:
@@ -658,6 +694,13 @@ class V2ResourceWithStreamingResponse:
         return DebenturesResourceWithStreamingResponse(self._v2.debentures)
 
     @cached_property
+    def news(self) -> NewsResourceWithStreamingResponse:
+        """
+        Notícias de empresas da B3 e do mercado, com resumo, sentimento, importância e ativos citados.
+        """
+        return NewsResourceWithStreamingResponse(self._v2.news)
+
+    @cached_property
     def user(self) -> UserResourceWithStreamingResponse:
         """Dados da conta autenticada, como plano atual e uso da janela vigente."""
         return UserResourceWithStreamingResponse(self._v2.user)
@@ -755,6 +798,13 @@ class AsyncV2ResourceWithStreamingResponse:
         Consulte dados de títulos públicos e outros instrumentos de renda fixa brasileira.
         """
         return AsyncDebenturesResourceWithStreamingResponse(self._v2.debentures)
+
+    @cached_property
+    def news(self) -> AsyncNewsResourceWithStreamingResponse:
+        """
+        Notícias de empresas da B3 e do mercado, com resumo, sentimento, importância e ativos citados.
+        """
+        return AsyncNewsResourceWithStreamingResponse(self._v2.news)
 
     @cached_property
     def user(self) -> AsyncUserResourceWithStreamingResponse:
