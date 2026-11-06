@@ -55,7 +55,7 @@ class ResultLookThroughActivity(BaseModel):
 
 class ResultLookThrough(BaseModel):
     """
-    Só para fundos: exposição da carteira às atividades das empresas, FIIs e BDRs que o fundo tem.
+    Só para fundos com carteira mensal na CVM: exposição da carteira às atividades das empresas, FIIs e BDRs que o fundo tem. `null` para ETFs.
     """
 
     activities: List[ResultLookThroughActivity]
@@ -399,8 +399,8 @@ class Result(BaseModel):
 
     look_through: Optional[ResultLookThrough] = FieldInfo(alias="lookThrough", default=None)
     """
-    Só para fundos: exposição da carteira às atividades das empresas, FIIs e BDRs
-    que o fundo tem.
+    Só para fundos com carteira mensal na CVM: exposição da carteira às atividades
+    das empresas, FIIs e BDRs que o fundo tem. `null` para ETFs.
     """
 
     name: Optional[str] = None
