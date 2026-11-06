@@ -96,9 +96,14 @@ class Fund(BaseModel):
     price: Optional[float] = None
 
     price_date: Optional[str] = FieldInfo(alias="priceDate", default=None)
-    """Data do preço de fechamento usado em `price` e `priceToNav`."""
+    """Data do preço de fechamento usado em `price`."""
 
     price_to_nav: Optional[float] = FieldInfo(alias="priceToNav", default=None)
+    """Fechamento na data da cota dividido por `navPerShare`.
+
+    Usa o último pregão até 7 dias antes dessa data. Sem fechamento nesse intervalo,
+    é `null`.
+    """
 
     raw_nav_per_share: Optional[float] = FieldInfo(alias="rawNavPerShare", default=None)
     """
