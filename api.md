@@ -507,6 +507,20 @@ Methods:
 - <code title="get /api/v2/debentures/list">client.v2.debentures.<a href="./src/brapi/resources/v2/debentures.py">list</a>(\*\*<a href="src/brapi/types/v2/debenture_list_params.py">params</a>) -> <a href="./src/brapi/types/v2/debenture_list_response.py">DebentureListResponse</a></code>
 - <code title="get /api/v2/debentures/profile">client.v2.debentures.<a href="./src/brapi/resources/v2/debentures.py">profile</a>(\*\*<a href="src/brapi/types/v2/debenture_profile_params.py">params</a>) -> <a href="./src/brapi/types/v2/debenture_profile_response.py">DebentureProfileResponse</a></code>
 
+## News
+
+Types:
+
+```python
+from brapi.types.v2 import NewsStory, NewsRetrieveResponse, NewsListResponse, NewsMarketResponse
+```
+
+Methods:
+
+- <code title="get /api/v2/news/{id}">client.v2.news.<a href="./src/brapi/resources/v2/news.py">retrieve</a>(id) -> <a href="./src/brapi/types/v2/news_retrieve_response.py">NewsRetrieveResponse</a></code>
+- <code title="get /api/v2/news">client.v2.news.<a href="./src/brapi/resources/v2/news.py">list</a>(\*\*<a href="src/brapi/types/v2/news_list_params.py">params</a>) -> <a href="./src/brapi/types/v2/news_list_response.py">NewsListResponse</a></code>
+- <code title="get /api/v2/news/market">client.v2.news.<a href="./src/brapi/resources/v2/news.py">market</a>(\*\*<a href="src/brapi/types/v2/news_market_params.py">params</a>) -> <a href="./src/brapi/types/v2/news_market_response.py">NewsMarketResponse</a></code>
+
 ## User
 
 Types:
