@@ -16,6 +16,14 @@ from .fii import (
     FiiResourceWithStreamingResponse,
     AsyncFiiResourceWithStreamingResponse,
 )
+from .news import (
+    NewsResource,
+    AsyncNewsResource,
+    NewsResourceWithRawResponse,
+    AsyncNewsResourceWithRawResponse,
+    NewsResourceWithStreamingResponse,
+    AsyncNewsResourceWithStreamingResponse,
+)
 from .user import (
     UserResource,
     AsyncUserResource,
@@ -228,6 +236,12 @@ __all__ = [
     "AsyncDebenturesResourceWithRawResponse",
     "DebenturesResourceWithStreamingResponse",
     "AsyncDebenturesResourceWithStreamingResponse",
+    "NewsResource",
+    "AsyncNewsResource",
+    "NewsResourceWithRawResponse",
+    "AsyncNewsResourceWithRawResponse",
+    "NewsResourceWithStreamingResponse",
+    "AsyncNewsResourceWithStreamingResponse",
     "UserResource",
     "AsyncUserResource",
     "UserResourceWithRawResponse",
