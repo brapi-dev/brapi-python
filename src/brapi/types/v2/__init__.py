@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from .debenture import Debenture as Debenture
+from .news_story import NewsStory as NewsStory
 from .fund_holding import FundHolding as FundHolding
 from .future_quote import FutureQuote as FutureQuote
 from .future_specs import FutureSpecs as FutureSpecs
@@ -10,6 +11,7 @@ from .option_series import OptionSeries as OptionSeries
 from .fii_list_params import FiiListParams as FiiListParams
 from .pagination_meta import PaginationMeta as PaginationMeta
 from .fund_list_params import FundListParams as FundListParams
+from .news_list_params import NewsListParams as NewsListParams
 from .debenture_profile import DebentureProfile as DebentureProfile
 from .fii_list_response import FiiListResponse as FiiListResponse
 from .user_usage_params import UserUsageParams as UserUsageParams
@@ -17,6 +19,8 @@ from .fii_reports_params import FiiReportsParams as FiiReportsParams
 from .fund_list_response import FundListResponse as FundListResponse
 from .future_list_params import FutureListParams as FutureListParams
 from .macro_series_error import MacroSeriesError as MacroSeriesError
+from .news_list_response import NewsListResponse as NewsListResponse
+from .news_market_params import NewsMarketParams as NewsMarketParams
 from .stock_quote_params import StockQuoteParams as StockQuoteParams
 from .ticker_list_params import TickerListParams as TickerListParams
 from .treasury_list_item import TreasuryListItem as TreasuryListItem
@@ -32,6 +36,7 @@ from .fii_reports_response import FiiReportsResponse as FiiReportsResponse
 from .fund_pagination_meta import FundPaginationMeta as FundPaginationMeta
 from .fund_screener_params import FundScreenerParams as FundScreenerParams
 from .future_list_response import FutureListResponse as FutureListResponse
+from .news_market_response import NewsMarketResponse as NewsMarketResponse
 from .stock_profile_params import StockProfileParams as StockProfileParams
 from .stock_quote_response import StockQuoteResponse as StockQuoteResponse
 from .ticker_list_response import TickerListResponse as TickerListResponse
@@ -55,6 +60,7 @@ from .crypto_retrieve_params import CryptoRetrieveParams as CryptoRetrieveParams
 from .fii_dividends_response import FiiDividendsResponse as FiiDividendsResponse
 from .fund_indicators_params import FundIndicatorsParams as FundIndicatorsParams
 from .fund_screener_response import FundScreenerResponse as FundScreenerResponse
+from .news_retrieve_response import NewsRetrieveResponse as NewsRetrieveResponse
 from .stock_cash_flow_params import StockCashFlowParams as StockCashFlowParams
 from .stock_dividends_params import StockDividendsParams as StockDividendsParams
 from .stock_profile_response import StockProfileResponse as StockProfileResponse
