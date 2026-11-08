@@ -1,5 +1,51 @@
 # Changelog
 
+## [1.13.0](https://github.com/brapi-dev/brapi-python/compare/v1.12.0...v1.13.0) (2026-11-07)
+
+
+### Features
+
+* add a Fundos tab to /quotes for funds without a ticker, by CNPJ ([2953e97](https://github.com/brapi-dev/brapi-python/commit/2953e9768b2d7cc5545f822cd27bb507048b4009))
+* **api:** add a fund screener endpoint ([3482372](https://github.com/brapi-dev/brapi-python/commit/34823729514dabbc072834e82163c198de86ec00))
+* **api:** debenture codes, CNPJ and cnpjs filter in the earnings calendar ([8e3d6ee](https://github.com/brapi-dev/brapi-python/commit/8e3d6ee42b6743f71e14b4ac15943ffec509243d))
+* **api:** debentures list and profile endpoints ([35aaae6](https://github.com/brapi-dev/brapi-python/commit/35aaae6e79b4d258a7f989876b513cae0de62e1a))
+* **api:** earnings calendar for B3 companies ([5a68c42](https://github.com/brapi-dev/brapi-python/commit/5a68c4212900c960ec9602533ba021d54d879bac))
+* **api:** merge the CNPJ fund screener into /funds/screener?assetType=unlisted ([64e9b3f](https://github.com/brapi-dev/brapi-python/commit/64e9b3f9321804b4256911a6a2e77fdc3538ab73))
+* **api:** show the B3 listing segment in the company profile ([c7d1618](https://github.com/brapi-dev/brapi-python/commit/c7d1618350635922cbc1c9153aa50eedf975425a))
+* **api:** show the consolidation basis of each statement period ([d01b8fe](https://github.com/brapi-dev/brapi-python/commit/d01b8feda852b162ba96d1d564d33dd643d2dbbc))
+* **etl:** ETF balance sheets and income statements from FNET balancetes ([af8a018](https://github.com/brapi-dev/brapi-python/commit/af8a018a3cfc41ab5fe8ea87c93d2a216aa9ac21))
+* **etl:** read BDR payouts from CVM RAD ([4ffd1c3](https://github.com/brapi-dev/brapi-python/commit/4ffd1c37684abb3910a3c70c3cd33f682a226c40))
+* **etl:** read the segment table again with the net revenue total ([9151e66](https://github.com/brapi-dev/brapi-python/commit/9151e66860be84e8c39733f014921178fda62270))
+* **etl:** split DVA third-party remuneration into interest, rents, and other ([2d2d277](https://github.com/brapi-dev/brapi-python/commit/2d2d2779f273d6ed7607f88430110fb328c2e572))
+* **etl:** valuation indicators for BDRs with SEC statements ([ab2d24f](https://github.com/brapi-dev/brapi-python/commit/ab2d24f26e163668ec664653b197ad7c88eef3fc))
+* **funds:** FIAGRO coverage endpoints and more monthly report fields ([ca32439](https://github.com/brapi-dev/brapi-python/commit/ca32439c3501d67c524236838af3c2d257c03180))
+* **news:** market and company news with AI summaries and articles ([fc58fcd](https://github.com/brapi-dev/brapi-python/commit/fc58fcd056fd5f3a0d032d7053e29a3443c10477))
+* revenue sources by activity for companies, BDRs, FIIs, funds, and ETFs ([68de1f2](https://github.com/brapi-dev/brapi-python/commit/68de1f291b621396809215cefba49b945cafea35))
+* **revenue-sources:** a review model ends label disputes when it keeps the first-pass labels ([b53d79c](https://github.com/brapi-dev/brapi-python/commit/b53d79c277ad3fb93424f9cb6b10581fe0bf404f))
+* **revenue-sources:** quarterly revenue by segment from CVM ITR filings ([021a9bc](https://github.com/brapi-dev/brapi-python/commit/021a9bc5b8e68f59f2d5a70caff1895fb6e7d4df))
+* **web:** debenture pages, the Debêntures tab and debentures in search ([2ab8cd1](https://github.com/brapi-dev/brapi-python/commit/2ab8cd1d5e9d38918eb6ccb2520e3bf9aae9e220))
+
+
+### Bug Fixes
+
+* **api:** accept the etf asset type in fund dividends ([06acdf4](https://github.com/brapi-dev/brapi-python/commit/06acdf403c91c9152fd867b8dee1efe94d0e1c4c))
+* **api:** compute fund priceToNav with the close of the NAV day ([0f87954](https://github.com/brapi-dev/brapi-python/commit/0f879544d675c56bbdf86489189efdd3ef626592))
+* **api:** date the fund price by its own close ([7af5351](https://github.com/brapi-dev/brapi-python/commit/7af535146006a126701d2b68801359ad47148b31))
+* **api:** keep the 3-month revenue of a renamed segment ([d3101ab](https://github.com/brapi-dev/brapi-python/commit/d3101abfd1fba020fad4fc6c4e2b69ebe3adfa32))
+* **api:** point ETF and fund coverage to the fund endpoints ([1ce1f34](https://github.com/brapi-dev/brapi-python/commit/1ce1f34631461ec7ea4e878be092fbaf9cb4c909))
+* **api:** read FII monthly reports in fund indicators and list ([5de59c3](https://github.com/brapi-dev/brapi-python/commit/5de59c35c0e1ec936b39a6d83873d3bc4c9d5346))
+* **chat:** tell the AI chat that listingSegment NM is Novo Mercado ([3b16308](https://github.com/brapi-dev/brapi-python/commit/3b16308a781e452366a679efc2a4746c503534de))
+* **earnings-calendar:** keep past estimates scheduled, keep last tickers ([518e0ca](https://github.com/brapi-dev/brapi-python/commit/518e0ca1cc18f10c00d549e5b52f6fdd1b78733a))
+* **etl:** put payouts on the split-adjusted price basis ([639e1b4](https://github.com/brapi-dev/brapi-python/commit/639e1b47d6c2fa133985b006eb007a6e2a8325a8))
+* **funds:** tell fixed-income ETFs from equity ETFs ([258a915](https://github.com/brapi-dev/brapi-python/commit/258a915d0a4caa23d447bd217ea914f92394fb95))
+* **revenue-sources:** read each quarter with the segments of the period before ([981098e](https://github.com/brapi-dev/brapi-python/commit/981098e0bfe84887e763197ac2f61bdff2907dee))
+
+
+### Documentation
+
+* **api:** mark the history open as nullable ([75bcb50](https://github.com/brapi-dev/brapi-python/commit/75bcb504f26a5400e59a50b3c5a24585a369fb0c))
+* **api:** state the real referenceDate of the FII indicator history ([120be95](https://github.com/brapi-dev/brapi-python/commit/120be95c6649c747f6f1fc5455d4880e6e8b0fc5))
+
 ## [1.12.0](https://github.com/brapi-dev/brapi-python/compare/v1.11.1...v1.12.0) (2026-10-23)
 
 
