@@ -95,6 +95,7 @@ class IndexesResource(SyncAPIResource):
         symbols: str,
         limit: int | Omit = omit,
         page: int | Omit = omit,
+        reference_date: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -114,8 +115,9 @@ class IndexesResource(SyncAPIResource):
         exterior, a resposta mostra os ativos desse ETF, pelos relatórios públicos do
         fundo no exterior (SEC).
 
-        Mostre `referenceDate` junto do dado: a CVM publica a carteira com meses de
-        atraso.
+        Sem `referenceDate`, a resposta traz o mês mais recente. Com ela, traz o mês
+        mais recente até essa data. Mostre `referenceDate` junto do dado: a CVM publica
+        a carteira com meses de atraso.
 
         Plano Pro.
 
@@ -126,6 +128,9 @@ class IndexesResource(SyncAPIResource):
           limit: Ativos por índice e por página. Padrão 10, máximo 500.
 
           page: Página, a partir de 1.
+
+          reference_date: Data no formato YYYY-MM-DD. Traz o mês mais recente até esta data. Sem ela, traz
+              o mês mais recente.
 
           extra_headers: Send extra headers
 
@@ -147,6 +152,7 @@ class IndexesResource(SyncAPIResource):
                         "symbols": symbols,
                         "limit": limit,
                         "page": page,
+                        "reference_date": reference_date,
                     },
                     index_composition_params.IndexCompositionParams,
                 ),
@@ -228,6 +234,7 @@ class AsyncIndexesResource(AsyncAPIResource):
         symbols: str,
         limit: int | Omit = omit,
         page: int | Omit = omit,
+        reference_date: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -247,8 +254,9 @@ class AsyncIndexesResource(AsyncAPIResource):
         exterior, a resposta mostra os ativos desse ETF, pelos relatórios públicos do
         fundo no exterior (SEC).
 
-        Mostre `referenceDate` junto do dado: a CVM publica a carteira com meses de
-        atraso.
+        Sem `referenceDate`, a resposta traz o mês mais recente. Com ela, traz o mês
+        mais recente até essa data. Mostre `referenceDate` junto do dado: a CVM publica
+        a carteira com meses de atraso.
 
         Plano Pro.
 
@@ -259,6 +267,9 @@ class AsyncIndexesResource(AsyncAPIResource):
           limit: Ativos por índice e por página. Padrão 10, máximo 500.
 
           page: Página, a partir de 1.
+
+          reference_date: Data no formato YYYY-MM-DD. Traz o mês mais recente até esta data. Sem ela, traz
+              o mês mais recente.
 
           extra_headers: Send extra headers
 
@@ -280,6 +291,7 @@ class AsyncIndexesResource(AsyncAPIResource):
                         "symbols": symbols,
                         "limit": limit,
                         "page": page,
+                        "reference_date": reference_date,
                     },
                     index_composition_params.IndexCompositionParams,
                 ),

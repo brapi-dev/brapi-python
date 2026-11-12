@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
-from typing_extensions import Required, TypedDict
+from typing_extensions import Required, Annotated, TypedDict
+
+from ..._utils import PropertyInfo
 
 __all__ = ["IndexCompositionParams"]
 
@@ -19,3 +21,9 @@ class IndexCompositionParams(TypedDict, total=False):
 
     page: int
     """Página, a partir de 1."""
+
+    reference_date: Annotated[str, PropertyInfo(alias="referenceDate")]
+    """Data no formato YYYY-MM-DD.
+
+    Traz o mês mais recente até esta data. Sem ela, traz o mês mais recente.
+    """

@@ -8,7 +8,7 @@ from pydantic import Field as FieldInfo
 
 from ..._models import BaseModel
 
-__all__ = ["FundHoldersResponse", "Asset", "Fund", "Pagination", "Summary"]
+__all__ = ["FundHoldersResponse", "Asset", "Fund", "FundPosition", "Pagination", "Summary"]
 
 
 class Asset(BaseModel):
@@ -17,6 +17,55 @@ class Asset(BaseModel):
     name: Optional[str] = None
 
     symbol: Optional[str] = None
+
+    symbols: List[str]
+    """Tickers buscados na bolsa."""
+
+    type: Literal["fund", "company", "security"]
+    """
+    `fund` (cotas de um fundo e, se listado, o ticker dele), `company` (ações e
+    dívida de uma empresa) ou `security` (um ticker).
+    """
+
+
+class FundPosition(BaseModel):
+    asset_class: Literal[
+        "equity",
+        "bdr",
+        "fund",
+        "governmentBond",
+        "repo",
+        "privateCredit",
+        "bankSecurity",
+        "foreign",
+        "derivative",
+        "cash",
+        "receivable",
+        "payable",
+        "other",
+    ] = FieldInfo(alias="assetClass")
+    """
+    Classe do ativo: `equity` (ações), `bdr`, `fund` (cotas de fundos),
+    `governmentBond` (títulos públicos), `repo` (compromissadas), `privateCredit`
+    (crédito privado), `bankSecurity` (títulos de bancos), `foreign` (exterior),
+    `derivative`, `cash` (caixa), `receivable` (valores a receber), `payable`
+    (valores a pagar) ou `other`.
+    """
+
+    market_value: float = FieldInfo(alias="marketValue")
+    """Valor em reais."""
+
+    quantity: Optional[float] = None
+    """Quantidade.
+
+    `null` para títulos sem código de uma empresa: podem ser mais de um.
+    """
+
+    symbol: Optional[str] = None
+    """Ticker ou código do ativo. `null` para cotas de fundo e títulos sem código."""
+
+    weight_percent: Optional[float] = FieldInfo(alias="weightPercent", default=None)
+    """Peso no patrimônio do fundo, em %."""
 
 
 class Fund(BaseModel):
@@ -34,7 +83,19 @@ class Fund(BaseModel):
     net_assets: Optional[float] = FieldInfo(alias="netAssets", default=None)
     """Patrimônio líquido do fundo, em reais."""
 
+    positions: List[FundPosition]
+    """Cada ativo que forma a posição, do maior valor ao menor.
+
+    Mostra, por exemplo, quanto o fundo tem em cada ação e em cada debênture da
+    empresa.
+    """
+
     quantity: Optional[float] = None
+    """Quantidade.
+
+    Vendas a descoberto ficam negativas. `null` quando a posição junta mais de um
+    ativo da empresa, ou títulos sem código.
+    """
 
     symbol: Optional[str] = None
 
@@ -59,7 +120,12 @@ class Summary(BaseModel):
 
     total_market_value: float = FieldInfo(alias="totalMarketValue")
 
-    total_quantity: float = FieldInfo(alias="totalQuantity")
+    total_quantity: Optional[float] = FieldInfo(alias="totalQuantity", default=None)
+    """Soma das quantidades.
+
+    `null` quando a resposta junta mais de um ativo da empresa, ou títulos sem
+    código.
+    """
 
 
 class FundHoldersResponse(BaseModel):

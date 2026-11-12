@@ -13,7 +13,6 @@ from brapi.types.v2 import (
     FundListResponse,
     FundHoldersResponse,
     FundProfileResponse,
-    FundHoldingsResponse,
     FundScreenerResponse,
     FundDividendsResponse,
     FundPortfolioResponse,
@@ -115,8 +114,10 @@ class TestFunds:
     @parametrize
     def test_method_holders_with_all_params(self, client: Brapi) -> None:
         fund = client.v2.funds.holders(
+            asset_class="assetClass",
             asset_type="fii",
             cnpj="x",
+            issuer="true",
             limit=2,
             page=1,
             reference_date="referenceDate",
@@ -143,44 +144,6 @@ class TestFunds:
 
             fund = response.parse()
             assert_matches_type(FundHoldersResponse, fund, path=["response"])
-
-        assert cast(Any, response.is_closed) is True
-
-    @parametrize
-    def test_method_holdings(self, client: Brapi) -> None:
-        fund = client.v2.funds.holdings()
-        assert_matches_type(FundHoldingsResponse, fund, path=["response"])
-
-    @parametrize
-    def test_method_holdings_with_all_params(self, client: Brapi) -> None:
-        fund = client.v2.funds.holdings(
-            asset_class="equity",
-            cnpjs="x",
-            limit=2,
-            look_through="true",
-            page=1,
-            reference_date="2026-09-30",
-            symbols="BOVA11",
-        )
-        assert_matches_type(FundHoldingsResponse, fund, path=["response"])
-
-    @parametrize
-    def test_raw_response_holdings(self, client: Brapi) -> None:
-        response = client.v2.funds.with_raw_response.holdings()
-
-        assert response.is_closed is True
-        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-        fund = response.parse()
-        assert_matches_type(FundHoldingsResponse, fund, path=["response"])
-
-    @parametrize
-    def test_streaming_response_holdings(self, client: Brapi) -> None:
-        with client.v2.funds.with_streaming_response.holdings() as response:
-            assert not response.is_closed
-            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-
-            fund = response.parse()
-            assert_matches_type(FundHoldingsResponse, fund, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -472,8 +435,10 @@ class TestAsyncFunds:
     @parametrize
     async def test_method_holders_with_all_params(self, async_client: AsyncBrapi) -> None:
         fund = await async_client.v2.funds.holders(
+            asset_class="assetClass",
             asset_type="fii",
             cnpj="x",
+            issuer="true",
             limit=2,
             page=1,
             reference_date="referenceDate",
@@ -500,44 +465,6 @@ class TestAsyncFunds:
 
             fund = await response.parse()
             assert_matches_type(FundHoldersResponse, fund, path=["response"])
-
-        assert cast(Any, response.is_closed) is True
-
-    @parametrize
-    async def test_method_holdings(self, async_client: AsyncBrapi) -> None:
-        fund = await async_client.v2.funds.holdings()
-        assert_matches_type(FundHoldingsResponse, fund, path=["response"])
-
-    @parametrize
-    async def test_method_holdings_with_all_params(self, async_client: AsyncBrapi) -> None:
-        fund = await async_client.v2.funds.holdings(
-            asset_class="equity",
-            cnpjs="x",
-            limit=2,
-            look_through="true",
-            page=1,
-            reference_date="2026-09-30",
-            symbols="BOVA11",
-        )
-        assert_matches_type(FundHoldingsResponse, fund, path=["response"])
-
-    @parametrize
-    async def test_raw_response_holdings(self, async_client: AsyncBrapi) -> None:
-        response = await async_client.v2.funds.with_raw_response.holdings()
-
-        assert response.is_closed is True
-        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-        fund = await response.parse()
-        assert_matches_type(FundHoldingsResponse, fund, path=["response"])
-
-    @parametrize
-    async def test_streaming_response_holdings(self, async_client: AsyncBrapi) -> None:
-        async with async_client.v2.funds.with_streaming_response.holdings() as response:
-            assert not response.is_closed
-            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-
-            fund = await response.parse()
-            assert_matches_type(FundHoldingsResponse, fund, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 

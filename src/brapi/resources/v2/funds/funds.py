@@ -38,6 +38,14 @@ from .fiagro import (
     FiagroResourceWithStreamingResponse,
     AsyncFiagroResourceWithStreamingResponse,
 )
+from .holdings import (
+    HoldingsResource,
+    AsyncHoldingsResource,
+    HoldingsResourceWithRawResponse,
+    AsyncHoldingsResourceWithRawResponse,
+    HoldingsResourceWithStreamingResponse,
+    AsyncHoldingsResourceWithStreamingResponse,
+)
 from ...._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
 from ...._utils import maybe_transform, async_maybe_transform
 from ...._compat import cached_property
@@ -45,7 +53,6 @@ from ....types.v2 import (
     fund_list_params,
     fund_holders_params,
     fund_profile_params,
-    fund_holdings_params,
     fund_screener_params,
     fund_dividends_params,
     fund_portfolio_params,
@@ -62,7 +69,6 @@ from ...._base_client import make_request_options
 from ....types.v2.fund_list_response import FundListResponse
 from ....types.v2.fund_holders_response import FundHoldersResponse
 from ....types.v2.fund_profile_response import FundProfileResponse
-from ....types.v2.fund_holdings_response import FundHoldingsResponse
 from ....types.v2.fund_screener_response import FundScreenerResponse
 from ....types.v2.fund_dividends_response import FundDividendsResponse
 from ....types.v2.fund_portfolio_response import FundPortfolioResponse
@@ -82,6 +88,13 @@ class FundsResource(SyncAPIResource):
         Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
         """
         return NavResource(self._client)
+
+    @cached_property
+    def holdings(self) -> HoldingsResource:
+        """
+        Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
+        """
+        return HoldingsResource(self._client)
 
     @cached_property
     def fiagro(self) -> FiagroResource:
@@ -321,8 +334,10 @@ class FundsResource(SyncAPIResource):
     def holders(
         self,
         *,
+        asset_class: str | Omit = omit,
         asset_type: Literal["fii", "fiagro", "fiinfra", "fif", "fidc", "fip", "etf", "other"] | Omit = omit,
         cnpj: str | Omit = omit,
+        issuer: Literal["true", "false"] | Omit = omit,
         limit: int | Omit = omit,
         page: int | Omit = omit,
         reference_date: str | Omit = omit,
@@ -340,15 +355,22 @@ class FundsResource(SyncAPIResource):
         Fundos que têm um ativo em carteira, com o valor e o peso da posição em cada
         fundo. Os dados vêm da carteira mensal que os fundos entregam à CVM.
 
-        Use para ver quais fundos e ETFs compram uma ação, ou quais fundos têm cotas de
-        outro fundo.
+        Use para ver quais fundos e ETFs compram uma ação, quais têm ações ou dívida de
+        uma empresa, ou quais fundos têm cotas de outro fundo.
 
-        Informe `symbol` (ticker na bolsa, como `PETR4`) ou `cnpj` (um fundo cujas cotas
-        outros fundos têm).
+        Informe `symbol` (ticker na bolsa, como `PETR4`) ou `cnpj`. O CNPJ de um fundo
+        traz quem tem cotas dele. O CNPJ de uma empresa traz quem tem as ações dela
+        (todos os tickers, como `PETR3` e `PETR4`), as debêntures e os outros títulos de
+        dívida que ela emitiu. Com `issuer=true`, um ticker de ação faz o mesmo que o
+        CNPJ da empresa. `asset.type` diz como o ativo foi lido e `asset.symbols` lista
+        os tickers buscados.
+
+        Cada fundo aparece uma vez, com os valores somados. `positions` mostra cada
+        ativo da posição. Use `assetClass=equity` para ver só as ações.
 
         Só posições diretas: um fundo que tem o ativo por meio de outro fundo não
-        aparece. Ações próprias e emprestadas somam uma posição. Posições confidenciais
-        não aparecem.
+        aparece. Ações próprias e emprestadas somam uma posição. Derivativos, valores a
+        pagar e posições confidenciais não aparecem.
 
         Sem `referenceDate`, a resposta traz o mês mais recente que a maioria dos fundos
         já entregou: os fundos entregam a carteira ao longo de semanas.
@@ -356,10 +378,16 @@ class FundsResource(SyncAPIResource):
         Plano Pro.
 
         Args:
+          asset_class: Só posições destas classes de ativo, separadas por vírgula. Ex.: `equity` para
+              só ações de uma empresa.
+
           asset_type: Só fundos deste tipo. Ex.: `etf`.
 
-          cnpj: CNPJ de um fundo, para ver quais fundos têm cotas dele. Use `symbol` ou `cnpj`,
-              não os dois.
+          cnpj: CNPJ de um fundo, para ver quais fundos têm cotas dele, ou de uma empresa, para
+              ver quais fundos têm ações ou dívida dela. Use `symbol` ou `cnpj`, não os dois.
+
+          issuer: `true` troca o ticker de `symbol` por todos os ativos da empresa: ações, units,
+              debêntures e outros títulos de dívida. Padrão `false`.
 
           limit: Fundos por página. Padrão 20, máximo 100.
 
@@ -391,8 +419,10 @@ class FundsResource(SyncAPIResource):
                 timeout=timeout,
                 query=maybe_transform(
                     {
+                        "asset_class": asset_class,
                         "asset_type": asset_type,
                         "cnpj": cnpj,
+                        "issuer": issuer,
                         "limit": limit,
                         "page": page,
                         "reference_date": reference_date,
@@ -404,101 +434,6 @@ class FundsResource(SyncAPIResource):
                 ),
             ),
             cast_to=FundHoldersResponse,
-        )
-
-    def holdings(
-        self,
-        *,
-        asset_class: str | Omit = omit,
-        cnpjs: str | Omit = omit,
-        limit: int | Omit = omit,
-        look_through: Literal["true", "false"] | Omit = omit,
-        page: int | Omit = omit,
-        reference_date: str | Omit = omit,
-        symbols: str | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> FundHoldingsResponse:
-        """
-        Composição de um fundo ou ETF em um mês, como na lâmina: cada ativo com o peso
-        no patrimônio, e o resumo por classe de ativo, país e setor. Os dados vêm da
-        carteira mensal que os fundos entregam à CVM.
-
-        Use para ver os maiores ativos de um ETF, quanto ele tem no exterior ou em cada
-        setor.
-
-        Informe `symbols` ou `cnpjs`. Sem `referenceDate`, a resposta traz o mês mais
-        recente. `availableDates` lista os meses com carteira.
-
-        Posições repetidas viram uma só: ações próprias e emprestadas, o mesmo título
-        público em várias linhas e as cotas de um mesmo fundo.
-
-        Com `lookThrough=true` (padrão), uma cota de outro fundo vira os ativos desse
-        fundo, proporcionais ao peso da cota: um ETF do exterior, pelos relatórios
-        públicos do fundo no exterior (SEC), e um fundo brasileiro com pelo menos 1% do
-        patrimônio, pela carteira dele no mesmo mês. Até três níveis.
-        `lookThrough.funds` lista os fundos abertos, cada um com a data da própria
-        carteira. `via` mostra por qual fundo vem cada ativo.
-
-        Posições confidenciais não aparecem em `holdings`. Elas entram em
-        `confidentialWeightPercent` e no resumo por classe.
-
-        Um fundo sem carteira no período não aparece na resposta. A CVM publica a
-        carteira com meses de atraso. Mostre `referenceDate` junto do dado.
-
-        Plano Pro.
-
-        Args:
-          asset_class: Classes de ativo separadas por vírgula. Filtra só a lista `holdings`; o resumo
-              usa a carteira toda. Ex.: equity,bdr.
-
-          cnpjs: CNPJs separados por vírgula, até 20, com ou sem pontuação.
-
-          limit: Posições por fundo e por página. Padrão 10, máximo 500.
-
-          look_through: `true` (padrão) abre as cotas de outros fundos e mostra os ativos deles. `false`
-              mostra só as posições diretas.
-
-          page: Página, a partir de 1.
-
-          reference_date: Data no formato YYYY-MM-DD. Traz o mês mais recente até esta data. Sem ela, traz
-              o mês mais recente.
-
-          symbols: Tickers separados por vírgula, até 20. Ex.: BOVA11,WRLD11.
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        return self._get(
-            "/api/v2/funds/holdings",
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=maybe_transform(
-                    {
-                        "asset_class": asset_class,
-                        "cnpjs": cnpjs,
-                        "limit": limit,
-                        "look_through": look_through,
-                        "page": page,
-                        "reference_date": reference_date,
-                        "symbols": symbols,
-                    },
-                    fund_holdings_params.FundHoldingsParams,
-                ),
-            ),
-            cast_to=FundHoldingsResponse,
         )
 
     def indicators(
@@ -1131,6 +1066,13 @@ class AsyncFundsResource(AsyncAPIResource):
         return AsyncNavResource(self._client)
 
     @cached_property
+    def holdings(self) -> AsyncHoldingsResource:
+        """
+        Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
+        """
+        return AsyncHoldingsResource(self._client)
+
+    @cached_property
     def fiagro(self) -> AsyncFiagroResource:
         """
         Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
@@ -1368,8 +1310,10 @@ class AsyncFundsResource(AsyncAPIResource):
     async def holders(
         self,
         *,
+        asset_class: str | Omit = omit,
         asset_type: Literal["fii", "fiagro", "fiinfra", "fif", "fidc", "fip", "etf", "other"] | Omit = omit,
         cnpj: str | Omit = omit,
+        issuer: Literal["true", "false"] | Omit = omit,
         limit: int | Omit = omit,
         page: int | Omit = omit,
         reference_date: str | Omit = omit,
@@ -1387,15 +1331,22 @@ class AsyncFundsResource(AsyncAPIResource):
         Fundos que têm um ativo em carteira, com o valor e o peso da posição em cada
         fundo. Os dados vêm da carteira mensal que os fundos entregam à CVM.
 
-        Use para ver quais fundos e ETFs compram uma ação, ou quais fundos têm cotas de
-        outro fundo.
+        Use para ver quais fundos e ETFs compram uma ação, quais têm ações ou dívida de
+        uma empresa, ou quais fundos têm cotas de outro fundo.
 
-        Informe `symbol` (ticker na bolsa, como `PETR4`) ou `cnpj` (um fundo cujas cotas
-        outros fundos têm).
+        Informe `symbol` (ticker na bolsa, como `PETR4`) ou `cnpj`. O CNPJ de um fundo
+        traz quem tem cotas dele. O CNPJ de uma empresa traz quem tem as ações dela
+        (todos os tickers, como `PETR3` e `PETR4`), as debêntures e os outros títulos de
+        dívida que ela emitiu. Com `issuer=true`, um ticker de ação faz o mesmo que o
+        CNPJ da empresa. `asset.type` diz como o ativo foi lido e `asset.symbols` lista
+        os tickers buscados.
+
+        Cada fundo aparece uma vez, com os valores somados. `positions` mostra cada
+        ativo da posição. Use `assetClass=equity` para ver só as ações.
 
         Só posições diretas: um fundo que tem o ativo por meio de outro fundo não
-        aparece. Ações próprias e emprestadas somam uma posição. Posições confidenciais
-        não aparecem.
+        aparece. Ações próprias e emprestadas somam uma posição. Derivativos, valores a
+        pagar e posições confidenciais não aparecem.
 
         Sem `referenceDate`, a resposta traz o mês mais recente que a maioria dos fundos
         já entregou: os fundos entregam a carteira ao longo de semanas.
@@ -1403,10 +1354,16 @@ class AsyncFundsResource(AsyncAPIResource):
         Plano Pro.
 
         Args:
+          asset_class: Só posições destas classes de ativo, separadas por vírgula. Ex.: `equity` para
+              só ações de uma empresa.
+
           asset_type: Só fundos deste tipo. Ex.: `etf`.
 
-          cnpj: CNPJ de um fundo, para ver quais fundos têm cotas dele. Use `symbol` ou `cnpj`,
-              não os dois.
+          cnpj: CNPJ de um fundo, para ver quais fundos têm cotas dele, ou de uma empresa, para
+              ver quais fundos têm ações ou dívida dela. Use `symbol` ou `cnpj`, não os dois.
+
+          issuer: `true` troca o ticker de `symbol` por todos os ativos da empresa: ações, units,
+              debêntures e outros títulos de dívida. Padrão `false`.
 
           limit: Fundos por página. Padrão 20, máximo 100.
 
@@ -1438,8 +1395,10 @@ class AsyncFundsResource(AsyncAPIResource):
                 timeout=timeout,
                 query=await async_maybe_transform(
                     {
+                        "asset_class": asset_class,
                         "asset_type": asset_type,
                         "cnpj": cnpj,
+                        "issuer": issuer,
                         "limit": limit,
                         "page": page,
                         "reference_date": reference_date,
@@ -1451,101 +1410,6 @@ class AsyncFundsResource(AsyncAPIResource):
                 ),
             ),
             cast_to=FundHoldersResponse,
-        )
-
-    async def holdings(
-        self,
-        *,
-        asset_class: str | Omit = omit,
-        cnpjs: str | Omit = omit,
-        limit: int | Omit = omit,
-        look_through: Literal["true", "false"] | Omit = omit,
-        page: int | Omit = omit,
-        reference_date: str | Omit = omit,
-        symbols: str | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> FundHoldingsResponse:
-        """
-        Composição de um fundo ou ETF em um mês, como na lâmina: cada ativo com o peso
-        no patrimônio, e o resumo por classe de ativo, país e setor. Os dados vêm da
-        carteira mensal que os fundos entregam à CVM.
-
-        Use para ver os maiores ativos de um ETF, quanto ele tem no exterior ou em cada
-        setor.
-
-        Informe `symbols` ou `cnpjs`. Sem `referenceDate`, a resposta traz o mês mais
-        recente. `availableDates` lista os meses com carteira.
-
-        Posições repetidas viram uma só: ações próprias e emprestadas, o mesmo título
-        público em várias linhas e as cotas de um mesmo fundo.
-
-        Com `lookThrough=true` (padrão), uma cota de outro fundo vira os ativos desse
-        fundo, proporcionais ao peso da cota: um ETF do exterior, pelos relatórios
-        públicos do fundo no exterior (SEC), e um fundo brasileiro com pelo menos 1% do
-        patrimônio, pela carteira dele no mesmo mês. Até três níveis.
-        `lookThrough.funds` lista os fundos abertos, cada um com a data da própria
-        carteira. `via` mostra por qual fundo vem cada ativo.
-
-        Posições confidenciais não aparecem em `holdings`. Elas entram em
-        `confidentialWeightPercent` e no resumo por classe.
-
-        Um fundo sem carteira no período não aparece na resposta. A CVM publica a
-        carteira com meses de atraso. Mostre `referenceDate` junto do dado.
-
-        Plano Pro.
-
-        Args:
-          asset_class: Classes de ativo separadas por vírgula. Filtra só a lista `holdings`; o resumo
-              usa a carteira toda. Ex.: equity,bdr.
-
-          cnpjs: CNPJs separados por vírgula, até 20, com ou sem pontuação.
-
-          limit: Posições por fundo e por página. Padrão 10, máximo 500.
-
-          look_through: `true` (padrão) abre as cotas de outros fundos e mostra os ativos deles. `false`
-              mostra só as posições diretas.
-
-          page: Página, a partir de 1.
-
-          reference_date: Data no formato YYYY-MM-DD. Traz o mês mais recente até esta data. Sem ela, traz
-              o mês mais recente.
-
-          symbols: Tickers separados por vírgula, até 20. Ex.: BOVA11,WRLD11.
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        return await self._get(
-            "/api/v2/funds/holdings",
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=await async_maybe_transform(
-                    {
-                        "asset_class": asset_class,
-                        "cnpjs": cnpjs,
-                        "limit": limit,
-                        "look_through": look_through,
-                        "page": page,
-                        "reference_date": reference_date,
-                        "symbols": symbols,
-                    },
-                    fund_holdings_params.FundHoldingsParams,
-                ),
-            ),
-            cast_to=FundHoldingsResponse,
         )
 
     async def indicators(
@@ -2178,9 +2042,6 @@ class FundsResourceWithRawResponse:
         self.holders = to_raw_response_wrapper(
             funds.holders,
         )
-        self.holdings = to_raw_response_wrapper(
-            funds.holdings,
-        )
         self.indicators = to_raw_response_wrapper(
             funds.indicators,
         )
@@ -2200,6 +2061,13 @@ class FundsResourceWithRawResponse:
         Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
         """
         return NavResourceWithRawResponse(self._funds.nav)
+
+    @cached_property
+    def holdings(self) -> HoldingsResourceWithRawResponse:
+        """
+        Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
+        """
+        return HoldingsResourceWithRawResponse(self._funds.holdings)
 
     @cached_property
     def fiagro(self) -> FiagroResourceWithRawResponse:
@@ -2236,9 +2104,6 @@ class AsyncFundsResourceWithRawResponse:
         self.holders = async_to_raw_response_wrapper(
             funds.holders,
         )
-        self.holdings = async_to_raw_response_wrapper(
-            funds.holdings,
-        )
         self.indicators = async_to_raw_response_wrapper(
             funds.indicators,
         )
@@ -2258,6 +2123,13 @@ class AsyncFundsResourceWithRawResponse:
         Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
         """
         return AsyncNavResourceWithRawResponse(self._funds.nav)
+
+    @cached_property
+    def holdings(self) -> AsyncHoldingsResourceWithRawResponse:
+        """
+        Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
+        """
+        return AsyncHoldingsResourceWithRawResponse(self._funds.holdings)
 
     @cached_property
     def fiagro(self) -> AsyncFiagroResourceWithRawResponse:
@@ -2294,9 +2166,6 @@ class FundsResourceWithStreamingResponse:
         self.holders = to_streamed_response_wrapper(
             funds.holders,
         )
-        self.holdings = to_streamed_response_wrapper(
-            funds.holdings,
-        )
         self.indicators = to_streamed_response_wrapper(
             funds.indicators,
         )
@@ -2316,6 +2185,13 @@ class FundsResourceWithStreamingResponse:
         Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
         """
         return NavResourceWithStreamingResponse(self._funds.nav)
+
+    @cached_property
+    def holdings(self) -> HoldingsResourceWithStreamingResponse:
+        """
+        Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
+        """
+        return HoldingsResourceWithStreamingResponse(self._funds.holdings)
 
     @cached_property
     def fiagro(self) -> FiagroResourceWithStreamingResponse:
@@ -2352,9 +2228,6 @@ class AsyncFundsResourceWithStreamingResponse:
         self.holders = async_to_streamed_response_wrapper(
             funds.holders,
         )
-        self.holdings = async_to_streamed_response_wrapper(
-            funds.holdings,
-        )
         self.indicators = async_to_streamed_response_wrapper(
             funds.indicators,
         )
@@ -2374,6 +2247,13 @@ class AsyncFundsResourceWithStreamingResponse:
         Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
         """
         return AsyncNavResourceWithStreamingResponse(self._funds.nav)
+
+    @cached_property
+    def holdings(self) -> AsyncHoldingsResourceWithStreamingResponse:
+        """
+        Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
+        """
+        return AsyncHoldingsResourceWithStreamingResponse(self._funds.holdings)
 
     @cached_property
     def fiagro(self) -> AsyncFiagroResourceWithStreamingResponse:
