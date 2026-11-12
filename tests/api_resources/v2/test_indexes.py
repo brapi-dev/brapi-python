@@ -62,6 +62,7 @@ class TestIndexes:
             symbols="IBOV",
             limit=2,
             page=1,
+            reference_date="referenceDate",
         )
         assert_matches_type(IndexCompositionResponse, index, path=["response"])
 
@@ -140,6 +141,7 @@ class TestAsyncIndexes:
             symbols="IBOV",
             limit=2,
             page=1,
+            reference_date="referenceDate",
         )
         assert_matches_type(IndexCompositionResponse, index, path=["response"])
 
