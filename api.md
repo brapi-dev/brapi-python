@@ -258,6 +258,8 @@ from brapi.types.v2 import (
     FundPaginationMeta,
     FundListResponse,
     FundDividendsResponse,
+    FundHoldersResponse,
+    FundHoldingsResponse,
     FundIndicatorsResponse,
     FundPortfolioResponse,
     FundProfileResponse,
@@ -269,6 +271,8 @@ Methods:
 
 - <code title="get /api/v2/funds/list">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">list</a>(\*\*<a href="src/brapi/types/v2/fund_list_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_list_response.py">FundListResponse</a></code>
 - <code title="get /api/v2/funds/dividends">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">dividends</a>(\*\*<a href="src/brapi/types/v2/fund_dividends_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_dividends_response.py">FundDividendsResponse</a></code>
+- <code title="get /api/v2/funds/holders">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">holders</a>(\*\*<a href="src/brapi/types/v2/fund_holders_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_holders_response.py">FundHoldersResponse</a></code>
+- <code title="get /api/v2/funds/holdings">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">holdings</a>(\*\*<a href="src/brapi/types/v2/fund_holdings_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_holdings_response.py">FundHoldingsResponse</a></code>
 - <code title="get /api/v2/funds/indicators">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">indicators</a>(\*\*<a href="src/brapi/types/v2/fund_indicators_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_indicators_response.py">FundIndicatorsResponse</a></code>
 - <code title="get /api/v2/funds/portfolio">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">portfolio</a>(\*\*<a href="src/brapi/types/v2/fund_portfolio_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_portfolio_response.py">FundPortfolioResponse</a></code>
 - <code title="get /api/v2/funds/profile">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">profile</a>(\*\*<a href="src/brapi/types/v2/fund_profile_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_profile_response.py">FundProfileResponse</a></code>
@@ -323,6 +327,19 @@ from brapi.types.v2.funds import FipReportsResponse
 Methods:
 
 - <code title="get /api/v2/funds/fip/reports">client.v2.funds.fip.<a href="./src/brapi/resources/v2/funds/fip.py">reports</a>(\*\*<a href="src/brapi/types/v2/funds/fip_reports_params.py">params</a>) -> <a href="./src/brapi/types/v2/funds/fip_reports_response.py">FipReportsResponse</a></code>
+
+## Indexes
+
+Types:
+
+```python
+from brapi.types.v2 import IndexListResponse, IndexCompositionResponse
+```
+
+Methods:
+
+- <code title="get /api/v2/indexes/list">client.v2.indexes.<a href="./src/brapi/resources/v2/indexes.py">list</a>(\*\*<a href="src/brapi/types/v2/index_list_params.py">params</a>) -> <a href="./src/brapi/types/v2/index_list_response.py">IndexListResponse</a></code>
+- <code title="get /api/v2/indexes/composition">client.v2.indexes.<a href="./src/brapi/resources/v2/indexes.py">composition</a>(\*\*<a href="src/brapi/types/v2/index_composition_params.py">params</a>) -> <a href="./src/brapi/types/v2/index_composition_response.py">IndexCompositionResponse</a></code>
 
 ## Options
 

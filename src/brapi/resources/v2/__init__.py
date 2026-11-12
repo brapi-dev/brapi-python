@@ -72,6 +72,14 @@ from .futures import (
     FuturesResourceWithStreamingResponse,
     AsyncFuturesResourceWithStreamingResponse,
 )
+from .indexes import (
+    IndexesResource,
+    AsyncIndexesResource,
+    IndexesResourceWithRawResponse,
+    AsyncIndexesResourceWithRawResponse,
+    IndexesResourceWithStreamingResponse,
+    AsyncIndexesResourceWithStreamingResponse,
+)
 from .options import (
     OptionsResource,
     AsyncOptionsResource,
@@ -206,6 +214,12 @@ __all__ = [
     "AsyncFundsResourceWithRawResponse",
     "FundsResourceWithStreamingResponse",
     "AsyncFundsResourceWithStreamingResponse",
+    "IndexesResource",
+    "AsyncIndexesResource",
+    "IndexesResourceWithRawResponse",
+    "AsyncIndexesResourceWithRawResponse",
+    "IndexesResourceWithStreamingResponse",
+    "AsyncIndexesResourceWithStreamingResponse",
     "OptionsResource",
     "AsyncOptionsResource",
     "OptionsResourceWithRawResponse",

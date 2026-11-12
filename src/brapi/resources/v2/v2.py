@@ -50,6 +50,14 @@ from .fii.fii import (
     FiiResourceWithStreamingResponse,
     AsyncFiiResourceWithStreamingResponse,
 )
+from .indexes import (
+    IndexesResource,
+    AsyncIndexesResource,
+    IndexesResourceWithRawResponse,
+    AsyncIndexesResourceWithRawResponse,
+    IndexesResourceWithStreamingResponse,
+    AsyncIndexesResourceWithStreamingResponse,
+)
 from .tickers import (
     TickersResource,
     AsyncTickersResource,
@@ -205,6 +213,13 @@ class V2Resource(SyncAPIResource):
         return FundsResource(self._client)
 
     @cached_property
+    def indexes(self) -> IndexesResource:
+        """
+        Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
+        """
+        return IndexesResource(self._client)
+
+    @cached_property
     def options(self) -> OptionsResource:
         """Consulte contratos, cadeias EOD negociadas e histórico de opções."""
         return OptionsResource(self._client)
@@ -325,6 +340,13 @@ class AsyncV2Resource(AsyncAPIResource):
         Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
         """
         return AsyncFundsResource(self._client)
+
+    @cached_property
+    def indexes(self) -> AsyncIndexesResource:
+        """
+        Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
+        """
+        return AsyncIndexesResource(self._client)
 
     @cached_property
     def options(self) -> AsyncOptionsResource:
@@ -452,6 +474,13 @@ class V2ResourceWithRawResponse:
         return FundsResourceWithRawResponse(self._v2.funds)
 
     @cached_property
+    def indexes(self) -> IndexesResourceWithRawResponse:
+        """
+        Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
+        """
+        return IndexesResourceWithRawResponse(self._v2.indexes)
+
+    @cached_property
     def options(self) -> OptionsResourceWithRawResponse:
         """Consulte contratos, cadeias EOD negociadas e histórico de opções."""
         return OptionsResourceWithRawResponse(self._v2.options)
@@ -556,6 +585,13 @@ class AsyncV2ResourceWithRawResponse:
         Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
         """
         return AsyncFundsResourceWithRawResponse(self._v2.funds)
+
+    @cached_property
+    def indexes(self) -> AsyncIndexesResourceWithRawResponse:
+        """
+        Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
+        """
+        return AsyncIndexesResourceWithRawResponse(self._v2.indexes)
 
     @cached_property
     def options(self) -> AsyncOptionsResourceWithRawResponse:
@@ -664,6 +700,13 @@ class V2ResourceWithStreamingResponse:
         return FundsResourceWithStreamingResponse(self._v2.funds)
 
     @cached_property
+    def indexes(self) -> IndexesResourceWithStreamingResponse:
+        """
+        Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
+        """
+        return IndexesResourceWithStreamingResponse(self._v2.indexes)
+
+    @cached_property
     def options(self) -> OptionsResourceWithStreamingResponse:
         """Consulte contratos, cadeias EOD negociadas e histórico de opções."""
         return OptionsResourceWithStreamingResponse(self._v2.options)
@@ -768,6 +811,13 @@ class AsyncV2ResourceWithStreamingResponse:
         Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
         """
         return AsyncFundsResourceWithStreamingResponse(self._v2.funds)
+
+    @cached_property
+    def indexes(self) -> AsyncIndexesResourceWithStreamingResponse:
+        """
+        Descubra e consulte fundos brasileiros listados e estruturados, incluindo FIIs, FIAGROs, FI-Infra/FIFs, FIDCs e FIPs.
+        """
+        return AsyncIndexesResourceWithStreamingResponse(self._v2.indexes)
 
     @cached_property
     def options(self) -> AsyncOptionsResourceWithStreamingResponse:
