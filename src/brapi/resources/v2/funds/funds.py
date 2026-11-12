@@ -43,7 +43,9 @@ from ...._utils import maybe_transform, async_maybe_transform
 from ...._compat import cached_property
 from ....types.v2 import (
     fund_list_params,
+    fund_holders_params,
     fund_profile_params,
+    fund_holdings_params,
     fund_screener_params,
     fund_dividends_params,
     fund_portfolio_params,
@@ -58,7 +60,9 @@ from ...._response import (
 )
 from ...._base_client import make_request_options
 from ....types.v2.fund_list_response import FundListResponse
+from ....types.v2.fund_holders_response import FundHoldersResponse
 from ....types.v2.fund_profile_response import FundProfileResponse
+from ....types.v2.fund_holdings_response import FundHoldingsResponse
 from ....types.v2.fund_screener_response import FundScreenerResponse
 from ....types.v2.fund_dividends_response import FundDividendsResponse
 from ....types.v2.fund_portfolio_response import FundPortfolioResponse
@@ -312,6 +316,189 @@ class FundsResource(SyncAPIResource):
                 ),
             ),
             cast_to=FundDividendsResponse,
+        )
+
+    def holders(
+        self,
+        *,
+        asset_type: Literal["fii", "fiagro", "fiinfra", "fif", "fidc", "fip", "etf", "other"] | Omit = omit,
+        cnpj: str | Omit = omit,
+        limit: int | Omit = omit,
+        page: int | Omit = omit,
+        reference_date: str | Omit = omit,
+        sort_by: Literal["marketValue", "weightPercent"] | Omit = omit,
+        sort_order: Literal["asc", "desc"] | Omit = omit,
+        symbol: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> FundHoldersResponse:
+        """
+        Fundos que têm um ativo em carteira, com o valor e o peso da posição em cada
+        fundo. Os dados vêm da carteira mensal que os fundos entregam à CVM.
+
+        Use para ver quais fundos e ETFs compram uma ação, ou quais fundos têm cotas de
+        outro fundo.
+
+        Informe `symbol` (ticker na bolsa, como `PETR4`) ou `cnpj` (um fundo cujas cotas
+        outros fundos têm).
+
+        Só posições diretas: um fundo que tem o ativo por meio de outro fundo não
+        aparece. Ações próprias e emprestadas somam uma posição. Posições confidenciais
+        não aparecem.
+
+        Sem `referenceDate`, a resposta traz o mês mais recente que a maioria dos fundos
+        já entregou: os fundos entregam a carteira ao longo de semanas.
+
+        Plano Pro.
+
+        Args:
+          asset_type: Só fundos deste tipo. Ex.: `etf`.
+
+          cnpj: CNPJ de um fundo, para ver quais fundos têm cotas dele. Use `symbol` ou `cnpj`,
+              não os dois.
+
+          limit: Fundos por página. Padrão 20, máximo 100.
+
+          page: Página, a partir de 1.
+
+          reference_date: Data no formato YYYY-MM-DD. Traz o mês mais recente até esta data. Sem ela, traz
+              o mês mais recente que a maioria dos fundos já entregou.
+
+          sort_by: `marketValue` (padrão) ou `weightPercent`.
+
+          sort_order: Ordem crescente (`asc`) ou decrescente (`desc`, padrão).
+
+          symbol: Ticker do ativo na bolsa. Ex.: PETR4.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return self._get(
+            "/api/v2/funds/holders",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {
+                        "asset_type": asset_type,
+                        "cnpj": cnpj,
+                        "limit": limit,
+                        "page": page,
+                        "reference_date": reference_date,
+                        "sort_by": sort_by,
+                        "sort_order": sort_order,
+                        "symbol": symbol,
+                    },
+                    fund_holders_params.FundHoldersParams,
+                ),
+            ),
+            cast_to=FundHoldersResponse,
+        )
+
+    def holdings(
+        self,
+        *,
+        asset_class: str | Omit = omit,
+        cnpjs: str | Omit = omit,
+        limit: int | Omit = omit,
+        look_through: Literal["true", "false"] | Omit = omit,
+        page: int | Omit = omit,
+        reference_date: str | Omit = omit,
+        symbols: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> FundHoldingsResponse:
+        """
+        Composição de um fundo ou ETF em um mês, como na lâmina: cada ativo com o peso
+        no patrimônio, e o resumo por classe de ativo, país e setor. Os dados vêm da
+        carteira mensal que os fundos entregam à CVM.
+
+        Use para ver os maiores ativos de um ETF, quanto ele tem no exterior ou em cada
+        setor.
+
+        Informe `symbols` ou `cnpjs`. Sem `referenceDate`, a resposta traz o mês mais
+        recente. `availableDates` lista os meses com carteira.
+
+        Posições repetidas viram uma só: ações próprias e emprestadas, o mesmo título
+        público em várias linhas e as cotas de um mesmo fundo.
+
+        Com `lookThrough=true` (padrão), uma cota de outro fundo vira os ativos desse
+        fundo, proporcionais ao peso da cota: um ETF do exterior, pelos relatórios
+        públicos do fundo no exterior (SEC), e um fundo brasileiro com pelo menos 1% do
+        patrimônio, pela carteira dele no mesmo mês. Até três níveis.
+        `lookThrough.funds` lista os fundos abertos, cada um com a data da própria
+        carteira. `via` mostra por qual fundo vem cada ativo.
+
+        Posições confidenciais não aparecem em `holdings`. Elas entram em
+        `confidentialWeightPercent` e no resumo por classe.
+
+        Um fundo sem carteira no período não aparece na resposta. A CVM publica a
+        carteira com meses de atraso. Mostre `referenceDate` junto do dado.
+
+        Plano Pro.
+
+        Args:
+          asset_class: Classes de ativo separadas por vírgula. Filtra só a lista `holdings`; o resumo
+              usa a carteira toda. Ex.: equity,bdr.
+
+          cnpjs: CNPJs separados por vírgula, até 20, com ou sem pontuação.
+
+          limit: Posições por fundo e por página. Padrão 10, máximo 500.
+
+          look_through: `true` (padrão) abre as cotas de outros fundos e mostra os ativos deles. `false`
+              mostra só as posições diretas.
+
+          page: Página, a partir de 1.
+
+          reference_date: Data no formato YYYY-MM-DD. Traz o mês mais recente até esta data. Sem ela, traz
+              o mês mais recente.
+
+          symbols: Tickers separados por vírgula, até 20. Ex.: BOVA11,WRLD11.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return self._get(
+            "/api/v2/funds/holdings",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {
+                        "asset_class": asset_class,
+                        "cnpjs": cnpjs,
+                        "limit": limit,
+                        "look_through": look_through,
+                        "page": page,
+                        "reference_date": reference_date,
+                        "symbols": symbols,
+                    },
+                    fund_holdings_params.FundHoldingsParams,
+                ),
+            ),
+            cast_to=FundHoldingsResponse,
         )
 
     def indicators(
@@ -1178,6 +1365,189 @@ class AsyncFundsResource(AsyncAPIResource):
             cast_to=FundDividendsResponse,
         )
 
+    async def holders(
+        self,
+        *,
+        asset_type: Literal["fii", "fiagro", "fiinfra", "fif", "fidc", "fip", "etf", "other"] | Omit = omit,
+        cnpj: str | Omit = omit,
+        limit: int | Omit = omit,
+        page: int | Omit = omit,
+        reference_date: str | Omit = omit,
+        sort_by: Literal["marketValue", "weightPercent"] | Omit = omit,
+        sort_order: Literal["asc", "desc"] | Omit = omit,
+        symbol: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> FundHoldersResponse:
+        """
+        Fundos que têm um ativo em carteira, com o valor e o peso da posição em cada
+        fundo. Os dados vêm da carteira mensal que os fundos entregam à CVM.
+
+        Use para ver quais fundos e ETFs compram uma ação, ou quais fundos têm cotas de
+        outro fundo.
+
+        Informe `symbol` (ticker na bolsa, como `PETR4`) ou `cnpj` (um fundo cujas cotas
+        outros fundos têm).
+
+        Só posições diretas: um fundo que tem o ativo por meio de outro fundo não
+        aparece. Ações próprias e emprestadas somam uma posição. Posições confidenciais
+        não aparecem.
+
+        Sem `referenceDate`, a resposta traz o mês mais recente que a maioria dos fundos
+        já entregou: os fundos entregam a carteira ao longo de semanas.
+
+        Plano Pro.
+
+        Args:
+          asset_type: Só fundos deste tipo. Ex.: `etf`.
+
+          cnpj: CNPJ de um fundo, para ver quais fundos têm cotas dele. Use `symbol` ou `cnpj`,
+              não os dois.
+
+          limit: Fundos por página. Padrão 20, máximo 100.
+
+          page: Página, a partir de 1.
+
+          reference_date: Data no formato YYYY-MM-DD. Traz o mês mais recente até esta data. Sem ela, traz
+              o mês mais recente que a maioria dos fundos já entregou.
+
+          sort_by: `marketValue` (padrão) ou `weightPercent`.
+
+          sort_order: Ordem crescente (`asc`) ou decrescente (`desc`, padrão).
+
+          symbol: Ticker do ativo na bolsa. Ex.: PETR4.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return await self._get(
+            "/api/v2/funds/holders",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {
+                        "asset_type": asset_type,
+                        "cnpj": cnpj,
+                        "limit": limit,
+                        "page": page,
+                        "reference_date": reference_date,
+                        "sort_by": sort_by,
+                        "sort_order": sort_order,
+                        "symbol": symbol,
+                    },
+                    fund_holders_params.FundHoldersParams,
+                ),
+            ),
+            cast_to=FundHoldersResponse,
+        )
+
+    async def holdings(
+        self,
+        *,
+        asset_class: str | Omit = omit,
+        cnpjs: str | Omit = omit,
+        limit: int | Omit = omit,
+        look_through: Literal["true", "false"] | Omit = omit,
+        page: int | Omit = omit,
+        reference_date: str | Omit = omit,
+        symbols: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> FundHoldingsResponse:
+        """
+        Composição de um fundo ou ETF em um mês, como na lâmina: cada ativo com o peso
+        no patrimônio, e o resumo por classe de ativo, país e setor. Os dados vêm da
+        carteira mensal que os fundos entregam à CVM.
+
+        Use para ver os maiores ativos de um ETF, quanto ele tem no exterior ou em cada
+        setor.
+
+        Informe `symbols` ou `cnpjs`. Sem `referenceDate`, a resposta traz o mês mais
+        recente. `availableDates` lista os meses com carteira.
+
+        Posições repetidas viram uma só: ações próprias e emprestadas, o mesmo título
+        público em várias linhas e as cotas de um mesmo fundo.
+
+        Com `lookThrough=true` (padrão), uma cota de outro fundo vira os ativos desse
+        fundo, proporcionais ao peso da cota: um ETF do exterior, pelos relatórios
+        públicos do fundo no exterior (SEC), e um fundo brasileiro com pelo menos 1% do
+        patrimônio, pela carteira dele no mesmo mês. Até três níveis.
+        `lookThrough.funds` lista os fundos abertos, cada um com a data da própria
+        carteira. `via` mostra por qual fundo vem cada ativo.
+
+        Posições confidenciais não aparecem em `holdings`. Elas entram em
+        `confidentialWeightPercent` e no resumo por classe.
+
+        Um fundo sem carteira no período não aparece na resposta. A CVM publica a
+        carteira com meses de atraso. Mostre `referenceDate` junto do dado.
+
+        Plano Pro.
+
+        Args:
+          asset_class: Classes de ativo separadas por vírgula. Filtra só a lista `holdings`; o resumo
+              usa a carteira toda. Ex.: equity,bdr.
+
+          cnpjs: CNPJs separados por vírgula, até 20, com ou sem pontuação.
+
+          limit: Posições por fundo e por página. Padrão 10, máximo 500.
+
+          look_through: `true` (padrão) abre as cotas de outros fundos e mostra os ativos deles. `false`
+              mostra só as posições diretas.
+
+          page: Página, a partir de 1.
+
+          reference_date: Data no formato YYYY-MM-DD. Traz o mês mais recente até esta data. Sem ela, traz
+              o mês mais recente.
+
+          symbols: Tickers separados por vírgula, até 20. Ex.: BOVA11,WRLD11.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return await self._get(
+            "/api/v2/funds/holdings",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {
+                        "asset_class": asset_class,
+                        "cnpjs": cnpjs,
+                        "limit": limit,
+                        "look_through": look_through,
+                        "page": page,
+                        "reference_date": reference_date,
+                        "symbols": symbols,
+                    },
+                    fund_holdings_params.FundHoldingsParams,
+                ),
+            ),
+            cast_to=FundHoldingsResponse,
+        )
+
     async def indicators(
         self,
         *,
@@ -1805,6 +2175,12 @@ class FundsResourceWithRawResponse:
         self.dividends = to_raw_response_wrapper(
             funds.dividends,
         )
+        self.holders = to_raw_response_wrapper(
+            funds.holders,
+        )
+        self.holdings = to_raw_response_wrapper(
+            funds.holdings,
+        )
         self.indicators = to_raw_response_wrapper(
             funds.indicators,
         )
@@ -1856,6 +2232,12 @@ class AsyncFundsResourceWithRawResponse:
         )
         self.dividends = async_to_raw_response_wrapper(
             funds.dividends,
+        )
+        self.holders = async_to_raw_response_wrapper(
+            funds.holders,
+        )
+        self.holdings = async_to_raw_response_wrapper(
+            funds.holdings,
         )
         self.indicators = async_to_raw_response_wrapper(
             funds.indicators,
@@ -1909,6 +2291,12 @@ class FundsResourceWithStreamingResponse:
         self.dividends = to_streamed_response_wrapper(
             funds.dividends,
         )
+        self.holders = to_streamed_response_wrapper(
+            funds.holders,
+        )
+        self.holdings = to_streamed_response_wrapper(
+            funds.holdings,
+        )
         self.indicators = to_streamed_response_wrapper(
             funds.indicators,
         )
@@ -1960,6 +2348,12 @@ class AsyncFundsResourceWithStreamingResponse:
         )
         self.dividends = async_to_streamed_response_wrapper(
             funds.dividends,
+        )
+        self.holders = async_to_streamed_response_wrapper(
+            funds.holders,
+        )
+        self.holdings = async_to_streamed_response_wrapper(
+            funds.holdings,
         )
         self.indicators = async_to_streamed_response_wrapper(
             funds.indicators,
