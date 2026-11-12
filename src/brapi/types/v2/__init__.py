@@ -36,7 +36,6 @@ from .option_chain_params import OptionChainParams as OptionChainParams
 from .user_usage_response import UserUsageResponse as UserUsageResponse
 from .fii_dividends_params import FiiDividendsParams as FiiDividendsParams
 from .fii_reports_response import FiiReportsResponse as FiiReportsResponse
-from .fund_holdings_params import FundHoldingsParams as FundHoldingsParams
 from .fund_pagination_meta import FundPaginationMeta as FundPaginationMeta
 from .fund_screener_params import FundScreenerParams as FundScreenerParams
 from .future_list_response import FutureListResponse as FutureListResponse
@@ -63,7 +62,6 @@ from .ticker_renames_params import TickerRenamesParams as TickerRenamesParams
 from .ticker_resolve_params import TickerResolveParams as TickerResolveParams
 from .crypto_retrieve_params import CryptoRetrieveParams as CryptoRetrieveParams
 from .fii_dividends_response import FiiDividendsResponse as FiiDividendsResponse
-from .fund_holdings_response import FundHoldingsResponse as FundHoldingsResponse
 from .fund_indicators_params import FundIndicatorsParams as FundIndicatorsParams
 from .fund_screener_response import FundScreenerResponse as FundScreenerResponse
 from .news_retrieve_response import NewsRetrieveResponse as NewsRetrieveResponse

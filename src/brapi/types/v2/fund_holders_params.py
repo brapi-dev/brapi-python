@@ -10,15 +10,27 @@ __all__ = ["FundHoldersParams"]
 
 
 class FundHoldersParams(TypedDict, total=False):
+    asset_class: Annotated[str, PropertyInfo(alias="assetClass")]
+    """Só posições destas classes de ativo, separadas por vírgula.
+
+    Ex.: `equity` para só ações de uma empresa.
+    """
+
     asset_type: Annotated[
         Literal["fii", "fiagro", "fiinfra", "fif", "fidc", "fip", "etf", "other"], PropertyInfo(alias="assetType")
     ]
     """Só fundos deste tipo. Ex.: `etf`."""
 
     cnpj: str
-    """CNPJ de um fundo, para ver quais fundos têm cotas dele.
+    """
+    CNPJ de um fundo, para ver quais fundos têm cotas dele, ou de uma empresa, para
+    ver quais fundos têm ações ou dívida dela. Use `symbol` ou `cnpj`, não os dois.
+    """
 
-    Use `symbol` ou `cnpj`, não os dois.
+    issuer: Literal["true", "false"]
+    """
+    `true` troca o ticker de `symbol` por todos os ativos da empresa: ações, units,
+    debêntures e outros títulos de dívida. Padrão `false`.
     """
 
     limit: int
