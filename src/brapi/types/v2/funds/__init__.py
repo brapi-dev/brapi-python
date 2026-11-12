@@ -10,7 +10,9 @@ from .nav_history_response import NavHistoryResponse as NavHistoryResponse
 from .fiagro_reports_params import FiagroReportsParams as FiagroReportsParams
 from .fidc_portfolio_params import FidcPortfolioParams as FidcPortfolioParams
 from .fidc_reports_response import FidcReportsResponse as FidcReportsResponse
+from .holding_history_params import HoldingHistoryParams as HoldingHistoryParams
 from .fiagro_portfolio_params import FiagroPortfolioParams as FiagroPortfolioParams
 from .fiagro_reports_response import FiagroReportsResponse as FiagroReportsResponse
 from .fidc_portfolio_response import FidcPortfolioResponse as FidcPortfolioResponse
+from .holding_history_response import HoldingHistoryResponse as HoldingHistoryResponse
 from .fiagro_portfolio_response import FiagroPortfolioResponse as FiagroPortfolioResponse
