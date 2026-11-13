@@ -943,8 +943,9 @@ class FundsResource(SyncAPIResource):
           return_ytd_min: Rentabilidade no ano: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Só
               com `assetType=unlisted`.
 
-          search: Parte do ticker ou do nome do fundo. Com `assetType=unlisted`, parte do nome ou
-              da razão social; números, com ou sem pontuação, buscam o início do CNPJ.
+          search: Parte do ticker ou do nome do fundo. Com `assetType=unlisted`, palavras do nome
+              ou da razão social, em qualquer ordem e sem exigir termos como FIC, FIA ou
+              "Fundo de Investimento"; números, com ou sem pontuação, buscam o início do CNPJ.
 
           segment: Segmento do FII no cadastro da CVM, como Logística, Shoppings, Escritórios ou
               Títulos e Val. Mob. Nome exato, sem diferença de maiúsculas. Só para fundos
@@ -1919,8 +1920,9 @@ class AsyncFundsResource(AsyncAPIResource):
           return_ytd_min: Rentabilidade no ano: valor mínimo, inclusive. Unidade: fração (0.06 = 6%). Só
               com `assetType=unlisted`.
 
-          search: Parte do ticker ou do nome do fundo. Com `assetType=unlisted`, parte do nome ou
-              da razão social; números, com ou sem pontuação, buscam o início do CNPJ.
+          search: Parte do ticker ou do nome do fundo. Com `assetType=unlisted`, palavras do nome
+              ou da razão social, em qualquer ordem e sem exigir termos como FIC, FIA ou
+              "Fundo de Investimento"; números, com ou sem pontuação, buscam o início do CNPJ.
 
           segment: Segmento do FII no cadastro da CVM, como Logística, Shoppings, Escritórios ou
               Títulos e Val. Mob. Nome exato, sem diferença de maiúsculas. Só para fundos
