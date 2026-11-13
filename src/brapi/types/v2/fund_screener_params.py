@@ -246,8 +246,9 @@ class FundScreenerParams(TypedDict, total=False):
     search: str
     """Parte do ticker ou do nome do fundo.
 
-    Com `assetType=unlisted`, parte do nome ou da razão social; números, com ou sem
-    pontuação, buscam o início do CNPJ.
+    Com `assetType=unlisted`, palavras do nome ou da razão social, em qualquer ordem
+    e sem exigir termos como FIC, FIA ou "Fundo de Investimento"; números, com ou
+    sem pontuação, buscam o início do CNPJ.
     """
 
     segment: str
