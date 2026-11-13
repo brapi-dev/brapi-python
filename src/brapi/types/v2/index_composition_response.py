@@ -34,6 +34,8 @@ class IndexHolding(BaseModel):
         "cash",
         "receivable",
         "payable",
+        "commodity",
+        "crypto",
         "other",
     ] = FieldInfo(alias="assetClass")
     """
@@ -41,7 +43,8 @@ class IndexHolding(BaseModel):
     `governmentBond` (títulos públicos), `repo` (compromissadas), `privateCredit`
     (crédito privado), `bankSecurity` (títulos de bancos), `foreign` (exterior),
     `derivative`, `cash` (caixa), `receivable` (valores a receber), `payable`
-    (valores a pagar) ou `other`.
+    (valores a pagar), `commodity` (ouro, prata), `crypto` (criptoativos) ou
+    `other`.
     """
 
     country: Optional[str] = None
