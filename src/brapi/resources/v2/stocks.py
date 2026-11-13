@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Union
+from typing import Union, Optional
 from datetime import datetime
 from typing_extensions import Literal
 
@@ -20,10 +20,12 @@ from ...types.v2 import (
     stock_historical_params,
     stock_statistics_params,
     stock_value_added_params,
+    stock_shareholders_params,
     stock_balance_sheet_params,
     stock_financial_data_params,
     stock_income_statement_params,
     stock_earnings_calendar_params,
+    stock_ownership_network_params,
     stock_insider_transactions_params,
 )
 from ..._resource import SyncAPIResource, AsyncAPIResource
@@ -42,10 +44,12 @@ from ...types.v2.stock_dividends_response import StockDividendsResponse
 from ...types.v2.stock_historical_response import StockHistoricalResponse
 from ...types.v2.stock_statistics_response import StockStatisticsResponse
 from ...types.v2.stock_value_added_response import StockValueAddedResponse
+from ...types.v2.stock_shareholders_response import StockShareholdersResponse
 from ...types.v2.stock_balance_sheet_response import StockBalanceSheetResponse
 from ...types.v2.stock_financial_data_response import StockFinancialDataResponse
 from ...types.v2.stock_income_statement_response import StockIncomeStatementResponse
 from ...types.v2.stock_earnings_calendar_response import StockEarningsCalendarResponse
+from ...types.v2.stock_ownership_network_response import StockOwnershipNetworkResponse
 from ...types.v2.stock_insider_transactions_response import StockInsiderTransactionsResponse
 
 __all__ = ["StocksResource", "AsyncStocksResource"]
@@ -771,6 +775,82 @@ class StocksResource(SyncAPIResource):
             cast_to=StockInsiderTransactionsResponse,
         )
 
+    def ownership_network(
+        self,
+        *,
+        depth: int | Omit = omit,
+        include_persons: Literal["true", "false"] | Omit = omit,
+        limit: int | Omit = omit,
+        min_percent: Optional[float] | Omit = omit,
+        symbol: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> StockOwnershipNetworkResponse:
+        """
+        Rede de quem detém quem entre empresas, fundos, governos e pessoas, para
+        desenhar um gráfico. Cada ligação (`edges`) vai de quem detém (`from`) para a
+        empresa detida (`to`).
+
+        Com `symbol`, a rede parte do ticker e anda `depth` passos para cima
+        (acionistas) e para baixo (participações). Sem `symbol`, a rede traz as ligações
+        dos formulários das empresas listadas, das maiores para as menores, sem pessoas
+        físicas.
+
+        `cycles` lista participações cruzadas. `topControllers` ordena os controladores
+        pelo valor de mercado das empresas listadas que controlam.
+
+        Fonte: Formulário de Referência, documento público que cada companhia aberta
+        entrega à CVM. A companhia entrega nova versão quando o controle ou um acionista
+        com 5% ou mais muda. Uma nova versão aparece aqui em até uma semana após a
+        entrega.
+
+        Plano Pro. PETR4, MGLU3, VALE3 e ITUB4 permitem testes gratuitos, sem token.
+
+        Args:
+          depth: Passos a partir do ticker, para cima e para baixo.
+
+          include_persons: Inclui pessoas físicas. Padrão: true com ticker, false na rede do mercado.
+
+          limit: Máximo de participantes (com ticker) ou de ligações (mercado).
+
+          min_percent: Participação mínima, em % do total ou do voto. Com ticker, controladores entram
+              sempre.
+
+          symbol: Ticker do centro da rede. Sem ticker, a resposta traz a rede do mercado.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return self._get(
+            "/api/v2/stocks/ownership-network",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {
+                        "depth": depth,
+                        "include_persons": include_persons,
+                        "limit": limit,
+                        "min_percent": min_percent,
+                        "symbol": symbol,
+                    },
+                    stock_ownership_network_params.StockOwnershipNetworkParams,
+                ),
+            ),
+            cast_to=StockOwnershipNetworkResponse,
+        )
+
     def profile(
         self,
         *,
@@ -1326,6 +1406,58 @@ class StocksResource(SyncAPIResource):
                 ),
             ),
             cast_to=StockScreenerResponse,
+        )
+
+    def shareholders(
+        self,
+        *,
+        symbols: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> StockShareholdersResponse:
+        """
+        Quem detém a empresa: controladores, acionistas com 5% ou mais, ações em
+        tesouraria, demais acionistas e ações em circulação, com a parte de cada um nas
+        ações ordinárias (voto), preferenciais e no total.
+
+        `chain` mostra quem detém os acionistas, até onde o formulário informa, e
+        `ultimateControllers` as entidades no topo da cadeia de controle. `stakes` traz
+        as participações da empresa em outras empresas.
+
+        Pessoas físicas aparecem pelo nome, como no formulário, sem CPF.
+
+        Fonte: Formulário de Referência, documento público que cada companhia aberta
+        entrega à CVM. A companhia entrega nova versão quando o controle ou um acionista
+        com 5% ou mais muda. Uma nova versão aparece aqui em até uma semana após a
+        entrega.
+
+        Plano Pro. PETR4, MGLU3, VALE3 e ITUB4 permitem testes gratuitos, sem token.
+
+        Args:
+          symbols: Tickers separados por vírgula. Máximo de 20.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return self._get(
+            "/api/v2/stocks/shareholders",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform({"symbols": symbols}, stock_shareholders_params.StockShareholdersParams),
+            ),
+            cast_to=StockShareholdersResponse,
         )
 
     def statistics(
@@ -2188,6 +2320,82 @@ class AsyncStocksResource(AsyncAPIResource):
             cast_to=StockInsiderTransactionsResponse,
         )
 
+    async def ownership_network(
+        self,
+        *,
+        depth: int | Omit = omit,
+        include_persons: Literal["true", "false"] | Omit = omit,
+        limit: int | Omit = omit,
+        min_percent: Optional[float] | Omit = omit,
+        symbol: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> StockOwnershipNetworkResponse:
+        """
+        Rede de quem detém quem entre empresas, fundos, governos e pessoas, para
+        desenhar um gráfico. Cada ligação (`edges`) vai de quem detém (`from`) para a
+        empresa detida (`to`).
+
+        Com `symbol`, a rede parte do ticker e anda `depth` passos para cima
+        (acionistas) e para baixo (participações). Sem `symbol`, a rede traz as ligações
+        dos formulários das empresas listadas, das maiores para as menores, sem pessoas
+        físicas.
+
+        `cycles` lista participações cruzadas. `topControllers` ordena os controladores
+        pelo valor de mercado das empresas listadas que controlam.
+
+        Fonte: Formulário de Referência, documento público que cada companhia aberta
+        entrega à CVM. A companhia entrega nova versão quando o controle ou um acionista
+        com 5% ou mais muda. Uma nova versão aparece aqui em até uma semana após a
+        entrega.
+
+        Plano Pro. PETR4, MGLU3, VALE3 e ITUB4 permitem testes gratuitos, sem token.
+
+        Args:
+          depth: Passos a partir do ticker, para cima e para baixo.
+
+          include_persons: Inclui pessoas físicas. Padrão: true com ticker, false na rede do mercado.
+
+          limit: Máximo de participantes (com ticker) ou de ligações (mercado).
+
+          min_percent: Participação mínima, em % do total ou do voto. Com ticker, controladores entram
+              sempre.
+
+          symbol: Ticker do centro da rede. Sem ticker, a resposta traz a rede do mercado.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return await self._get(
+            "/api/v2/stocks/ownership-network",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {
+                        "depth": depth,
+                        "include_persons": include_persons,
+                        "limit": limit,
+                        "min_percent": min_percent,
+                        "symbol": symbol,
+                    },
+                    stock_ownership_network_params.StockOwnershipNetworkParams,
+                ),
+            ),
+            cast_to=StockOwnershipNetworkResponse,
+        )
+
     async def profile(
         self,
         *,
@@ -2745,6 +2953,60 @@ class AsyncStocksResource(AsyncAPIResource):
             cast_to=StockScreenerResponse,
         )
 
+    async def shareholders(
+        self,
+        *,
+        symbols: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> StockShareholdersResponse:
+        """
+        Quem detém a empresa: controladores, acionistas com 5% ou mais, ações em
+        tesouraria, demais acionistas e ações em circulação, com a parte de cada um nas
+        ações ordinárias (voto), preferenciais e no total.
+
+        `chain` mostra quem detém os acionistas, até onde o formulário informa, e
+        `ultimateControllers` as entidades no topo da cadeia de controle. `stakes` traz
+        as participações da empresa em outras empresas.
+
+        Pessoas físicas aparecem pelo nome, como no formulário, sem CPF.
+
+        Fonte: Formulário de Referência, documento público que cada companhia aberta
+        entrega à CVM. A companhia entrega nova versão quando o controle ou um acionista
+        com 5% ou mais muda. Uma nova versão aparece aqui em até uma semana após a
+        entrega.
+
+        Plano Pro. PETR4, MGLU3, VALE3 e ITUB4 permitem testes gratuitos, sem token.
+
+        Args:
+          symbols: Tickers separados por vírgula. Máximo de 20.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return await self._get(
+            "/api/v2/stocks/shareholders",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {"symbols": symbols}, stock_shareholders_params.StockShareholdersParams
+                ),
+            ),
+            cast_to=StockShareholdersResponse,
+        )
+
     async def statistics(
         self,
         *,
@@ -2913,6 +3175,9 @@ class StocksResourceWithRawResponse:
         self.insider_transactions = to_raw_response_wrapper(
             stocks.insider_transactions,
         )
+        self.ownership_network = to_raw_response_wrapper(
+            stocks.ownership_network,
+        )
         self.profile = to_raw_response_wrapper(
             stocks.profile,
         )
@@ -2921,6 +3186,9 @@ class StocksResourceWithRawResponse:
         )
         self.screener = to_raw_response_wrapper(
             stocks.screener,
+        )
+        self.shareholders = to_raw_response_wrapper(
+            stocks.shareholders,
         )
         self.statistics = to_raw_response_wrapper(
             stocks.statistics,
@@ -2958,6 +3226,9 @@ class AsyncStocksResourceWithRawResponse:
         self.insider_transactions = async_to_raw_response_wrapper(
             stocks.insider_transactions,
         )
+        self.ownership_network = async_to_raw_response_wrapper(
+            stocks.ownership_network,
+        )
         self.profile = async_to_raw_response_wrapper(
             stocks.profile,
         )
@@ -2966,6 +3237,9 @@ class AsyncStocksResourceWithRawResponse:
         )
         self.screener = async_to_raw_response_wrapper(
             stocks.screener,
+        )
+        self.shareholders = async_to_raw_response_wrapper(
+            stocks.shareholders,
         )
         self.statistics = async_to_raw_response_wrapper(
             stocks.statistics,
@@ -3003,6 +3277,9 @@ class StocksResourceWithStreamingResponse:
         self.insider_transactions = to_streamed_response_wrapper(
             stocks.insider_transactions,
         )
+        self.ownership_network = to_streamed_response_wrapper(
+            stocks.ownership_network,
+        )
         self.profile = to_streamed_response_wrapper(
             stocks.profile,
         )
@@ -3011,6 +3288,9 @@ class StocksResourceWithStreamingResponse:
         )
         self.screener = to_streamed_response_wrapper(
             stocks.screener,
+        )
+        self.shareholders = to_streamed_response_wrapper(
+            stocks.shareholders,
         )
         self.statistics = to_streamed_response_wrapper(
             stocks.statistics,
@@ -3048,6 +3328,9 @@ class AsyncStocksResourceWithStreamingResponse:
         self.insider_transactions = async_to_streamed_response_wrapper(
             stocks.insider_transactions,
         )
+        self.ownership_network = async_to_streamed_response_wrapper(
+            stocks.ownership_network,
+        )
         self.profile = async_to_streamed_response_wrapper(
             stocks.profile,
         )
@@ -3056,6 +3339,9 @@ class AsyncStocksResourceWithStreamingResponse:
         )
         self.screener = async_to_streamed_response_wrapper(
             stocks.screener,
+        )
+        self.shareholders = async_to_streamed_response_wrapper(
+            stocks.shareholders,
         )
         self.statistics = async_to_streamed_response_wrapper(
             stocks.statistics,
