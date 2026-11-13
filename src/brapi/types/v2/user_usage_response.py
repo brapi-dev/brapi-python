@@ -18,6 +18,9 @@ class UsageSubscriptionPeriod(BaseModel):
 
 
 class UsageUsageWindow(BaseModel):
+    available_at: Optional[datetime] = FieldInfo(alias="availableAt", default=None)
+    """Quando uma cota esgotada volta a aceitar requisições. `null` abaixo do limite."""
+
     end: datetime
 
     start: datetime
