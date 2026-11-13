@@ -11,8 +11,12 @@ from .fiagro_reports_params import FiagroReportsParams as FiagroReportsParams
 from .fidc_portfolio_params import FidcPortfolioParams as FidcPortfolioParams
 from .fidc_reports_response import FidcReportsResponse as FidcReportsResponse
 from .holding_history_params import HoldingHistoryParams as HoldingHistoryParams
+from .crowding_history_params import CrowdingHistoryParams as CrowdingHistoryParams
 from .fiagro_portfolio_params import FiagroPortfolioParams as FiagroPortfolioParams
 from .fiagro_reports_response import FiagroReportsResponse as FiagroReportsResponse
 from .fidc_portfolio_response import FidcPortfolioResponse as FidcPortfolioResponse
+from .crowding_retrieve_params import CrowdingRetrieveParams as CrowdingRetrieveParams
 from .holding_history_response import HoldingHistoryResponse as HoldingHistoryResponse
+from .crowding_history_response import CrowdingHistoryResponse as CrowdingHistoryResponse
 from .fiagro_portfolio_response import FiagroPortfolioResponse as FiagroPortfolioResponse
+from .crowding_retrieve_response import CrowdingRetrieveResponse as CrowdingRetrieveResponse

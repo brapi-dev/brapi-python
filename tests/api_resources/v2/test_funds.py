@@ -13,6 +13,7 @@ from brapi.types.v2 import (
     FundListResponse,
     FundHoldersResponse,
     FundProfileResponse,
+    FundExposureResponse,
     FundScreenerResponse,
     FundDividendsResponse,
     FundPortfolioResponse,
@@ -107,6 +108,47 @@ class TestFunds:
         assert cast(Any, response.is_closed) is True
 
     @parametrize
+    def test_method_exposure(self, client: Brapi) -> None:
+        fund = client.v2.funds.exposure(
+            positions="WRLD11:10000,IVVB11:5000,NVDC34:2000,PETR4:3000,BIAU39:1000",
+        )
+        assert_matches_type(FundExposureResponse, fund, path=["response"])
+
+    @parametrize
+    def test_method_exposure_with_all_params(self, client: Brapi) -> None:
+        fund = client.v2.funds.exposure(
+            positions="WRLD11:10000,IVVB11:5000,NVDC34:2000,PETR4:3000,BIAU39:1000",
+            limit=1,
+            page=1,
+            reference_date="2026-09-30",
+        )
+        assert_matches_type(FundExposureResponse, fund, path=["response"])
+
+    @parametrize
+    def test_raw_response_exposure(self, client: Brapi) -> None:
+        response = client.v2.funds.with_raw_response.exposure(
+            positions="WRLD11:10000,IVVB11:5000,NVDC34:2000,PETR4:3000,BIAU39:1000",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        fund = response.parse()
+        assert_matches_type(FundExposureResponse, fund, path=["response"])
+
+    @parametrize
+    def test_streaming_response_exposure(self, client: Brapi) -> None:
+        with client.v2.funds.with_streaming_response.exposure(
+            positions="WRLD11:10000,IVVB11:5000,NVDC34:2000,PETR4:3000,BIAU39:1000",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            fund = response.parse()
+            assert_matches_type(FundExposureResponse, fund, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
     def test_method_holders(self, client: Brapi) -> None:
         fund = client.v2.funds.holders()
         assert_matches_type(FundHoldersResponse, fund, path=["response"])
@@ -117,10 +159,12 @@ class TestFunds:
             asset_class="assetClass",
             asset_type="fii",
             cnpj="x",
+            include="movers,direct",
             issuer="true",
             limit=2,
             page=1,
             reference_date="referenceDate",
+            scope="direct",
             sort_by="marketValue",
             sort_order="asc",
             symbol="PETR4",
@@ -428,6 +472,47 @@ class TestAsyncFunds:
         assert cast(Any, response.is_closed) is True
 
     @parametrize
+    async def test_method_exposure(self, async_client: AsyncBrapi) -> None:
+        fund = await async_client.v2.funds.exposure(
+            positions="WRLD11:10000,IVVB11:5000,NVDC34:2000,PETR4:3000,BIAU39:1000",
+        )
+        assert_matches_type(FundExposureResponse, fund, path=["response"])
+
+    @parametrize
+    async def test_method_exposure_with_all_params(self, async_client: AsyncBrapi) -> None:
+        fund = await async_client.v2.funds.exposure(
+            positions="WRLD11:10000,IVVB11:5000,NVDC34:2000,PETR4:3000,BIAU39:1000",
+            limit=1,
+            page=1,
+            reference_date="2026-09-30",
+        )
+        assert_matches_type(FundExposureResponse, fund, path=["response"])
+
+    @parametrize
+    async def test_raw_response_exposure(self, async_client: AsyncBrapi) -> None:
+        response = await async_client.v2.funds.with_raw_response.exposure(
+            positions="WRLD11:10000,IVVB11:5000,NVDC34:2000,PETR4:3000,BIAU39:1000",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        fund = await response.parse()
+        assert_matches_type(FundExposureResponse, fund, path=["response"])
+
+    @parametrize
+    async def test_streaming_response_exposure(self, async_client: AsyncBrapi) -> None:
+        async with async_client.v2.funds.with_streaming_response.exposure(
+            positions="WRLD11:10000,IVVB11:5000,NVDC34:2000,PETR4:3000,BIAU39:1000",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            fund = await response.parse()
+            assert_matches_type(FundExposureResponse, fund, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
     async def test_method_holders(self, async_client: AsyncBrapi) -> None:
         fund = await async_client.v2.funds.holders()
         assert_matches_type(FundHoldersResponse, fund, path=["response"])
@@ -438,10 +523,12 @@ class TestAsyncFunds:
             asset_class="assetClass",
             asset_type="fii",
             cnpj="x",
+            include="movers,direct",
             issuer="true",
             limit=2,
             page=1,
             reference_date="referenceDate",
+            scope="direct",
             sort_by="marketValue",
             sort_order="asc",
             symbol="PETR4",
