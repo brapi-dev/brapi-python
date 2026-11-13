@@ -20,9 +20,11 @@ from brapi.types.v2 import (
     StockStatisticsResponse,
     StockValueAddedResponse,
     StockBalanceSheetResponse,
+    StockShareholdersResponse,
     StockFinancialDataResponse,
     StockIncomeStatementResponse,
     StockEarningsCalendarResponse,
+    StockOwnershipNetworkResponse,
     StockInsiderTransactionsResponse,
 )
 
@@ -373,6 +375,42 @@ class TestStocks:
         assert cast(Any, response.is_closed) is True
 
     @parametrize
+    def test_method_ownership_network(self, client: Brapi) -> None:
+        stock = client.v2.stocks.ownership_network()
+        assert_matches_type(StockOwnershipNetworkResponse, stock, path=["response"])
+
+    @parametrize
+    def test_method_ownership_network_with_all_params(self, client: Brapi) -> None:
+        stock = client.v2.stocks.ownership_network(
+            depth=1,
+            include_persons="true",
+            limit=1,
+            min_percent=0,
+            symbol="ITUB4",
+        )
+        assert_matches_type(StockOwnershipNetworkResponse, stock, path=["response"])
+
+    @parametrize
+    def test_raw_response_ownership_network(self, client: Brapi) -> None:
+        response = client.v2.stocks.with_raw_response.ownership_network()
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        stock = response.parse()
+        assert_matches_type(StockOwnershipNetworkResponse, stock, path=["response"])
+
+    @parametrize
+    def test_streaming_response_ownership_network(self, client: Brapi) -> None:
+        with client.v2.stocks.with_streaming_response.ownership_network() as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            stock = response.parse()
+            assert_matches_type(StockOwnershipNetworkResponse, stock, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
     def test_method_profile(self, client: Brapi) -> None:
         stock = client.v2.stocks.profile(
             symbols="PETR4,VALE3",
@@ -537,6 +575,37 @@ class TestStocks:
 
             stock = response.parse()
             assert_matches_type(StockScreenerResponse, stock, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    def test_method_shareholders(self, client: Brapi) -> None:
+        stock = client.v2.stocks.shareholders(
+            symbols="PETR4",
+        )
+        assert_matches_type(StockShareholdersResponse, stock, path=["response"])
+
+    @parametrize
+    def test_raw_response_shareholders(self, client: Brapi) -> None:
+        response = client.v2.stocks.with_raw_response.shareholders(
+            symbols="PETR4",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        stock = response.parse()
+        assert_matches_type(StockShareholdersResponse, stock, path=["response"])
+
+    @parametrize
+    def test_streaming_response_shareholders(self, client: Brapi) -> None:
+        with client.v2.stocks.with_streaming_response.shareholders(
+            symbols="PETR4",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            stock = response.parse()
+            assert_matches_type(StockShareholdersResponse, stock, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -970,6 +1039,42 @@ class TestAsyncStocks:
         assert cast(Any, response.is_closed) is True
 
     @parametrize
+    async def test_method_ownership_network(self, async_client: AsyncBrapi) -> None:
+        stock = await async_client.v2.stocks.ownership_network()
+        assert_matches_type(StockOwnershipNetworkResponse, stock, path=["response"])
+
+    @parametrize
+    async def test_method_ownership_network_with_all_params(self, async_client: AsyncBrapi) -> None:
+        stock = await async_client.v2.stocks.ownership_network(
+            depth=1,
+            include_persons="true",
+            limit=1,
+            min_percent=0,
+            symbol="ITUB4",
+        )
+        assert_matches_type(StockOwnershipNetworkResponse, stock, path=["response"])
+
+    @parametrize
+    async def test_raw_response_ownership_network(self, async_client: AsyncBrapi) -> None:
+        response = await async_client.v2.stocks.with_raw_response.ownership_network()
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        stock = await response.parse()
+        assert_matches_type(StockOwnershipNetworkResponse, stock, path=["response"])
+
+    @parametrize
+    async def test_streaming_response_ownership_network(self, async_client: AsyncBrapi) -> None:
+        async with async_client.v2.stocks.with_streaming_response.ownership_network() as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            stock = await response.parse()
+            assert_matches_type(StockOwnershipNetworkResponse, stock, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
     async def test_method_profile(self, async_client: AsyncBrapi) -> None:
         stock = await async_client.v2.stocks.profile(
             symbols="PETR4,VALE3",
@@ -1134,6 +1239,37 @@ class TestAsyncStocks:
 
             stock = await response.parse()
             assert_matches_type(StockScreenerResponse, stock, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    async def test_method_shareholders(self, async_client: AsyncBrapi) -> None:
+        stock = await async_client.v2.stocks.shareholders(
+            symbols="PETR4",
+        )
+        assert_matches_type(StockShareholdersResponse, stock, path=["response"])
+
+    @parametrize
+    async def test_raw_response_shareholders(self, async_client: AsyncBrapi) -> None:
+        response = await async_client.v2.stocks.with_raw_response.shareholders(
+            symbols="PETR4",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        stock = await response.parse()
+        assert_matches_type(StockShareholdersResponse, stock, path=["response"])
+
+    @parametrize
+    async def test_streaming_response_shareholders(self, async_client: AsyncBrapi) -> None:
+        async with async_client.v2.stocks.with_streaming_response.shareholders(
+            symbols="PETR4",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            stock = await response.parse()
+            assert_matches_type(StockShareholdersResponse, stock, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
