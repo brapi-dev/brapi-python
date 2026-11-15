@@ -258,6 +258,7 @@ from brapi.types.v2 import (
     FundPaginationMeta,
     FundListResponse,
     FundDividendsResponse,
+    FundExposureResponse,
     FundHoldersResponse,
     FundIndicatorsResponse,
     FundPortfolioResponse,
@@ -270,6 +271,7 @@ Methods:
 
 - <code title="get /api/v2/funds/list">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">list</a>(\*\*<a href="src/brapi/types/v2/fund_list_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_list_response.py">FundListResponse</a></code>
 - <code title="get /api/v2/funds/dividends">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">dividends</a>(\*\*<a href="src/brapi/types/v2/fund_dividends_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_dividends_response.py">FundDividendsResponse</a></code>
+- <code title="get /api/v2/funds/exposure">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">exposure</a>(\*\*<a href="src/brapi/types/v2/fund_exposure_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_exposure_response.py">FundExposureResponse</a></code>
 - <code title="get /api/v2/funds/holders">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">holders</a>(\*\*<a href="src/brapi/types/v2/fund_holders_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_holders_response.py">FundHoldersResponse</a></code>
 - <code title="get /api/v2/funds/indicators">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">indicators</a>(\*\*<a href="src/brapi/types/v2/fund_indicators_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_indicators_response.py">FundIndicatorsResponse</a></code>
 - <code title="get /api/v2/funds/portfolio">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">portfolio</a>(\*\*<a href="src/brapi/types/v2/fund_portfolio_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_portfolio_response.py">FundPortfolioResponse</a></code>
@@ -299,6 +301,19 @@ from brapi.types.v2.funds import HoldingHistoryResponse
 Methods:
 
 - <code title="get /api/v2/funds/holdings/history">client.v2.funds.holdings.<a href="./src/brapi/resources/v2/funds/holdings.py">history</a>(\*\*<a href="src/brapi/types/v2/funds/holding_history_params.py">params</a>) -> <a href="./src/brapi/types/v2/funds/holding_history_response.py">HoldingHistoryResponse</a></code>
+
+### Crowding
+
+Types:
+
+```python
+from brapi.types.v2.funds import CrowdingRetrieveResponse, CrowdingHistoryResponse
+```
+
+Methods:
+
+- <code title="get /api/v2/funds/crowding">client.v2.funds.crowding.<a href="./src/brapi/resources/v2/funds/crowding.py">retrieve</a>(\*\*<a href="src/brapi/types/v2/funds/crowding_retrieve_params.py">params</a>) -> <a href="./src/brapi/types/v2/funds/crowding_retrieve_response.py">CrowdingRetrieveResponse</a></code>
+- <code title="get /api/v2/funds/crowding/history">client.v2.funds.crowding.<a href="./src/brapi/resources/v2/funds/crowding.py">history</a>(\*\*<a href="src/brapi/types/v2/funds/crowding_history_params.py">params</a>) -> <a href="./src/brapi/types/v2/funds/crowding_history_response.py">CrowdingHistoryResponse</a></code>
 
 ### Fiagro
 
