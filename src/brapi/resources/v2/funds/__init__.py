@@ -40,6 +40,14 @@ from .fiagro import (
     FiagroResourceWithStreamingResponse,
     AsyncFiagroResourceWithStreamingResponse,
 )
+from .crowding import (
+    CrowdingResource,
+    AsyncCrowdingResource,
+    CrowdingResourceWithRawResponse,
+    AsyncCrowdingResourceWithRawResponse,
+    CrowdingResourceWithStreamingResponse,
+    AsyncCrowdingResourceWithStreamingResponse,
+)
 from .holdings import (
     HoldingsResource,
     AsyncHoldingsResource,
@@ -62,6 +70,12 @@ __all__ = [
     "AsyncHoldingsResourceWithRawResponse",
     "HoldingsResourceWithStreamingResponse",
     "AsyncHoldingsResourceWithStreamingResponse",
+    "CrowdingResource",
+    "AsyncCrowdingResource",
+    "CrowdingResourceWithRawResponse",
+    "AsyncCrowdingResourceWithRawResponse",
+    "CrowdingResourceWithStreamingResponse",
+    "AsyncCrowdingResourceWithStreamingResponse",
     "FiagroResource",
     "AsyncFiagroResource",
     "FiagroResourceWithRawResponse",
