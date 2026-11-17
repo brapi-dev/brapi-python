@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.14.0](https://github.com/brapi-dev/brapi-python/compare/v1.13.0...v1.14.0) (2026-11-13)
+
+
+### Features
+
+* **funds:** fund and ETF holdings with look-through, holders and index composition ([7fba550](https://github.com/brapi-dev/brapi-python/commit/7fba550b74565e05921a3f88deb152b4bf89c484))
+* **funds:** holdings history, company holders lookup, SEC backfill, quote page section ([a9f8a19](https://github.com/brapi-dev/brapi-python/commit/a9f8a199dc54c7550963a48fb62bce514f4717b9))
+* **funds:** portfolio composition from fund manager pages ([d3b1a1c](https://github.com/brapi-dev/brapi-python/commit/d3b1a1cb96d88f4fdf3d6f1747edac6d1af1fa69))
+
+
+### Bug Fixes
+
+* **web:** show the 30-day usage window without a renewal date ([3dfaa67](https://github.com/brapi-dev/brapi-python/commit/3dfaa678e7e65782312ebb12d93ddabd272cb92e))
+
 ## [1.13.0](https://github.com/brapi-dev/brapi-python/compare/v1.12.0...v1.13.0) (2026-11-07)
 
 
