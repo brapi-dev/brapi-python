@@ -27,10 +27,12 @@ class FundHoldersParams(TypedDict, total=False):
     ver quais fundos têm ações ou dívida dela. Use `symbol` ou `cnpj`, não os dois.
     """
 
-    include: Literal["movers"]
-    """
-    `movers` traz também `topBuyers` e `topSellers`: os maiores compradores e
-    vendedores do mês, até `limit` de cada, na mesma resposta.
+    include: str
+    """Listas extras na mesma resposta, separadas por vírgula, até `limit` de cada.
+
+    `movers` traz `topBuyers` e `topSellers`: os maiores compradores e vendedores do
+    mês. `direct`, com `scope=indirect` ou `all`, traz `topDirect`: as maiores
+    posições diretas.
     """
 
     issuer: Literal["true", "false"]
@@ -50,6 +52,15 @@ class FundHoldersParams(TypedDict, total=False):
 
     Traz o mês mais recente até esta data. Sem ela, traz o mês mais recente que a
     maioria dos fundos já entregou.
+    """
+
+    scope: Literal["direct", "indirect", "all"]
+    """`direct` (padrão): fundos que têm o ativo na própria carteira.
+
+    `indirect`: fundos que têm o ativo por meio de outros fundos (fundos de fundos,
+    ETFs, BDRs de ETF e os fundos do exterior por trás deles). `all`: os dois. Com
+    `indirect` e `all`, `marketValue` e `weightPercent` trazem a exposição total do
+    fundo, e cada fundo traz `directValue`, `indirectValue` e `paths`.
     """
 
     sort_by: Annotated[Literal["marketValue", "weightPercent", "bought", "sold"], PropertyInfo(alias="sortBy")]
