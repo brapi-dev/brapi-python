@@ -337,11 +337,12 @@ class FundsResource(SyncAPIResource):
         asset_class: str | Omit = omit,
         asset_type: Literal["fii", "fiagro", "fiinfra", "fif", "fidc", "fip", "etf", "other"] | Omit = omit,
         cnpj: str | Omit = omit,
+        include: Literal["movers"] | Omit = omit,
         issuer: Literal["true", "false"] | Omit = omit,
         limit: int | Omit = omit,
         page: int | Omit = omit,
         reference_date: str | Omit = omit,
-        sort_by: Literal["marketValue", "weightPercent"] | Omit = omit,
+        sort_by: Literal["marketValue", "weightPercent", "bought", "sold"] | Omit = omit,
         sort_order: Literal["asc", "desc"] | Omit = omit,
         symbol: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -375,6 +376,25 @@ class FundsResource(SyncAPIResource):
         Sem `referenceDate`, a resposta traz o mês mais recente que a maioria dos fundos
         já entregou: os fundos entregam a carteira ao longo de semanas.
 
+        Quem comprou e quem vendeu: `change` compara cada fundo com o mês anterior com
+        carteiras (`previousReferenceDate`). `change.changeValue` estima o valor
+        comprado ou vendido pela diferença de quantidade vezes o preço do mês, então a
+        alta ou a queda do preço não conta. A quantidade do mês anterior é ajustada por
+        desdobramentos, grupamentos e bonificações. Use `sortBy=bought` para os maiores
+        compradores e `sortBy=sold` para os maiores vendedores, inclusive os que zeraram
+        a posição. Com `include=movers`, a mesma resposta traz também `topBuyers` e
+        `topSellers`. `summary` traz quantos fundos compraram e venderam e o saldo do
+        mês. Uma linha com quantidade e valor zerados conta como posição zerada.
+
+        Um fundo que ainda não entregou a carteira do mês não conta como venda. Um fundo
+        sem carteira no mês anterior, ou com posições confidenciais da mesma classe do
+        ativo em um dos dois meses, fica com `change.status` `unknown` e não entra nos
+        totais. Quando um evento muda a quantidade de ações sem fator conhecido (como
+        incorporação ou redução de capital), `change` e os totais vêm `null`.
+
+        `return12mPercent` traz a variação do valor da cota de cada fundo nos 12 meses
+        até `referenceDate`, sem os rendimentos distribuídos.
+
         Plano Pro.
 
         Args:
@@ -386,6 +406,9 @@ class FundsResource(SyncAPIResource):
           cnpj: CNPJ de um fundo, para ver quais fundos têm cotas dele, ou de uma empresa, para
               ver quais fundos têm ações ou dívida dela. Use `symbol` ou `cnpj`, não os dois.
 
+          include: `movers` traz também `topBuyers` e `topSellers`: os maiores compradores e
+              vendedores do mês, até `limit` de cada, na mesma resposta.
+
           issuer: `true` troca o ticker de `symbol` por todos os ativos da empresa: ações, units,
               debêntures e outros títulos de dívida. Padrão `false`.
 
@@ -396,9 +419,13 @@ class FundsResource(SyncAPIResource):
           reference_date: Data no formato YYYY-MM-DD. Traz o mês mais recente até esta data. Sem ela, traz
               o mês mais recente que a maioria dos fundos já entregou.
 
-          sort_by: `marketValue` (padrão) ou `weightPercent`.
+          sort_by: `marketValue` (padrão) ou `weightPercent` listam os fundos que têm o ativo.
+              `bought` lista só os fundos que compraram no mês, pelo valor comprado
+              (`change.changeValue`). `sold` lista só os que venderam, inclusive os que
+              zeraram a posição, pelo valor vendido.
 
-          sort_order: Ordem crescente (`asc`) ou decrescente (`desc`, padrão).
+          sort_order: Ordem crescente (`asc`) ou decrescente (`desc`, padrão). Com `bought` e `sold`,
+              `desc` traz primeiro as maiores compras ou vendas.
 
           symbol: Ticker do ativo na bolsa. Ex.: PETR4.
 
@@ -422,6 +449,7 @@ class FundsResource(SyncAPIResource):
                         "asset_class": asset_class,
                         "asset_type": asset_type,
                         "cnpj": cnpj,
+                        "include": include,
                         "issuer": issuer,
                         "limit": limit,
                         "page": page,
@@ -1313,11 +1341,12 @@ class AsyncFundsResource(AsyncAPIResource):
         asset_class: str | Omit = omit,
         asset_type: Literal["fii", "fiagro", "fiinfra", "fif", "fidc", "fip", "etf", "other"] | Omit = omit,
         cnpj: str | Omit = omit,
+        include: Literal["movers"] | Omit = omit,
         issuer: Literal["true", "false"] | Omit = omit,
         limit: int | Omit = omit,
         page: int | Omit = omit,
         reference_date: str | Omit = omit,
-        sort_by: Literal["marketValue", "weightPercent"] | Omit = omit,
+        sort_by: Literal["marketValue", "weightPercent", "bought", "sold"] | Omit = omit,
         sort_order: Literal["asc", "desc"] | Omit = omit,
         symbol: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -1351,6 +1380,25 @@ class AsyncFundsResource(AsyncAPIResource):
         Sem `referenceDate`, a resposta traz o mês mais recente que a maioria dos fundos
         já entregou: os fundos entregam a carteira ao longo de semanas.
 
+        Quem comprou e quem vendeu: `change` compara cada fundo com o mês anterior com
+        carteiras (`previousReferenceDate`). `change.changeValue` estima o valor
+        comprado ou vendido pela diferença de quantidade vezes o preço do mês, então a
+        alta ou a queda do preço não conta. A quantidade do mês anterior é ajustada por
+        desdobramentos, grupamentos e bonificações. Use `sortBy=bought` para os maiores
+        compradores e `sortBy=sold` para os maiores vendedores, inclusive os que zeraram
+        a posição. Com `include=movers`, a mesma resposta traz também `topBuyers` e
+        `topSellers`. `summary` traz quantos fundos compraram e venderam e o saldo do
+        mês. Uma linha com quantidade e valor zerados conta como posição zerada.
+
+        Um fundo que ainda não entregou a carteira do mês não conta como venda. Um fundo
+        sem carteira no mês anterior, ou com posições confidenciais da mesma classe do
+        ativo em um dos dois meses, fica com `change.status` `unknown` e não entra nos
+        totais. Quando um evento muda a quantidade de ações sem fator conhecido (como
+        incorporação ou redução de capital), `change` e os totais vêm `null`.
+
+        `return12mPercent` traz a variação do valor da cota de cada fundo nos 12 meses
+        até `referenceDate`, sem os rendimentos distribuídos.
+
         Plano Pro.
 
         Args:
@@ -1362,6 +1410,9 @@ class AsyncFundsResource(AsyncAPIResource):
           cnpj: CNPJ de um fundo, para ver quais fundos têm cotas dele, ou de uma empresa, para
               ver quais fundos têm ações ou dívida dela. Use `symbol` ou `cnpj`, não os dois.
 
+          include: `movers` traz também `topBuyers` e `topSellers`: os maiores compradores e
+              vendedores do mês, até `limit` de cada, na mesma resposta.
+
           issuer: `true` troca o ticker de `symbol` por todos os ativos da empresa: ações, units,
               debêntures e outros títulos de dívida. Padrão `false`.
 
@@ -1372,9 +1423,13 @@ class AsyncFundsResource(AsyncAPIResource):
           reference_date: Data no formato YYYY-MM-DD. Traz o mês mais recente até esta data. Sem ela, traz
               o mês mais recente que a maioria dos fundos já entregou.
 
-          sort_by: `marketValue` (padrão) ou `weightPercent`.
+          sort_by: `marketValue` (padrão) ou `weightPercent` listam os fundos que têm o ativo.
+              `bought` lista só os fundos que compraram no mês, pelo valor comprado
+              (`change.changeValue`). `sold` lista só os que venderam, inclusive os que
+              zeraram a posição, pelo valor vendido.
 
-          sort_order: Ordem crescente (`asc`) ou decrescente (`desc`, padrão).
+          sort_order: Ordem crescente (`asc`) ou decrescente (`desc`, padrão). Com `bought` e `sold`,
+              `desc` traz primeiro as maiores compras ou vendas.
 
           symbol: Ticker do ativo na bolsa. Ex.: PETR4.
 
@@ -1398,6 +1453,7 @@ class AsyncFundsResource(AsyncAPIResource):
                         "asset_class": asset_class,
                         "asset_type": asset_type,
                         "cnpj": cnpj,
+                        "include": include,
                         "issuer": issuer,
                         "limit": limit,
                         "page": page,
