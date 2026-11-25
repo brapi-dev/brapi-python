@@ -40,7 +40,10 @@ class StockInsiderTransactionsParams(TypedDict, total=False):
     """Máximo de movimentações por empresa e página."""
 
     movement_type: Annotated[str, PropertyInfo(alias="movementType")]
-    """Tipo de movimentação, com o texto exato do relatório."""
+    """Tipos de movimentação separados por vírgula, com o texto exato do relatório.
+
+    Ex.: `Compra à vista,Venda à vista` para só as compras e vendas à vista.
+    """
 
     page: int
     """Página de cada empresa."""

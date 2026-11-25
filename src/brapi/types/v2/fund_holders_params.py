@@ -27,6 +27,12 @@ class FundHoldersParams(TypedDict, total=False):
     ver quais fundos têm ações ou dívida dela. Use `symbol` ou `cnpj`, não os dois.
     """
 
+    include: Literal["movers"]
+    """
+    `movers` traz também `topBuyers` e `topSellers`: os maiores compradores e
+    vendedores do mês, até `limit` de cada, na mesma resposta.
+    """
+
     issuer: Literal["true", "false"]
     """
     `true` troca o ticker de `symbol` por todos os ativos da empresa: ações, units,
@@ -46,11 +52,19 @@ class FundHoldersParams(TypedDict, total=False):
     maioria dos fundos já entregou.
     """
 
-    sort_by: Annotated[Literal["marketValue", "weightPercent"], PropertyInfo(alias="sortBy")]
-    """`marketValue` (padrão) ou `weightPercent`."""
+    sort_by: Annotated[Literal["marketValue", "weightPercent", "bought", "sold"], PropertyInfo(alias="sortBy")]
+    """`marketValue` (padrão) ou `weightPercent` listam os fundos que têm o ativo.
+
+    `bought` lista só os fundos que compraram no mês, pelo valor comprado
+    (`change.changeValue`). `sold` lista só os que venderam, inclusive os que
+    zeraram a posição, pelo valor vendido.
+    """
 
     sort_order: Annotated[Literal["asc", "desc"], PropertyInfo(alias="sortOrder")]
-    """Ordem crescente (`asc`) ou decrescente (`desc`, padrão)."""
+    """Ordem crescente (`asc`) ou decrescente (`desc`, padrão).
+
+    Com `bought` e `sold`, `desc` traz primeiro as maiores compras ou vendas.
+    """
 
     symbol: str
     """Ticker do ativo na bolsa. Ex.: PETR4."""
