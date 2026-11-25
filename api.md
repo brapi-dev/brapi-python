@@ -115,9 +115,11 @@ from brapi.types.v2 import (
     StockHistoricalResponse,
     StockIncomeStatementResponse,
     StockInsiderTransactionsResponse,
+    StockOwnershipNetworkResponse,
     StockProfileResponse,
     StockQuoteResponse,
     StockScreenerResponse,
+    StockShareholdersResponse,
     StockStatisticsResponse,
     StockValueAddedResponse,
 )
@@ -133,9 +135,11 @@ Methods:
 - <code title="get /api/v2/stocks/historical">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">historical</a>(\*\*<a href="src/brapi/types/v2/stock_historical_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_historical_response.py">StockHistoricalResponse</a></code>
 - <code title="get /api/v2/stocks/income-statement">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">income_statement</a>(\*\*<a href="src/brapi/types/v2/stock_income_statement_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_income_statement_response.py">StockIncomeStatementResponse</a></code>
 - <code title="get /api/v2/stocks/insider-transactions">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">insider_transactions</a>(\*\*<a href="src/brapi/types/v2/stock_insider_transactions_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_insider_transactions_response.py">StockInsiderTransactionsResponse</a></code>
+- <code title="get /api/v2/stocks/ownership-network">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">ownership_network</a>(\*\*<a href="src/brapi/types/v2/stock_ownership_network_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_ownership_network_response.py">StockOwnershipNetworkResponse</a></code>
 - <code title="get /api/v2/stocks/profile">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">profile</a>(\*\*<a href="src/brapi/types/v2/stock_profile_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_profile_response.py">StockProfileResponse</a></code>
 - <code title="get /api/v2/stocks/quote">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">quote</a>(\*\*<a href="src/brapi/types/v2/stock_quote_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_quote_response.py">StockQuoteResponse</a></code>
 - <code title="get /api/v2/stocks/screener">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">screener</a>(\*\*<a href="src/brapi/types/v2/stock_screener_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_screener_response.py">StockScreenerResponse</a></code>
+- <code title="get /api/v2/stocks/shareholders">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">shareholders</a>(\*\*<a href="src/brapi/types/v2/stock_shareholders_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_shareholders_response.py">StockShareholdersResponse</a></code>
 - <code title="get /api/v2/stocks/statistics">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">statistics</a>(\*\*<a href="src/brapi/types/v2/stock_statistics_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_statistics_response.py">StockStatisticsResponse</a></code>
 - <code title="get /api/v2/stocks/value-added">client.v2.stocks.<a href="./src/brapi/resources/v2/stocks.py">value_added</a>(\*\*<a href="src/brapi/types/v2/stock_value_added_params.py">params</a>) -> <a href="./src/brapi/types/v2/stock_value_added_response.py">StockValueAddedResponse</a></code>
 
@@ -258,6 +262,7 @@ from brapi.types.v2 import (
     FundPaginationMeta,
     FundListResponse,
     FundDividendsResponse,
+    FundExposureResponse,
     FundHoldersResponse,
     FundIndicatorsResponse,
     FundPortfolioResponse,
@@ -270,6 +275,7 @@ Methods:
 
 - <code title="get /api/v2/funds/list">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">list</a>(\*\*<a href="src/brapi/types/v2/fund_list_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_list_response.py">FundListResponse</a></code>
 - <code title="get /api/v2/funds/dividends">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">dividends</a>(\*\*<a href="src/brapi/types/v2/fund_dividends_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_dividends_response.py">FundDividendsResponse</a></code>
+- <code title="get /api/v2/funds/exposure">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">exposure</a>(\*\*<a href="src/brapi/types/v2/fund_exposure_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_exposure_response.py">FundExposureResponse</a></code>
 - <code title="get /api/v2/funds/holders">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">holders</a>(\*\*<a href="src/brapi/types/v2/fund_holders_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_holders_response.py">FundHoldersResponse</a></code>
 - <code title="get /api/v2/funds/indicators">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">indicators</a>(\*\*<a href="src/brapi/types/v2/fund_indicators_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_indicators_response.py">FundIndicatorsResponse</a></code>
 - <code title="get /api/v2/funds/portfolio">client.v2.funds.<a href="./src/brapi/resources/v2/funds/funds.py">portfolio</a>(\*\*<a href="src/brapi/types/v2/fund_portfolio_params.py">params</a>) -> <a href="./src/brapi/types/v2/fund_portfolio_response.py">FundPortfolioResponse</a></code>
@@ -299,6 +305,24 @@ from brapi.types.v2.funds import HoldingHistoryResponse
 Methods:
 
 - <code title="get /api/v2/funds/holdings/history">client.v2.funds.holdings.<a href="./src/brapi/resources/v2/funds/holdings.py">history</a>(\*\*<a href="src/brapi/types/v2/funds/holding_history_params.py">params</a>) -> <a href="./src/brapi/types/v2/funds/holding_history_response.py">HoldingHistoryResponse</a></code>
+
+### Crowding
+
+Types:
+
+```python
+from brapi.types.v2.funds import (
+    CrowdingRetrieveResponse,
+    CrowdingHistoryResponse,
+    CrowdingTimelineResponse,
+)
+```
+
+Methods:
+
+- <code title="get /api/v2/funds/crowding">client.v2.funds.crowding.<a href="./src/brapi/resources/v2/funds/crowding.py">retrieve</a>(\*\*<a href="src/brapi/types/v2/funds/crowding_retrieve_params.py">params</a>) -> <a href="./src/brapi/types/v2/funds/crowding_retrieve_response.py">CrowdingRetrieveResponse</a></code>
+- <code title="get /api/v2/funds/crowding/history">client.v2.funds.crowding.<a href="./src/brapi/resources/v2/funds/crowding.py">history</a>(\*\*<a href="src/brapi/types/v2/funds/crowding_history_params.py">params</a>) -> <a href="./src/brapi/types/v2/funds/crowding_history_response.py">CrowdingHistoryResponse</a></code>
+- <code title="get /api/v2/funds/crowding/timeline">client.v2.funds.crowding.<a href="./src/brapi/resources/v2/funds/crowding.py">timeline</a>(\*\*<a href="src/brapi/types/v2/funds/crowding_timeline_params.py">params</a>) -> <a href="./src/brapi/types/v2/funds/crowding_timeline_response.py">CrowdingTimelineResponse</a></code>
 
 ### Fiagro
 
