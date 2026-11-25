@@ -53,6 +53,7 @@ from ....types.v2 import (
     fund_list_params,
     fund_holders_params,
     fund_profile_params,
+    fund_exposure_params,
     fund_screener_params,
     fund_dividends_params,
     fund_portfolio_params,
@@ -69,6 +70,7 @@ from ...._base_client import make_request_options
 from ....types.v2.fund_list_response import FundListResponse
 from ....types.v2.fund_holders_response import FundHoldersResponse
 from ....types.v2.fund_profile_response import FundProfileResponse
+from ....types.v2.fund_exposure_response import FundExposureResponse
 from ....types.v2.fund_screener_response import FundScreenerResponse
 from ....types.v2.fund_dividends_response import FundDividendsResponse
 from ....types.v2.fund_portfolio_response import FundPortfolioResponse
@@ -331,17 +333,107 @@ class FundsResource(SyncAPIResource):
             cast_to=FundDividendsResponse,
         )
 
+    def exposure(
+        self,
+        *,
+        positions: str,
+        limit: int | Omit = omit,
+        page: int | Omit = omit,
+        reference_date: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> FundExposureResponse:
+        """
+        A exposição final de uma carteira de ativos: cada item abre até os ativos
+        finais, e o resultado junta tudo por empresa, país, setor e classe de ativo.
+
+        Use para saber quanto uma carteira tem, no total, em uma empresa (NVIDIA pelo
+        WRLD11, pelo IVVB11 e pelo NVDC34), em um país ou em um setor.
+
+        Informe `positions` com até 200 itens: tickers de ações, units, BDRs, ETFs, BDRs
+        de ETF, ou CNPJs de fundos, cada um com o valor em reais (`PETR4:3000`) ou o
+        peso (`PETR4:30%`).
+
+        Como cada item abre:
+
+        - Fundo ou ETF brasileiro: pela carteira mensal do fundo, abrindo os fundos que
+          ele tem, como em `/api/v2/funds/holdings`.
+        - BDR de ETF: pela carteira do ETF no exterior, dos relatórios públicos dos
+          fundos. BDRs de ouro, prata e criptoativos viram o próprio ativo.
+        - Ação, unit ou BDR de empresa: a própria empresa. Uma ação direta soma com a
+          mesma empresa dentro dos fundos.
+
+        `companies` junta as classes de ações de uma empresa e os BDRs dela, quando a
+        ligação é conhecida. `paths` mostra quanto vem de cada item, até 10 itens;
+        `pathsCount` conta todos. `totals` e `assetClasses` fecham 100%.
+
+        `coverage.unresolved` lista as 50 maiores partes que não abrem (fundos sem
+        carteira, posições confidenciais, fundos pequenos demais para abrir), com o
+        motivo e o peso; `coverage.otherUnresolved` soma o resto. Os fundos de todos os
+        itens dividem um limite de posições: os de maior peso na carteira abrem
+        primeiro. As carteiras têm datas diferentes: `coverage.oldestReferenceDate` traz
+        a mais antiga.
+
+        Plano Pro.
+
+        Args:
+          positions: Itens separados por vírgula, até 200: ticker ou CNPJ, com o valor em reais
+              (`WRLD11:10000`) ou o peso (`WRLD11:30%`). Sem valor, o item recebe a média dos
+              outros; sem nenhum valor, todos têm o mesmo peso. Use ponto como separador
+              decimal.
+
+          limit: Empresas por página. Padrão 50, máximo 500.
+
+          page: Página, a partir de 1.
+
+          reference_date: Data no formato YYYY-MM-DD. Traz o mês mais recente até esta data. Sem ela, traz
+              o mês mais recente.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return self._get(
+            "/api/v2/funds/exposure",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {
+                        "positions": positions,
+                        "limit": limit,
+                        "page": page,
+                        "reference_date": reference_date,
+                    },
+                    fund_exposure_params.FundExposureParams,
+                ),
+            ),
+            cast_to=FundExposureResponse,
+        )
+
     def holders(
         self,
         *,
         asset_class: str | Omit = omit,
         asset_type: Literal["fii", "fiagro", "fiinfra", "fif", "fidc", "fip", "etf", "other"] | Omit = omit,
         cnpj: str | Omit = omit,
+        include: str | Omit = omit,
         issuer: Literal["true", "false"] | Omit = omit,
         limit: int | Omit = omit,
         page: int | Omit = omit,
         reference_date: str | Omit = omit,
-        sort_by: Literal["marketValue", "weightPercent"] | Omit = omit,
+        scope: Literal["direct", "indirect", "all"] | Omit = omit,
+        sort_by: Literal["marketValue", "weightPercent", "bought", "sold"] | Omit = omit,
         sort_order: Literal["asc", "desc"] | Omit = omit,
         symbol: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -368,12 +460,58 @@ class FundsResource(SyncAPIResource):
         Cada fundo aparece uma vez, com os valores somados. `positions` mostra cada
         ativo da posição. Use `assetClass=equity` para ver só as ações.
 
-        Só posições diretas: um fundo que tem o ativo por meio de outro fundo não
-        aparece. Ações próprias e emprestadas somam uma posição. Derivativos, valores a
-        pagar e posições confidenciais não aparecem.
+        Por padrão (`scope=direct`), só posições diretas: um fundo que tem o ativo por
+        meio de outro fundo não aparece. Ações próprias e emprestadas somam uma posição.
+        Derivativos, valores a pagar e posições confidenciais não aparecem.
+
+        Fundos que têm o ativo por meio de outros fundos: use `scope=indirect` (só
+        esses) ou `scope=all` (os dois). O caminho passa por fundos de fundos, ETFs,
+        BDRs de ETF e os fundos do exterior por trás deles. Assim, um fundo que tem
+        WRLD11 aparece entre os que têm NVIDIA (NVDC34). Um BDR de empresa também busca
+        a ação no exterior: as ações da NVIDIA que os fundos têm fora do país e dentro
+        dos fundos do exterior.
+
+        Com `scope=indirect` ou `all`:
+
+        - `marketValue` e `weightPercent` trazem a exposição total do fundo ao ativo,
+          direta mais indireta. `directValue` e `directWeightPercent` trazem só a
+          posição direta, e `indirectValue` a parte por meio de outros fundos.
+        - `paths` traz os 3 caminhos de maior valor, cada um com os fundos no caminho
+          (`via`), o peso e o valor. A posição direta é o caminho com `via` vazio.
+        - A mesma posição aparece em cada fundo acima dela, então a soma dos fundos
+          conta a posição mais de uma vez. `summary.totalValue` conta cada posição uma
+          vez. `summary` traz também quantos fundos têm o ativo só direto, só indireto
+          ou dos dois jeitos.
+        - `change`, `sortBy=bought`, `sortBy=sold` e `include=movers` continuam sobre a
+          posição direta. `include=direct` traz também `topDirect`: as maiores posições
+          diretas, na mesma resposta. O valor indireto muda quando um fundo no meio do
+          caminho negocia, e isso não é compra nem venda do fundo.
+          `previousIndirectValue` traz o valor indireto do mês anterior.
+        - Um fundo só abre outro a partir de 0,01% do patrimônio e até 5 níveis.
+          Posições confidenciais nunca abrem. Os fundos do exterior publicam a carteira
+          a cada trimestre: `summary.oldestReferenceDate` traz a data mais antiga usada.
 
         Sem `referenceDate`, a resposta traz o mês mais recente que a maioria dos fundos
         já entregou: os fundos entregam a carteira ao longo de semanas.
+
+        Quem comprou e quem vendeu: `change` compara cada fundo com o mês anterior com
+        carteiras (`previousReferenceDate`). `change.changeValue` estima o valor
+        comprado ou vendido pela diferença de quantidade vezes o preço do mês, então a
+        alta ou a queda do preço não conta. A quantidade do mês anterior é ajustada por
+        desdobramentos, grupamentos e bonificações. Use `sortBy=bought` para os maiores
+        compradores e `sortBy=sold` para os maiores vendedores, inclusive os que zeraram
+        a posição. Com `include=movers`, a mesma resposta traz também `topBuyers` e
+        `topSellers`. `summary` traz quantos fundos compraram e venderam e o saldo do
+        mês. Uma linha com quantidade e valor zerados conta como posição zerada.
+
+        Um fundo que ainda não entregou a carteira do mês não conta como venda. Um fundo
+        sem carteira no mês anterior, ou com posições confidenciais da mesma classe do
+        ativo em um dos dois meses, fica com `change.status` `unknown` e não entra nos
+        totais. Quando um evento muda a quantidade de ações sem fator conhecido (como
+        incorporação ou redução de capital), `change` e os totais vêm `null`.
+
+        `return12mPercent` traz a variação do valor da cota de cada fundo nos 12 meses
+        até `referenceDate`, sem os rendimentos distribuídos.
 
         Plano Pro.
 
@@ -386,6 +524,11 @@ class FundsResource(SyncAPIResource):
           cnpj: CNPJ de um fundo, para ver quais fundos têm cotas dele, ou de uma empresa, para
               ver quais fundos têm ações ou dívida dela. Use `symbol` ou `cnpj`, não os dois.
 
+          include: Listas extras na mesma resposta, separadas por vírgula, até `limit` de cada.
+              `movers` traz `topBuyers` e `topSellers`: os maiores compradores e vendedores do
+              mês. `direct`, com `scope=indirect` ou `all`, traz `topDirect`: as maiores
+              posições diretas.
+
           issuer: `true` troca o ticker de `symbol` por todos os ativos da empresa: ações, units,
               debêntures e outros títulos de dívida. Padrão `false`.
 
@@ -396,9 +539,20 @@ class FundsResource(SyncAPIResource):
           reference_date: Data no formato YYYY-MM-DD. Traz o mês mais recente até esta data. Sem ela, traz
               o mês mais recente que a maioria dos fundos já entregou.
 
-          sort_by: `marketValue` (padrão) ou `weightPercent`.
+          scope:
+              `direct` (padrão): fundos que têm o ativo na própria carteira. `indirect`:
+              fundos que têm o ativo por meio de outros fundos (fundos de fundos, ETFs, BDRs
+              de ETF e os fundos do exterior por trás deles). `all`: os dois. Com `indirect` e
+              `all`, `marketValue` e `weightPercent` trazem a exposição total do fundo, e cada
+              fundo traz `directValue`, `indirectValue` e `paths`.
 
-          sort_order: Ordem crescente (`asc`) ou decrescente (`desc`, padrão).
+          sort_by: `marketValue` (padrão) ou `weightPercent` listam os fundos que têm o ativo.
+              `bought` lista só os fundos que compraram no mês, pelo valor comprado
+              (`change.changeValue`). `sold` lista só os que venderam, inclusive os que
+              zeraram a posição, pelo valor vendido.
+
+          sort_order: Ordem crescente (`asc`) ou decrescente (`desc`, padrão). Com `bought` e `sold`,
+              `desc` traz primeiro as maiores compras ou vendas.
 
           symbol: Ticker do ativo na bolsa. Ex.: PETR4.
 
@@ -422,10 +576,12 @@ class FundsResource(SyncAPIResource):
                         "asset_class": asset_class,
                         "asset_type": asset_type,
                         "cnpj": cnpj,
+                        "include": include,
                         "issuer": issuer,
                         "limit": limit,
                         "page": page,
                         "reference_date": reference_date,
+                        "scope": scope,
                         "sort_by": sort_by,
                         "sort_order": sort_order,
                         "symbol": symbol,
@@ -1307,17 +1463,107 @@ class AsyncFundsResource(AsyncAPIResource):
             cast_to=FundDividendsResponse,
         )
 
+    async def exposure(
+        self,
+        *,
+        positions: str,
+        limit: int | Omit = omit,
+        page: int | Omit = omit,
+        reference_date: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> FundExposureResponse:
+        """
+        A exposição final de uma carteira de ativos: cada item abre até os ativos
+        finais, e o resultado junta tudo por empresa, país, setor e classe de ativo.
+
+        Use para saber quanto uma carteira tem, no total, em uma empresa (NVIDIA pelo
+        WRLD11, pelo IVVB11 e pelo NVDC34), em um país ou em um setor.
+
+        Informe `positions` com até 200 itens: tickers de ações, units, BDRs, ETFs, BDRs
+        de ETF, ou CNPJs de fundos, cada um com o valor em reais (`PETR4:3000`) ou o
+        peso (`PETR4:30%`).
+
+        Como cada item abre:
+
+        - Fundo ou ETF brasileiro: pela carteira mensal do fundo, abrindo os fundos que
+          ele tem, como em `/api/v2/funds/holdings`.
+        - BDR de ETF: pela carteira do ETF no exterior, dos relatórios públicos dos
+          fundos. BDRs de ouro, prata e criptoativos viram o próprio ativo.
+        - Ação, unit ou BDR de empresa: a própria empresa. Uma ação direta soma com a
+          mesma empresa dentro dos fundos.
+
+        `companies` junta as classes de ações de uma empresa e os BDRs dela, quando a
+        ligação é conhecida. `paths` mostra quanto vem de cada item, até 10 itens;
+        `pathsCount` conta todos. `totals` e `assetClasses` fecham 100%.
+
+        `coverage.unresolved` lista as 50 maiores partes que não abrem (fundos sem
+        carteira, posições confidenciais, fundos pequenos demais para abrir), com o
+        motivo e o peso; `coverage.otherUnresolved` soma o resto. Os fundos de todos os
+        itens dividem um limite de posições: os de maior peso na carteira abrem
+        primeiro. As carteiras têm datas diferentes: `coverage.oldestReferenceDate` traz
+        a mais antiga.
+
+        Plano Pro.
+
+        Args:
+          positions: Itens separados por vírgula, até 200: ticker ou CNPJ, com o valor em reais
+              (`WRLD11:10000`) ou o peso (`WRLD11:30%`). Sem valor, o item recebe a média dos
+              outros; sem nenhum valor, todos têm o mesmo peso. Use ponto como separador
+              decimal.
+
+          limit: Empresas por página. Padrão 50, máximo 500.
+
+          page: Página, a partir de 1.
+
+          reference_date: Data no formato YYYY-MM-DD. Traz o mês mais recente até esta data. Sem ela, traz
+              o mês mais recente.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return await self._get(
+            "/api/v2/funds/exposure",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {
+                        "positions": positions,
+                        "limit": limit,
+                        "page": page,
+                        "reference_date": reference_date,
+                    },
+                    fund_exposure_params.FundExposureParams,
+                ),
+            ),
+            cast_to=FundExposureResponse,
+        )
+
     async def holders(
         self,
         *,
         asset_class: str | Omit = omit,
         asset_type: Literal["fii", "fiagro", "fiinfra", "fif", "fidc", "fip", "etf", "other"] | Omit = omit,
         cnpj: str | Omit = omit,
+        include: str | Omit = omit,
         issuer: Literal["true", "false"] | Omit = omit,
         limit: int | Omit = omit,
         page: int | Omit = omit,
         reference_date: str | Omit = omit,
-        sort_by: Literal["marketValue", "weightPercent"] | Omit = omit,
+        scope: Literal["direct", "indirect", "all"] | Omit = omit,
+        sort_by: Literal["marketValue", "weightPercent", "bought", "sold"] | Omit = omit,
         sort_order: Literal["asc", "desc"] | Omit = omit,
         symbol: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -1344,12 +1590,58 @@ class AsyncFundsResource(AsyncAPIResource):
         Cada fundo aparece uma vez, com os valores somados. `positions` mostra cada
         ativo da posição. Use `assetClass=equity` para ver só as ações.
 
-        Só posições diretas: um fundo que tem o ativo por meio de outro fundo não
-        aparece. Ações próprias e emprestadas somam uma posição. Derivativos, valores a
-        pagar e posições confidenciais não aparecem.
+        Por padrão (`scope=direct`), só posições diretas: um fundo que tem o ativo por
+        meio de outro fundo não aparece. Ações próprias e emprestadas somam uma posição.
+        Derivativos, valores a pagar e posições confidenciais não aparecem.
+
+        Fundos que têm o ativo por meio de outros fundos: use `scope=indirect` (só
+        esses) ou `scope=all` (os dois). O caminho passa por fundos de fundos, ETFs,
+        BDRs de ETF e os fundos do exterior por trás deles. Assim, um fundo que tem
+        WRLD11 aparece entre os que têm NVIDIA (NVDC34). Um BDR de empresa também busca
+        a ação no exterior: as ações da NVIDIA que os fundos têm fora do país e dentro
+        dos fundos do exterior.
+
+        Com `scope=indirect` ou `all`:
+
+        - `marketValue` e `weightPercent` trazem a exposição total do fundo ao ativo,
+          direta mais indireta. `directValue` e `directWeightPercent` trazem só a
+          posição direta, e `indirectValue` a parte por meio de outros fundos.
+        - `paths` traz os 3 caminhos de maior valor, cada um com os fundos no caminho
+          (`via`), o peso e o valor. A posição direta é o caminho com `via` vazio.
+        - A mesma posição aparece em cada fundo acima dela, então a soma dos fundos
+          conta a posição mais de uma vez. `summary.totalValue` conta cada posição uma
+          vez. `summary` traz também quantos fundos têm o ativo só direto, só indireto
+          ou dos dois jeitos.
+        - `change`, `sortBy=bought`, `sortBy=sold` e `include=movers` continuam sobre a
+          posição direta. `include=direct` traz também `topDirect`: as maiores posições
+          diretas, na mesma resposta. O valor indireto muda quando um fundo no meio do
+          caminho negocia, e isso não é compra nem venda do fundo.
+          `previousIndirectValue` traz o valor indireto do mês anterior.
+        - Um fundo só abre outro a partir de 0,01% do patrimônio e até 5 níveis.
+          Posições confidenciais nunca abrem. Os fundos do exterior publicam a carteira
+          a cada trimestre: `summary.oldestReferenceDate` traz a data mais antiga usada.
 
         Sem `referenceDate`, a resposta traz o mês mais recente que a maioria dos fundos
         já entregou: os fundos entregam a carteira ao longo de semanas.
+
+        Quem comprou e quem vendeu: `change` compara cada fundo com o mês anterior com
+        carteiras (`previousReferenceDate`). `change.changeValue` estima o valor
+        comprado ou vendido pela diferença de quantidade vezes o preço do mês, então a
+        alta ou a queda do preço não conta. A quantidade do mês anterior é ajustada por
+        desdobramentos, grupamentos e bonificações. Use `sortBy=bought` para os maiores
+        compradores e `sortBy=sold` para os maiores vendedores, inclusive os que zeraram
+        a posição. Com `include=movers`, a mesma resposta traz também `topBuyers` e
+        `topSellers`. `summary` traz quantos fundos compraram e venderam e o saldo do
+        mês. Uma linha com quantidade e valor zerados conta como posição zerada.
+
+        Um fundo que ainda não entregou a carteira do mês não conta como venda. Um fundo
+        sem carteira no mês anterior, ou com posições confidenciais da mesma classe do
+        ativo em um dos dois meses, fica com `change.status` `unknown` e não entra nos
+        totais. Quando um evento muda a quantidade de ações sem fator conhecido (como
+        incorporação ou redução de capital), `change` e os totais vêm `null`.
+
+        `return12mPercent` traz a variação do valor da cota de cada fundo nos 12 meses
+        até `referenceDate`, sem os rendimentos distribuídos.
 
         Plano Pro.
 
@@ -1362,6 +1654,11 @@ class AsyncFundsResource(AsyncAPIResource):
           cnpj: CNPJ de um fundo, para ver quais fundos têm cotas dele, ou de uma empresa, para
               ver quais fundos têm ações ou dívida dela. Use `symbol` ou `cnpj`, não os dois.
 
+          include: Listas extras na mesma resposta, separadas por vírgula, até `limit` de cada.
+              `movers` traz `topBuyers` e `topSellers`: os maiores compradores e vendedores do
+              mês. `direct`, com `scope=indirect` ou `all`, traz `topDirect`: as maiores
+              posições diretas.
+
           issuer: `true` troca o ticker de `symbol` por todos os ativos da empresa: ações, units,
               debêntures e outros títulos de dívida. Padrão `false`.
 
@@ -1372,9 +1669,20 @@ class AsyncFundsResource(AsyncAPIResource):
           reference_date: Data no formato YYYY-MM-DD. Traz o mês mais recente até esta data. Sem ela, traz
               o mês mais recente que a maioria dos fundos já entregou.
 
-          sort_by: `marketValue` (padrão) ou `weightPercent`.
+          scope:
+              `direct` (padrão): fundos que têm o ativo na própria carteira. `indirect`:
+              fundos que têm o ativo por meio de outros fundos (fundos de fundos, ETFs, BDRs
+              de ETF e os fundos do exterior por trás deles). `all`: os dois. Com `indirect` e
+              `all`, `marketValue` e `weightPercent` trazem a exposição total do fundo, e cada
+              fundo traz `directValue`, `indirectValue` e `paths`.
 
-          sort_order: Ordem crescente (`asc`) ou decrescente (`desc`, padrão).
+          sort_by: `marketValue` (padrão) ou `weightPercent` listam os fundos que têm o ativo.
+              `bought` lista só os fundos que compraram no mês, pelo valor comprado
+              (`change.changeValue`). `sold` lista só os que venderam, inclusive os que
+              zeraram a posição, pelo valor vendido.
+
+          sort_order: Ordem crescente (`asc`) ou decrescente (`desc`, padrão). Com `bought` e `sold`,
+              `desc` traz primeiro as maiores compras ou vendas.
 
           symbol: Ticker do ativo na bolsa. Ex.: PETR4.
 
@@ -1398,10 +1706,12 @@ class AsyncFundsResource(AsyncAPIResource):
                         "asset_class": asset_class,
                         "asset_type": asset_type,
                         "cnpj": cnpj,
+                        "include": include,
                         "issuer": issuer,
                         "limit": limit,
                         "page": page,
                         "reference_date": reference_date,
+                        "scope": scope,
                         "sort_by": sort_by,
                         "sort_order": sort_order,
                         "symbol": symbol,
@@ -2039,6 +2349,9 @@ class FundsResourceWithRawResponse:
         self.dividends = to_raw_response_wrapper(
             funds.dividends,
         )
+        self.exposure = to_raw_response_wrapper(
+            funds.exposure,
+        )
         self.holders = to_raw_response_wrapper(
             funds.holders,
         )
@@ -2100,6 +2413,9 @@ class AsyncFundsResourceWithRawResponse:
         )
         self.dividends = async_to_raw_response_wrapper(
             funds.dividends,
+        )
+        self.exposure = async_to_raw_response_wrapper(
+            funds.exposure,
         )
         self.holders = async_to_raw_response_wrapper(
             funds.holders,
@@ -2163,6 +2479,9 @@ class FundsResourceWithStreamingResponse:
         self.dividends = to_streamed_response_wrapper(
             funds.dividends,
         )
+        self.exposure = to_streamed_response_wrapper(
+            funds.exposure,
+        )
         self.holders = to_streamed_response_wrapper(
             funds.holders,
         )
@@ -2224,6 +2543,9 @@ class AsyncFundsResourceWithStreamingResponse:
         )
         self.dividends = async_to_streamed_response_wrapper(
             funds.dividends,
+        )
+        self.exposure = async_to_streamed_response_wrapper(
+            funds.exposure,
         )
         self.holders = async_to_streamed_response_wrapper(
             funds.holders,
