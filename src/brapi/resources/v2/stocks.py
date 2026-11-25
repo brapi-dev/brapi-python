@@ -729,7 +729,8 @@ class StocksResource(SyncAPIResource):
 
           limit: Máximo de movimentações por empresa e página.
 
-          movement_type: Tipo de movimentação, com o texto exato do relatório.
+          movement_type: Tipos de movimentação separados por vírgula, com o texto exato do relatório.
+              Ex.: `Compra à vista,Venda à vista` para só as compras e vendas à vista.
 
           page: Página de cada empresa.
 
@@ -2146,7 +2147,8 @@ class AsyncStocksResource(AsyncAPIResource):
 
           limit: Máximo de movimentações por empresa e página.
 
-          movement_type: Tipo de movimentação, com o texto exato do relatório.
+          movement_type: Tipos de movimentação separados por vírgula, com o texto exato do relatório.
+              Ex.: `Compra à vista,Venda à vista` para só as compras e vendas à vista.
 
           page: Página de cada empresa.
 
