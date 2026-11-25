@@ -27,6 +27,14 @@ class FundHoldersParams(TypedDict, total=False):
     ver quais fundos têm ações ou dívida dela. Use `symbol` ou `cnpj`, não os dois.
     """
 
+    include: str
+    """Listas extras na mesma resposta, separadas por vírgula, até `limit` de cada.
+
+    `movers` traz `topBuyers` e `topSellers`: os maiores compradores e vendedores do
+    mês. `direct`, com `scope=indirect` ou `all`, traz `topDirect`: as maiores
+    posições diretas.
+    """
+
     issuer: Literal["true", "false"]
     """
     `true` troca o ticker de `symbol` por todos os ativos da empresa: ações, units,
@@ -46,11 +54,28 @@ class FundHoldersParams(TypedDict, total=False):
     maioria dos fundos já entregou.
     """
 
-    sort_by: Annotated[Literal["marketValue", "weightPercent"], PropertyInfo(alias="sortBy")]
-    """`marketValue` (padrão) ou `weightPercent`."""
+    scope: Literal["direct", "indirect", "all"]
+    """`direct` (padrão): fundos que têm o ativo na própria carteira.
+
+    `indirect`: fundos que têm o ativo por meio de outros fundos (fundos de fundos,
+    ETFs, BDRs de ETF e os fundos do exterior por trás deles). `all`: os dois. Com
+    `indirect` e `all`, `marketValue` e `weightPercent` trazem a exposição total do
+    fundo, e cada fundo traz `directValue`, `indirectValue` e `paths`.
+    """
+
+    sort_by: Annotated[Literal["marketValue", "weightPercent", "bought", "sold"], PropertyInfo(alias="sortBy")]
+    """`marketValue` (padrão) ou `weightPercent` listam os fundos que têm o ativo.
+
+    `bought` lista só os fundos que compraram no mês, pelo valor comprado
+    (`change.changeValue`). `sold` lista só os que venderam, inclusive os que
+    zeraram a posição, pelo valor vendido.
+    """
 
     sort_order: Annotated[Literal["asc", "desc"], PropertyInfo(alias="sortOrder")]
-    """Ordem crescente (`asc`) ou decrescente (`desc`, padrão)."""
+    """Ordem crescente (`asc`) ou decrescente (`desc`, padrão).
+
+    Com `bought` e `sold`, `desc` traz primeiro as maiores compras ou vendas.
+    """
 
     symbol: str
     """Ticker do ativo na bolsa. Ex.: PETR4."""
