@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.15.0](https://github.com/brapi-dev/brapi-python/compare/v1.14.0...v1.15.0) (2026-11-25)
+
+
+### Features
+
+* **funds:** investors section on the ticker page — holders, buyers, sellers, insider trades ([31fbd21](https://github.com/brapi-dev/brapi-python/commit/31fbd21f00ba5093223428275a4d5562942adcff))
+* **quotes:** find funds without a ticker by name in the carteira fields ([3af7256](https://github.com/brapi-dev/brapi-python/commit/3af7256399b8a492f0ee959a70476cad55064361))
+* **web:** own pages for the two market maps ([0fa04f4](https://github.com/brapi-dev/brapi-python/commit/0fa04f4ba3c71bdd65fc306999f7fbb629dcbebc))
+
 ## [1.14.0](https://github.com/brapi-dev/brapi-python/compare/v1.13.0...v1.14.0) (2026-11-13)
 
 
