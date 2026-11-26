@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.1](https://github.com/brapi-dev/brapi-python/compare/v1.15.0...v1.15.1) (2026-11-26)
+
+
+### Documentation
+
+* **funds:** point /funds/crowding to the monthly history route ([f2021bc](https://github.com/brapi-dev/brapi-python/commit/f2021bcf1daa08acff1d5352e363f12af042a11c))
+
 ## [1.15.0](https://github.com/brapi-dev/brapi-python/compare/v1.14.0...v1.15.0) (2026-11-25)
 
 
